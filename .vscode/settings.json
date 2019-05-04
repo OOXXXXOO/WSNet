@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "C:\\Users\\tanwe\\AppData\\Local\\conda\\conda\\envs\\ML37\\python.exe",
+    "python.autoComplete.extraPaths": [
+        "${env:SPARK_HOME}\\python",
+        "${env:SPARK_HOME}\\python\\pyspark"
+    ]
+}
