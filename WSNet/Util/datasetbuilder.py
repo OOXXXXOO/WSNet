@@ -20,9 +20,9 @@ def main():
 
     parser.add_argument('--labeldir',type=str,default='./dataset/label',help='must input label dir (default is ./dataset/label)')
 
-    parser.add_argument('--tarinval',type=float,default=0.8,help='ratio of train data & val data (default=0.8)')
+    parser.add_argument('--ratio',type=float,default=0.8,help='ratio of train data & val data (default=0.8)')
 
-    parser.add_argument('--')
+    # parser.add_argument('--')
 
     args = parser.parse_args()
     print('backbone :',args.backbone)
