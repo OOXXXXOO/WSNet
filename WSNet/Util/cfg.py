@@ -2,8 +2,8 @@ import os
 import sys
 import numpy as np
 import json
-
-class cfg:
+from Instace import *
+class cfg(Instance):
     def __init__(self,missionType,root):
         print('process type with :',missionType)
 

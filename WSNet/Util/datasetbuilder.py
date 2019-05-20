@@ -2,8 +2,10 @@ import cv2
 import torch.nn as nn
 import os
 import argparse
+from Instance import *
 
-
+class data(Instance):
+    
 
 
 
