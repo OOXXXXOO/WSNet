@@ -4,8 +4,18 @@ import os
 import argparse
 from Instance import *
 
-class data(Instance):
-    
+class datasetbuilder(Instance):
+    def __init__(self,root):
+        print('******* dataset builder ******')
+        assert not os.path.exists(root),'Invalid Root Path'
+        assert not os.path.exists(os.path.join(root,'image')),'cant find image folder'
+        assert not os.path.exists(os.path.join(root,'label')),'cant find label folder'
+        self.root=root
+        self.imagefolder=os.path.join(root,'image')
+        self.labelfolder=os.path.join(root,'image')
+
+        
+
 
 
 
@@ -18,7 +28,7 @@ def main():
     parser = argparse.ArgumentParser(description=
     "------PyTorch Dataset Building Tool Help Notes------")
  
-    parser.add_argument('--imagedir',type=str,default='./dataset',help='must input image dir (default is ./dataset )')
+    parser.add_argument('--root',type=str,default='./dataset',help='must input image dir (default is ./dataset )')
 
     parser.add_argument('--labeldir',type=str,default='./dataset/label',help='must input label dir (default is ./dataset/label)')
 
@@ -27,7 +37,14 @@ def main():
     # parser.add_argument('--')
 
     args = parser.parse_args()
-    print('backbone :',args.backbone)
+    print('backbone :',args.root)
+    """
+    Process flow:
+    1.Traversal image folder & index image file & label file
+     
+    """
+    dataset=datasetbuilder(args.root)
+
 
 
 

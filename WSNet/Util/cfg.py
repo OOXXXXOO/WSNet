@@ -3,24 +3,39 @@ import sys
 import numpy as np
 import json
 from Instace import *
+
+
 class cfg(Instance):
+    """
+    Mission index :
+    0 -> Detection Mission
+    1 -> Segmentation Mission
+    2 -> Mask Mission
+    others -> Invalid Mission
+
+
+    """
     def __init__(self,missionType,root):
-        print('process type with :',missionType)
+        super(cfg,self).__init__()
+        assert missionType.type()!=int or missionType>=3,'mode index must be interger'
+        print('process type with :',self.MissionType[missionType])
 
-        if missionType=='Segmentation':
-            print('root is ',root)
+        print('root is ',root)
+        imagepath = os.path.join(root, 'image')
+        labelpath = os.path.join(root, 'label')
+        if missionType=='1':
+
             assert os.path.exists(root),"Invaild root path for Segmentation"
-            imagepath=os.path.join(root,'image')
-            labelpath = os.path.join(root, 'label')
 
 
+        elif missionType=='0':
 
-
-        elif missionType=='Detection':
-            print('root is ', root)
             assert os.path.exists(root), "Invaild root path for Detection"
-            imagepath=os.path.join(root,'image')
-            labelpath = os.path.join(root, 'label')
+
+
+
+        elif missionType=='2':
+            assert os.path.exists(root), "Invaild root path for Mask Mission"
 
 
         else:
@@ -29,6 +44,17 @@ class cfg(Instance):
             
         # return super().__init__(*args, **kwargs)
     def read(self,config_json):
+        pass
+
+
+
+    def generate(self,jsonfile='./config.json'):
+        instance={}
+        instance['instance id']=self.instance_id
+        net={'backbone':self.backbone,''}
+        net['backbone']=
+        instance['Net']=self.
+        instance['mode']=self.
 
 CFG=cfg(missionType='Segmentation',root='./')
 CFG2=cfg('Detection','./')
