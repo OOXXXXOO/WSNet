@@ -47,7 +47,7 @@ Instance——|——DataSet--|——datasetbuild->(data，label)
           |——Config---|——Mission type ( segmentation/detection/mask )
                       |——Net(BackBone)
                       |——Optimizer
-                      |——Super parameter
+                      |——Super parameters
                       |——gpu id(set -1 for disable gpu)
                       |——...
 
@@ -89,7 +89,7 @@ python datasetbuilder.py --root ./root --datasetdir ./root/dataset --mode segmen
             download_pretrain_model:True,
             checkpointdir:"./root/model",
             mutilscale_training:True,
-            logdir:
+            logdir:‘./log’
         }
 
     }
@@ -135,7 +135,7 @@ tensorboard --logdir 监控训练
 > 
 > 2，如果以txt保存，则一类的名字为一行，如果以csv保存，则类名之间用','分隔。
 >
-
+> 3, 数据生成过程中对于一类任务的像素类别会自动扫描，所以推荐label为单通道，但是三通道也同样支持，只不过在可视化过程中会有不同策略
 
 
 
