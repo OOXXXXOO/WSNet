@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="" />
+    <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/WSNet/Util/NetProcess.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Util/Instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Util/Instance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +52,39 @@
     </window>
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="NetWorkGenerator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="NetProcess.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WSNet/Util/NetProcess.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="Instance.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="625">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="resnet.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="25">
+              <caret line="1" column="24" lean-forward="true" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -74,8 +112,11 @@
         <option value="$PROJECT_DIR$/WSNet/Util/__init__.py" />
         <option value="$PROJECT_DIR$/WSNet/Nets/__init__.py" />
         <option value="$PROJECT_DIR$/WSNet/Util/cfg.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/Instance.py" />
         <option value="$PROJECT_DIR$/WSNet/Util/datasetbuilder.py" />
+        <option value="$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py" />
+        <option value="$PROJECT_DIR$/WSNet/Util/NetProcess.py" />
+        <option value="$PROJECT_DIR$/WSNet/Util/Instance.py" />
+        <option value="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" />
       </list>
     </option>
   </component>
@@ -113,12 +154,58 @@
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WS-Faster-RCNN" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="faster_rcnn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="pytorch-deeplab-xception" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="Backbone" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="Nets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
@@ -256,7 +343,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32903227" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33333334" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.0" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -473,13 +560,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Util/datasetbuilder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1125">
@@ -490,10 +570,33 @@
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/cfgs/res101.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/NetProcess.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1375">
           <caret line="59" column="26" lean-forward="true" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="625">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="1" column="24" lean-forward="true" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
         </state>
       </provider>
     </entry>
