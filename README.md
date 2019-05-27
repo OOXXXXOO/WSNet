@@ -1,21 +1,181 @@
+![](./timg.jpeg)
+
+
 ## WSNet Document
 > Version 1.0
 
-### The main function of toolkit in **version 1.0**:
+### The primary feature of WSNet toolkit in **version 1.0**:
 
-* The custom data structure not has a standard form,so this toolkit rule a easy way to make that support for different NeuroNetwork(For Detection , Segmentation or both like Mask RCNN)
+* The custom data structure not has a standard form,so this toolkit rule a easy way to make that support for different NeuroNetwork ( For Detection , Segmentation or both like Mask RCNN )
 
-* Support for :
+* Detection Support for :
   * Twostage（Faster RCNN ,Cascade RCNN ,Mask RCNN）;
   * Onestage （YOLO v3 ,SSD）;
 
-* Support for Deeplab v3+，Cascade Net，Seg Net
+* Segmentation Support for : 
+    * Deeplab v3+，Cascade Net，Seg Net
 
-> In principle , When we run 'datasetbuild' will generate the dataset and relate configure file , if we custom our data with
+>  In principle , When we run 'datasetbuild' will generate the dataset and relate configure file , if we custom our data with
 >  **Data structure RULE.**
+>
 >  You could modified the configure file to change option like gpu-id ，NetWork ...... or download pre-train model( Actually That alway is a efficient way to boost your training work). 
 
 ****
+
+
+
+
+## **Doc with EN_US**
+
+
+
+
+
+
+### Project Structure
+```txt
+                              |——template-config-generator——>——>|
+                |——Config-----|——readconfig<————————————————————|  
+                |     ^       |——configure instance             |  
+                |     |                                         |               
+Instance[MODE]——|-->Dataset-->|——training-array generator       |  
+                |             |——training-to DataLoader         |  
+                |                                               |          
+                |——Network----|——readconfig<————————————————————|  
+                              |——Network Generator
+                              |——Network Process——————>——————————>Train/Val/Test
+
+MODE=[Segmentation,Detection,Mask]
+```
+
+
+A typically process：
+
+if we have a set of image & label, we need put the image files & label files into image-folder & label-folder . Now, we have the root path of two folders that include dataset like`./root/image` & `./root/label`. In addition, we need to have a text file include class names like `./root/classes.txt` that like:
+
+```
+class1
+class2
+class3
+```
+Each class name occupies a line (please make sure the file not have gap line).
+
+Then , run as below:
+```bash
+python datasetbuilder.py --root ./root  --mode segmentation
+```
+Its gonna be start a brand new **generate instance**,the code will scan the all image file in `./root/image` and try to make a map between the image & label -files . In end of the scan process , program will generate index file of all the mapping files and  default instance configure file 
+
+`./instance-(id)-config.json`
+
+That include all the configurable option about training instance:
+
+
+```json
+{
+    "instance_id":0,
+    "mode":0,
+    "content":{
+        "Net":{
+            "BackBone":"None",
+            "NetType":"DeeplabV3plus",
+            "BatchSize":4
+        },
+    "Dataset":{
+        "root":"./root"
+    },
+    "Config":{
+        "gpu_id":0,
+        "epochs":100,
+        "down_pretrain_model":true,
+        "checkpoint_path":"./root/model",
+        "mutilscale_training":true,
+        "logdir":"./root/log"
+    }
+    }
+}
+
+```
+
+The Json file content could be modified. When you finish your change , run as :
+
+```bash
+python train.py --cfg config.json
+```
+
+#### The train will start.
+
+> Pytorch 1.1 has supported for tensorboard run like `tensorboard --logdir ./root/log` to supervise whole training flow. 
+
+
+## Dataset Generator
+
+### Data structure rule
+
+
+
+For custom dataset， index file & configure neurons network is complex step in training proces. So, that auto generate  & configure is most important part of this project.The network training gonna be **Easy & Quick**.
+
+
+**Label requiremant**：
+
+**Segmentation**:
+```
+---Root
+    |---image
+        |---image1.jpg
+                   `
+                   `
+                   `
+    |---label
+        |---image1.png
+                    `
+                    `
+                    `
+    |---classes.txt/csv
+
+```
+
+
+> * The image file of label is pixel mask label, the ascending sort sequence of different pixel values map on classnames.
+>
+> * if save the class names by txt file, the individual classname occupies a single line and please make sure without gap line . if csv file, split class names by char `,`
+>
+> * The **Sequence** generate by auto scanning, so we recommand label file is single channel image. Btw, the 3ch image also could be support. The difference is visualization method。 
+
+
+**Detection**:
+```
+---Root
+    |---image
+        |---image1.jpg
+                   `
+                   `
+                   `
+    |---label
+        |---image1.xml/txt
+                    `
+                    `
+                    `
+    |---classes.txt/csv
+
+```
+
+
+
+
+
+> * Usually, label tools is labelme or labelimg, so the label file could be xml/json/bbox file.
+> * Current version support for json & bbox file 
+
+
+
+****
+
+
+
+# Doc with ZH_CN
+
 
 ### 1.0 阶段该工具主要功能:
 
@@ -36,11 +196,11 @@
 
 
 
-# Doc with ZH_CN
+
 
 
 ### 整体结构
-```
+```txt
 
 
                       |——ReadConfig
@@ -75,29 +235,25 @@ python datasetbuilder.py --root ./root --datasetdir ./root/dataset --mode segmen
 
 ```json
 {
-    instance id:0,
-    mode:segmentation,
-    content:
-    {
-        Net:{
-            backbone:"None",
-            NetType:"Deeplabv3",
-            BatchSize:4,
-
+    "instance_id":0,
+    "mode":0,
+    "content":{
+        "Net":{
+            "BackBone":"None",
+            "NetType":"DeeplabV3plus",
+            "BatchSize":4
         },
-        Dataset:{
-            root:"./root"
-        
-        },
-        Config:{
-            gpu_id:0,
-            epochs:100,
-            download_pretrain_model:True,
-            checkpointdir:"./root/model",
-            mutilscale_training:True,
-            logdir:‘./log’
-        }
-
+    "Dataset":{
+        "root":"./root"
+    },
+    "Config":{
+        "gpu_id":0,
+        "epochs":100,
+        "down_pretrain_model":true,
+        "checkpoint_path":"./root/model",
+        "mutilscale_training":true,
+        "logdir":"./root/log"
+    }
     }
 }
 
@@ -178,147 +334,6 @@ tensorboard --logdir 监控训练
 
 
 
-
-
-# Doc with EN_US
-
-
-
-
-
-# Doc with ZH_CN
-
-
-### Project Structure
-```python 
-                              |——template-config-generator——>——>|
-                |——Config-----|——readconfig<————————————————————|  
-                |     ^       |——configure instance             |  
-                |     |                                         |               
-Instance[MODE]——|-->Dataset-->|——training-array generator       |  
-                |             |——training-to DataLoader         |  
-                |                                               |          
-                |——Network----|——readconfig<————————————————————|  
-                              |——Network Generator
-                              |——Network Process——————>——————————>Train/Val/Test
-
-MODE=[Segmentation,Detection,Mask]
-```
-
-
-A typically process：
-
-if we have a set of image & label, we need put the image files & label files into image-folder & label-folder . Now, we have the root path of two folders that include dataset like`./root/image` & `./root/label`. In addition, we need to have a text file include class names like `./root/classes.txt` that like:
-
-```
-class1
-class2
-class3
-```
-Each class name occupies a line (please make sure the file not have gap line).
-
-Then , run as below:
-```bash
-python datasetbuilder.py --root ./root  --mode segmentation
-```
-Its gonna be start a brand new **generate instance**,the code will scan the all image file in `./root/image` and try to make a map between the image & label -files . In end of the scan process , program will generate index file of all the mapping files and  default instance configure file 
-
-`./instance-(id)-config.json`
-
-That include all the configurable option about training instance:
-
-
-```json
-{
-    "instance_id":0,
-    "mode":0,
-    "content":{
-        "Net":{
-            "BackBone":"None",
-            "NetType":"DeeplabV3plus",
-            "BatchSize":4
-        },
-    "Dataset":{
-        "root":"./root"
-    },
-    "Config":{
-        "gpu_id":0,
-        "epochs":100,
-        "down_pretrain_model":true,
-        "checkpoint_path":"./root/model",
-        "mutilscale_training":true,
-        "logdir":"./root/log"
-    }
-    }
-}
-
-```
-
-The Json file content could be modified. When you finish your change , run as :
-
-```bash
-python train.py --cfg config.json
-```
-
-#### The train will start.
-
-> Pytorch 1.1 has support for tensorboard run like `tensorboard --logdir ./root/log` to supervise whole training flow. 
-
-
-## Dataset Generator
-
-### Data structure rule
-
-对于常见的数据整理形式来说，索引文件的建立以及配置相关神经网络的步骤通常是最复杂的，所以对这个步骤的自动化处理就变成了非常重要的部分。因此本工具制定了一套简单的数据处理规范，以及自动化生成配置文件，的快速训练流程。
-对于常见的AI训练任务能够快速的生成数据集，训练配置文件。快速开始训练。
-
-
-
-**标注要求**：
-
-**分割**:
-```
----Root
-    |---image
-        |---image1.jpg
-                   `
-                   `
-                   `
-    |---label
-        |---image1.png
-                    `
-                    `
-                    `
-    |---classes.txt/csv
-
-```
-> 1，注意 label 中的图片为像素级标注的图片文件，色值为从小到大排序,这个顺序对应类别文件（classes.txt）中的类名的顺序。
-> 
-> 2，如果以txt保存，则一类的名字为一行，如果以csv保存，则类名之间用','分隔。
->
-> 3, 数据生成过程中对于一类任务的像素类别会自动扫描，所以推荐label为单通道，但是三通道也同样支持，只不过在可视化过程中会有不同策略
-
-
-
-**检测**:
-```
----Root
-    |---image
-        |---image1.jpg
-                   `
-                   `
-                   `
-    |---label
-        |---image1.xml/txt
-                    `
-                    `
-                    `
-    |---classes.txt/csv
-
-```
-> 对于检测的标注一般使用labelme，image生成labelimag.xml/json文件，或者bbox.txt文件
-> 当前版本支持json以及bbox格式
-> 
 
 
 
