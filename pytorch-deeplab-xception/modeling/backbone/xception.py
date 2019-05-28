@@ -3,8 +3,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
+import os
+import matplotlib.pyplot as plt
+os.sys.path.append('/home/winshare/WSNet/pytorch-deeplab-xception/')
 from modeling.sync_batchnorm.batchnorm import SynchronizedBatchNorm2d
-
+import numpy as np
 def fixed_padding(inputs, kernel_size, dilation):
     kernel_size_effective = kernel_size + (kernel_size - 1) * (dilation - 1)
     pad_total = kernel_size_effective - 1
@@ -245,7 +248,7 @@ class AlignedXception(nn.Module):
 
 
     def _load_pretrained_model(self):
-        pretrain_dict = model_zoo.load_url('http://data.lip6.fr/cadene/pretrainedmodels/xception-b5690688.pth')
+        pretrain_dict = model_zoo.load_url('./home/winshare/.torch/models/xception-b5690688.pth')
         model_dict = {}
         state_dict = self.state_dict()
 
@@ -284,5 +287,9 @@ if __name__ == "__main__":
     model = AlignedXception(BatchNorm=nn.BatchNorm2d, pretrained=True, output_stride=16)
     input = torch.rand(1, 3, 512, 512)
     output, low_level_feat = model(input)
-    print(output.size())
+    output=output.detach().numpy()
+    
+    plt.imshow(output[0,0,:,:]),plt.show()
+    # print(output.detach().numpy())
+
     print(low_level_feat.size())

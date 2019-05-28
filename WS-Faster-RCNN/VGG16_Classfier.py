@@ -32,7 +32,7 @@ def load_data(DATA_PATH,BATCH_SIZE):
             normalize,])
 
     trainset = torchvision.datasets.CIFAR10(root=DATA_PATH, train=True,
-                                            download=False, transform=transform)
+                                            download=True, transform=transform)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE,
                                             shuffle=True, num_workers=2)
 
@@ -185,7 +185,7 @@ def train(traindata,testdata,LearningRate=0.1):
 
 def main():
     classes = ('plane', 'car', 'bird', 'cat','deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-    DataPath='/home/winshare/Dataset'
+    DataPath='/run/user/1000/gvfs/smb-share:server=192.168.31.1,share=xiaomi-usb0/DataSet/'
     Batch_Size=4
     trainloader,testloader=load_data(DataPath,Batch_Size)
 

@@ -163,14 +163,34 @@ For custom dataset， index file & configure neurons network is complex step in 
 
 
 
-
-
 > * Usually, label tools is labelme or labelimg, so the label file could be xml/json/bbox file.
 > * Current version support for json & bbox file 
 
 
 
 ****
+
+
+
+### Train/Val Process
+
+在通常的Pytorch网络训练流程中，一般要经过
+数据集->单例数据->Tensor->Batch的流程
+即
+
+#### 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -201,23 +221,20 @@ For custom dataset， index file & configure neurons network is complex step in 
 
 ### 整体结构
 ```txt
+                              |——template-config-generator——>——>|
+                |——Config-----|——readconfig<————————————————————|  
+                |     ^       |——configure instance             |  
+                |     |                                         |               
+Instance[MODE]——|-->Dataset-->|——training-array generator       |  
+                |             |——training-to DataLoader         |  
+                |                                               |          
+                |——Network----|——readconfig<————————————————————|  
+                              |——Network Generator
+                              |——Network Process——————>——————————>Train/Val/Test
 
-
-                      |——ReadConfig
-                      |——Config2Net
-          |——Net------|——Train/val Process flow
-          |
-Instance——|——DataSet--|——datasetbuild->(data，label)
-          |
-          |——Config---|——Mission type ( segmentation/detection/mask )
-                      |——Net(BackBone)
-                      |——Optimizer
-                      |——Super parameters
-                      |——gpu id(set -1 for disable gpu)
-                      |——...
-
-
+MODE=[Segmentation,Detection,Mask]
 ```
+
 一个典型的处理流程，如现在获取了一批标注完成的数据，且label和imagefile按照所要求的目录结构已经放置好，例如当前数据存储于`./root/image/`,标注文件存储于`./root/label/`.类名文件`classes.txt`中包含如
 ```
 class1

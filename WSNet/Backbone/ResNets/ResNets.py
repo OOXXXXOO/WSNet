@@ -1,15 +1,35 @@
 import torch.nn as nn
 import torch
 import matplotlib.pyplot as plt
-
-
-
-
+import torchvision.models.resnet as resnet
+import matplotlib.pyplot as plt
+import cv2
+import torch.nn.functional as F
+import torchvision.transforms.functional as tv_F
+from PIL import Image
+from torch.autograd import Variable
 
 def main():
-    tensor=torch.rand(100,100)
-    print(tensor)
-    plt.imshow(tensor.numpy()),plt.show()
+    model=resnet.resnet101()
+    model.load_state_dict(torch.load('/home/winshare/premodel/resnet/resnet101-5d3b4d8f.pth'))
+    model.cuda()
+    model.eval()
+    imagedir='/home/winshare/WSNet/timg.jpeg'
+    image=Image.open(imagedir)
+    img = tv_F.to_tensor(tv_F.resize(image, (224, 224)))
+    img = tv_F.normalize(img, [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    img_input = Variable(torch.unsqueeze(img, 0))
+
+    img_input = img_input.cuda()
+    output = model(img_input)
+    output=output.cpu()
+    # print(output.cpu())
+    output=output.detach().numpy()
+    print(output.shape)
+
+    
+    # score = F.softmax(output, dim=1)
+    # _, prediction = torch.max(score.data, dim=1)
 
 
 if __name__ == '__main__':
