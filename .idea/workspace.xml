@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/WSNet/Util/NetProcess.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Util/Instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Util/Instance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNets.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/bottleneck.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/buildingblock.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/resnet.md" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Backbone/ResNets/resnet.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/resnet.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/table.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/v2-71633c4b129b187f1c6a198473b30fd8_r.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/v2-e7418072b4de7f80414c6c061033fda3_r.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/v2-ecfb7042a787a92265c0d48eaab350fe_r.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,7 +47,7 @@
               <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="1375">
-                    <caret line="59" column="26" lean-forward="true" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
+                    <caret line="59" column="26" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
                   </state>
                 </provider>
               </entry>
@@ -67,7 +73,7 @@
         <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="625">
-              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+              <caret line="25" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -78,8 +84,23 @@
       <file leaf-file-name="resnet.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="1" column="24" lean-forward="true" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+            <state relative-caret-position="7175">
+              <caret line="287" column="14" lean-forward="true" selection-start-line="287" selection-start-column="14" selection-end-line="287" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResNetTemplate.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNetTemplate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="370">
+              <caret line="160" column="36" lean-forward="true" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -96,6 +117,9 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>post</find>
+      <find>seq</find>
+      <find>down</find>
+      <find>downsample</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -576,27 +600,40 @@
     <entry file="file://$PROJECT_DIR$/WSNet/Util/NetProcess.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1375">
-          <caret line="59" column="26" lean-forward="true" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="625">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1375">
+          <caret line="59" column="26" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNetTemplate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="160" column="36" lean-forward="true" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="1" column="24" lean-forward="true" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+        <state relative-caret-position="7175">
+          <caret line="287" column="14" lean-forward="true" selection-start-line="287" selection-start-column="14" selection-end-line="287" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
