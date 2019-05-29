@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNets.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/bottleneck.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/buildingblock.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/resnet.md" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Backbone/ResNets/resnet.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/resnet.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/table.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/v2-71633c4b129b187f1c6a198473b30fd8_r.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/v2-e7418072b4de7f80414c6c061033fda3_r.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Backbone/ResNets/v2-ecfb7042a787a92265c0d48eaab350fe_r.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Util/datasetbuilder.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Util/datasetbuilder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/instance-0-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/instance-0-config.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,7 +27,7 @@
             <file leaf-file-name="datasetbuilder.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/WSNet/Util/datasetbuilder.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="1125">
+                  <state relative-caret-position="2750">
                     <caret line="131" column="4" selection-start-line="131" selection-start-column="4" selection-end-line="131" selection-end-column="4" />
                   </state>
                 </provider>
@@ -43,11 +38,23 @@
                 <provider selected="true" editor-type-id="text-editor" />
               </entry>
             </file>
-            <file leaf-file-name="cfg.py" pinned="false" current-in-tab="true">
+            <file leaf-file-name="cfg.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="1375">
+                  <state relative-caret-position="731">
                     <caret line="59" column="26" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="resnet.py" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="643">
+                    <caret line="283" column="38" lean-forward="true" selection-start-line="283" selection-start-column="38" selection-end-line="283" selection-end-column="38" />
+                    <folding>
+                      <element signature="e#0#38#0" expanded="true" />
+                    </folding>
                   </state>
                 </provider>
               </entry>
@@ -58,7 +65,7 @@
     </window>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="NetWorkGenerator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py">
           <provider selected="true" editor-type-id="text-editor" />
@@ -72,7 +79,7 @@
       <file leaf-file-name="Instance.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="625">
+            <state relative-caret-position="484">
               <caret line="25" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
@@ -81,13 +88,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="resnet.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
+      <file leaf-file-name="faster_rcnn.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/faster_rcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7175">
-              <caret line="287" column="14" lean-forward="true" selection-start-line="287" selection-start-column="14" selection-end-line="287" selection-end-column="14" />
+            <state relative-caret-position="-66">
               <folding>
-                <element signature="e#0#38#0" expanded="true" />
+                <element signature="e#0#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -96,8 +102,8 @@
       <file leaf-file-name="ResNetTemplate.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNetTemplate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="160" column="36" lean-forward="true" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="36" />
+            <state relative-caret-position="3498">
+              <caret line="160" column="36" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="36" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -154,10 +160,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1088" />
-    <option name="y" value="-8" />
-    <option name="width" value="1096" />
-    <option name="height" value="1906" />
+    <option name="width" value="1080" />
+    <option name="height" value="1920" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -357,7 +361,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1088" y="-8" width="1096" height="1906" extended-state="6" />
+    <frame x="0" y="0" width="1080" height="1920" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -391,6 +395,36 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNetTemplate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3498">
+          <caret line="160" column="36" lean-forward="true" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6028">
+          <caret line="287" column="14" lean-forward="true" selection-start-line="287" selection-start-column="14" selection-end-line="287" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Util/datasetbuilder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="726">
@@ -584,25 +618,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/datasetbuilder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="131" column="4" selection-start-line="131" selection-start-column="4" selection-end-line="131" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/cfgs/res101.yml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Util/NetProcess.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="625">
+        <state relative-caret-position="484">
           <caret line="25" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
@@ -610,27 +631,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1375">
-          <caret line="59" column="26" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNetTemplate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="160" column="36" lean-forward="true" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="36" />
+        <state relative-caret-position="3498">
+          <caret line="160" column="36" selection-start-line="160" selection-start-column="36" selection-end-line="160" selection-end-column="36" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/datasetbuilder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2750">
+          <caret line="131" column="4" selection-start-line="131" selection-start-column="4" selection-end-line="131" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/cfgs/res101.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="59" column="26" selection-start-line="59" selection-start-column="26" selection-end-line="59" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/faster_rcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-66">
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7175">
-          <caret line="287" column="14" lean-forward="true" selection-start-line="287" selection-start-column="14" selection-end-line="287" selection-end-column="14" />
+        <state relative-caret-position="643">
+          <caret line="283" column="38" lean-forward="true" selection-start-line="283" selection-start-column="38" selection-end-line="283" selection-end-column="38" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>

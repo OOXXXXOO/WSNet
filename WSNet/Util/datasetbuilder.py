@@ -4,6 +4,8 @@ import os
 import argparse
 from Instance import *
 import numpy
+import torchvision.transforms as transforms
+
 
 def namefilter(self, name, key):
     if name.find(key) == -1:
@@ -22,6 +24,8 @@ class datasetbuilder(Instance):
         self.labelfolder=os.path.join(root,'label')
         print('\nimagedir:',self.imagefolder,'\nlabel dir:',self.labelfolder)
         self.filetypes=filtypes
+
+
     def TraversalFileInPath(self,Key=None,topdown=False):
 
         """
@@ -93,6 +97,9 @@ class datasetbuilder(Instance):
         print('image & label dict list: ',indexpair)
         return indexpair
 
+
+    def loader():
+        pass
 
 
 

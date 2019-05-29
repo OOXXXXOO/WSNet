@@ -8,7 +8,7 @@
             "BatchSize":4
         },
     "Dataset":{
-        "root","./root"
+        "root":"./root",
     },
     "Config":{
         "gpu_id":0,

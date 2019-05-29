@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/winshare/.conda/envs/ML37/bin/python",
+    "python.pythonPath": "/home/winshare/.conda/envs/MLenv/bin/python",
     "python.autoComplete.extraPaths": [
         "${env:SPARK_HOME}\\python",
         "${env:SPARK_HOME}\\python\\pyspark"
