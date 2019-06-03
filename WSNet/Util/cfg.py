@@ -16,8 +16,19 @@ class cfg(Instance):
 
     """
     def __init__(self,missionType,root):
+        """
+
+        :param missionType:
+        Mission index :
+        0 -> Detection Mission
+        1 -> Segmentation Mission
+        2 -> Mask Mission
+        others -> Invalid Mission
+        :param root:
+        root path of config file
+        """
         super(cfg,self).__init__()
-        assert missionType.type()!=int or missionType>=3,'mode index must be interger'
+        assert missionType.type()!=int or missionType>=3,'mode index must be interger(0-3) & '
         print('process type with :',self.MissionType[missionType])
 
         print('root is ',root)

@@ -61,6 +61,8 @@ class _RPN(nn.Module):
 
         # return feature map after convrelu layer
         rpn_conv1 = F.relu(self.RPN_Conv(base_feat), inplace=True)
+
+
         # get rpn classification score
         rpn_cls_score = self.RPN_cls_score(rpn_conv1)
 
