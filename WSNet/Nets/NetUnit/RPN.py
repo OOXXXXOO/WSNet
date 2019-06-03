@@ -52,7 +52,7 @@ class RPN(nn.Module):
         # rpn_bbx_pred_net #(3*3*4)-->(9*4)
         self.RPN_bbx_pred_out=len(self.anchor_scales)*len(anchor_ratios)*2
         self.RPN_bbx_pred_net=nn.Conv2d(512,self.RPN_cls_score_out,1,1,0)
-
+        return 0
 
 
     @staticmethod

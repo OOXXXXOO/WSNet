@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/Detection/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/Detection/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/Detection/faster-rcnn的副本的副本.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Util/cfg.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Util/cfg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py" beforeDir="false" afterPath="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,7 +28,7 @@
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="rpn.py" pinned="false" current-in-tab="false">
+            <file leaf-file-name="rpn.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="836">
@@ -55,10 +52,10 @@
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="proposal_layer.py" pinned="false" current-in-tab="true">
+            <file leaf-file-name="proposal_layer.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_layer.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="2112">
+                  <state relative-caret-position="2310">
                     <caret line="105" column="38" selection-start-line="105" selection-start-column="20" selection-end-line="105" selection-end-column="38" />
                     <folding>
                       <element signature="e#0#38#0" expanded="true" />
@@ -88,8 +85,8 @@
       <file leaf-file-name="RPN.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+            <state relative-caret-position="486">
+              <caret line="54" column="16" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="16" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -114,6 +111,7 @@
       <find>downsample</find>
       <find>ANCH</find>
       <find>cfg</find>
+      <find>proposals_keep</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -170,40 +168,6 @@
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="rpn" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
@@ -500,16 +464,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
-          <caret line="38" column="42" selection-start-line="38" selection-start-column="28" selection-end-line="38" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_target_layer_cascade.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -521,8 +475,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_layer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2112">
+        <state relative-caret-position="2310">
           <caret line="105" column="38" selection-start-line="105" selection-start-column="20" selection-end-line="105" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="836">
+          <caret line="38" column="42" selection-start-line="38" selection-start-column="28" selection-end-line="38" selection-end-column="42" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -531,8 +495,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        <state relative-caret-position="486">
+          <caret line="54" column="16" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="16" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
