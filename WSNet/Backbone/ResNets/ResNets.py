@@ -22,14 +22,15 @@ def main():
 
     img_input = img_input.cuda()
     output = model(img_input)
-    output=output.cpu()
+    output1=output.cpu()
     # print(output.cpu())
-    output=output.detach().numpy()
-    print(output.shape)
+    output2=output1.detach().numpy()
+    print(output2.shape)
 
     
-    # score = F.softmax(output, dim=1)
-    # _, prediction = torch.max(score.data, dim=1)
+    score = F.softmax(output1, dim=1)
+    _, prediction = torch.max(score.data, dim=1)
+    print('prediction ',prediction)
 
 
 if __name__ == '__main__':

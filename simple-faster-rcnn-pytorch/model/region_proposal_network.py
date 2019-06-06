@@ -30,7 +30,7 @@ class RegionProposalNetwork(nn.Module):
         feat_stride (int): Stride size after extracting features from an
             image.
         initialW (callable): Initial weight value. If :obj:`None` then this
-            function uses Gaussian distribution scaled by 0.1 to
+            function uses Gaussian distribution scaled by 0.1 to  
             initialize weight.
             May also be a callable that takes an array and edits its values.
         proposal_creator_params (dict): Key valued paramters for
