@@ -1,3 +1,18 @@
+## Pytorch - Detection RCNN Series Re-Implement
+the RCNN series network has become a standard of two stage - image detection mission. so the this project support for three most useful network in rcnn series. :
+
+
+* FASTER RCNN
+
+* MASK RCNN
+
+* Cascade RCNN
+
+
+
+
+
+
 ## Faster RCNN Implement
 
 Faster RCNN
@@ -9,9 +24,9 @@ Faster RCNN
 
 
 
-## RPN Network
+### RPN Network
 
-
+![](./Resources/RPN.png)
 ```python
 
 class _RPN(nn.Module):
@@ -110,6 +125,6 @@ class _RPN(nn.Module):
         return rois, self.rpn_loss_cls, self.rpn_loss_box
 ```
 
-![](./Resources/RPN.png)
+
 
 ****

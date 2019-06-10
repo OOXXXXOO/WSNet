@@ -4,12 +4,8 @@ print('Faster RCNN Pytorch Implement')
 
 
 
-
-
-
-
-
-
-class resnet(nn.Module):
+class Faster_RCNN(nn.Module):
     def __init__(self):
-        return super().__init__()
+        super(Faster_RCNN,self).__init__()
+        
+
