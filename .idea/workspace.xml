@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/WSNet/Nets/NetUnit/ROI_Align.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WSNet/Nets/NetUnit/ROI_Pooling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/Detection/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/Detection/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Util/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Util/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py" beforeDir="false" afterPath="$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,7 +22,7 @@
             <file leaf-file-name="region_proposal_network.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-1325">
+                  <state relative-caret-position="-1150">
                     <caret line="49" column="47" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="47" />
                     <folding>
                       <element signature="e#0#18#0" expanded="true" />
@@ -47,8 +41,8 @@
       <file leaf-file-name="rpn.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="947">
-              <caret line="73" column="42" selection-start-line="73" selection-start-column="29" selection-end-line="73" selection-end-column="42" />
+            <state relative-caret-position="1272">
+              <caret line="101" column="79" selection-start-line="101" selection-start-column="55" selection-end-line="101" selection-end-column="79" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -442,16 +436,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1325">
-          <caret line="49" column="47" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/faster_rcnn.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1600">
@@ -462,10 +446,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1150">
+          <caret line="49" column="47" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="947">
-          <caret line="73" column="42" selection-start-line="73" selection-start-column="29" selection-end-line="73" selection-end-column="42" />
+        <state relative-caret-position="1272">
+          <caret line="101" column="79" selection-start-line="101" selection-start-column="55" selection-end-line="101" selection-end-column="79" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>

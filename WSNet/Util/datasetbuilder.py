@@ -5,6 +5,88 @@ import argparse
 from Instance import *
 import numpy
 import torchvision.transforms as transforms
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms, utils
+import PIL.Image as Image
+
+
+
+"""template
+class trainset(Dataset):
+    def __init__(self,loader=default_loader):
+        self.images=imagelist[:6000]
+        self.labels=labellist[:6000]
+        self.loader=loader
+    def __getitem__(self, index):
+
+        fn=self.images[index]
+        img=self.loader(fn)
+        labels=self.labels[index]
+        labels=np.array(labels)
+        labels=torch.from_numpy(labels)
+        return img,labels
+
+    def __len__(self):
+        return len(self.images)
+"""
+
+
+class custom_dataset(Dataset):
+    def __init__(self,data_list=[],label_list=[],trainval_ratio=0.9,image_size=512):
+        """
+        data_list
+        label_list
+        trainval=len(train)/len(val)
+        """
+        # assert len(data_list)!=0 ,'Null data list'
+        # assert len(label_list)!=0 ,'Null label list'
+        self.data=data_list
+        
+        self.label=label_list
+    
+    
+    
+        transformslist=[
+        transform_train = transforms.Compose([
+        transforms.RandomCrop(512, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+        ])
+    def __getitem__(self, index):
+        return super().__getitem__(index)
+
+    def __len__(self):
+        return super().__len__()
+        
+    @staticmethod
+    def defaultloader(path):
+        image= Image.open(path)
+        image=image.convert('RGB')
+        tensor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def namefilter(self, name, key):
@@ -12,6 +94,7 @@ def namefilter(self, name, key):
         return False
     else:
         return True
+
 
 class datasetbuilder(Instance):
     def __init__(self,root,filtypes=['png','jpg','jepg']):
@@ -129,10 +212,10 @@ def main():
     1.Traversal image folder & index image file & label file
      
     """
-    dataset=datasetbuilder(args.root)
-    dataset.TraversalFileInPath()
-    dataset.Indexlabel()
-
+    # dataset=datasetbuilder(args.root)
+    # dataset.TraversalFileInPath()
+    # dataset.Indexlabel()
+    cds=custom_dataset()
 
 if __name__ == '__main__':
     main()
