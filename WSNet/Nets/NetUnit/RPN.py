@@ -5,6 +5,30 @@ import torchvision.transforms as T
 import torch.nn.functional as F
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
 Features Extraction from the image.
 
@@ -103,6 +127,7 @@ class RPN(nn.Module):
         rois=self.RPN_proposal((rpn_cls_prob.data,rpn_bbx_pred.data,image_info,self.Mode)
         self.rpn_loss_cls=0
         self.rpn_loss_box=0
+        if self.training
         
 
 
