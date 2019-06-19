@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/WSNet.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WSNet.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" beforeDir="false" afterPath="$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" afterDir="false" />
-    </list>
+    <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,11 +17,11 @@
       <content type="file-editors">
         <state>
           <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="region_proposal_network.py" pinned="false" current-in-tab="false">
+            <file leaf-file-name="region_proposal_network.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-776">
-                    <caret line="49" column="47" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="47" />
+                  <state relative-caret-position="1144">
+                    <caret line="52" column="38" selection-start-line="52" selection-start-column="38" selection-end-line="52" selection-end-column="38" />
                     <folding>
                       <element signature="e#0#18#0" expanded="true" />
                     </folding>
@@ -40,16 +33,16 @@
               <entry file="file://$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="22">
-                    <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+                    <caret line="1" selection-start-line="1" selection-end-line="1" />
                   </state>
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="rpn.py" pinned="false" current-in-tab="true">
+            <file leaf-file-name="rpn.py" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="748">
-                    <caret line="34" column="58" lean-forward="true" selection-start-line="34" selection-start-column="58" selection-end-line="34" selection-end-column="58" />
+                    <caret line="34" column="58" selection-start-line="34" selection-start-column="58" selection-end-line="34" selection-end-column="58" />
                     <folding>
                       <element signature="e#0#38#0" expanded="true" />
                     </folding>
@@ -64,41 +57,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="faster_rcnn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/faster_rcnn.py">
+      <file leaf-file-name="roi_pool.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/modules/roi_pool.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="70" column="32" selection-start-line="70" selection-start-column="23" selection-end-line="70" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="faster_rcnn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/faster_rcnn.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="30" column="28" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="28" />
+            <state>
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#0#42#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="resnet.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
+      <file leaf-file-name="trainval_net.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/trainval_net.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
-              <caret line="275" column="31" lean-forward="true" selection-start-line="275" selection-start-column="31" selection-end-line="275" selection-end-column="31" />
+            <state relative-caret-position="618">
+              <caret line="337" column="22" lean-forward="true" selection-start-line="337" selection-start-column="22" selection-end-line="337" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RPN.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py">
+      <file leaf-file-name="roi_pooling.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling.c">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="roi_pooling_cuda.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling_cuda.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="30" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="-1117" />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="roi_pooling_kernel.cu" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling_kernel.cu">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-396" />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="roi_pool.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/functions/roi_pool.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="24" column="48" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="48" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -106,52 +111,25 @@
       <file leaf-file-name="proposal_target_layer_cascade.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_target_layer_cascade.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="30" column="52" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="52" />
+            <state relative-caret-position="-2244">
+              <caret line="32" column="40" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="40" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="make.sh" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_align/make.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-            </state>
-          </provider>
+      <file leaf-file-name="crop_resize.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_crop/functions/crop_resize.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file leaf-file-name="proposal_layer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_layer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1100">
-              <caret line="71" column="35" selection-start-line="71" selection-start-column="28" selection-end-line="71" selection-end-column="35" />
-            </state>
-          </provider>
+      <file leaf-file-name="gridgen.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_crop/functions/gridgen.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file leaf-file-name="generate_anchors.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/generate_anchors.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="53" column="36" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="36" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="anchor_target_layer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/anchor_target_layer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1850">
-              <caret line="102" column="47" lean-forward="true" selection-start-line="102" selection-start-column="47" selection-end-line="102" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/functions/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -174,6 +152,7 @@
       <find>proposals_keep</find>
       <find>generate_anchor_base</find>
       <find>anchor</find>
+      <find>data_layer</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -256,45 +235,45 @@
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="simple-faster-rcnn-pytorch" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="simple-faster-rcnn-pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="roi_pooling" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="simple-faster-rcnn-pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="roi_pooling" type="462c0819:PsiDirectoryNode" />
+              <item name="functions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="roi_pooling" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Nets" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="roi_pooling" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
               <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Nets" type="462c0819:PsiDirectoryNode" />
-              <item name="Detection" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Nets" type="462c0819:PsiDirectoryNode" />
-              <item name="NetUnit" type="462c0819:PsiDirectoryNode" />
+              <item name="faster-rcnn.pytorch" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="rpn" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -426,7 +405,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32903227" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33778015" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32977587" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -450,51 +429,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pytorch-deeplab-xception/modeling/backbone/resnet.py" />
-    <entry file="file://$PROJECT_DIR$/WS-Faster-RCNN/VGGTemplate.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/PyCharmEnv.py" />
-    <entry file="file://$PROJECT_DIR$/pytorch-deeplab-xception/train.py" />
-    <entry file="file://$PROJECT_DIR$/WS-Faster-RCNN/Net.py" />
-    <entry file="file://$PROJECT_DIR$/WS-Faster-RCNN/VGGTemplate.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/PyCharmEnv.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/selective search.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNets.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/Segmentation/DeepLabv3p.py" />
-    <entry file="file://$PROJECT_DIR$/pytorch-deeplab-xception/modeling/decoder.py" />
-    <entry file="file://$PROJECT_DIR$/pytorch-deeplab-xception/modeling/deeplab.py" />
-    <entry file="file://$PROJECT_DIR$/pytorch-deeplab-xception/train.py" />
-    <entry file="file://$PROJECT_DIR$/pytorch-deeplab-xception/modeling/backbone/resnet.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Backbone/DenseNet/densenet.pytorch/densenet.py" />
-    <entry file="file://$PROJECT_DIR$/README.md" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Backbone/DenseNet/DenseNet.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/WS-Faster-RCNN/ResNet.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Backbone/ResNets/ResNetTemplate.py" />
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/cfgs/res101.yml" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/NetProcess.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/cfg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/Detection/img_5a9ffec911c19.png" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/Detection/img_5aa46e9e0bbd7-1024x421.png" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/Detection/img_5aa0053323ac5.png" />
     <entry file="file://$PROJECT_DIR$/WSNet/Nets/Detection/img_5aa0695484e3e.png" />
     <entry file="file://$PROJECT_DIR$/WSNet/Nets/Detection/img_5aa5766d53b63.png" />
     <entry file="file://$PROJECT_DIR$/WSNet/Util/datasetbuilder.py">
@@ -531,16 +465,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="66" column="33" selection-start-line="66" selection-start-column="18" selection-end-line="66" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/faster_rcnn.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="484">
@@ -561,17 +485,7 @@
     <entry file="file://$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-776">
-          <caret line="49" column="47" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
@@ -585,7 +499,7 @@
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/anchor_target_layer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1850">
-          <caret line="102" column="47" lean-forward="true" selection-start-line="102" selection-start-column="47" selection-end-line="102" selection-end-column="47" />
+          <caret line="102" column="47" selection-start-line="102" selection-start-column="47" selection-end-line="102" selection-end-column="47" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -595,7 +509,7 @@
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
-          <caret line="275" column="31" lean-forward="true" selection-start-line="275" selection-start-column="31" selection-end-line="275" selection-end-column="31" />
+          <caret line="275" column="31" selection-start-line="275" selection-start-column="31" selection-end-line="275" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -616,13 +530,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_target_layer_cascade.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="30" column="52" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -634,7 +541,7 @@
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="748">
-          <caret line="34" column="58" lean-forward="true" selection-start-line="34" selection-start-column="58" selection-end-line="34" selection-end-column="58" />
+          <caret line="34" column="58" selection-start-line="34" selection-start-column="58" selection-end-line="34" selection-end-column="58" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -644,7 +551,193 @@
     <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_align/make.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/roi_data_layer/minibatch.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/nms/gpu_nms.pyx">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/nms/gpu_nms.hpp">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/nms/cpu_nms.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-732" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/roi_pooling/build.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="44" lean-forward="true" selection-start-line="2" selection-start-column="44" selection-end-line="2" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/rpn_msr/proposal_target_layer.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/rpn_msr/generate.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/rpn_msr/anchor_target_layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5828" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/rpn_msr/generate_anchors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1034">
+          <caret line="47" column="18" selection-start-line="47" selection-start-column="11" selection-end-line="47" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/rpn_msr/proposal_layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1326">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="97" column="63" selection-start-line="97" selection-start-column="52" selection-end-line="97" selection-end-column="63" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4934">
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="68" column="25" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/roi_data_layer/layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-248" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/roi_pooling/modules/roi_pool.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="36" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/_ext/roi_pooling/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/_ext/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/build.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/make.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/roi_data_layer/roidb.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-396" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/roi_data_layer/roibatchLoader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3694" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/functions/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling.c">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling_cuda.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1117" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1144">
+          <caret line="52" column="38" selection-start-line="52" selection-start-column="38" selection-end-line="52" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling_kernel.cu">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-396" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_crop/functions/crop_resize.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_crop/functions/gridgen.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/functions/roi_pool.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="24" column="48" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_target_layer_cascade.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2244">
+          <caret line="32" column="40" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/modules/roi_pool.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/trainval_net.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="618">
+          <caret line="337" column="22" lean-forward="true" selection-start-line="337" selection-start-column="22" selection-end-line="337" selection-end-column="22" />
         </state>
       </provider>
     </entry>
