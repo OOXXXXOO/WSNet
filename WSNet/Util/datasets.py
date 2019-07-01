@@ -2,7 +2,7 @@ import cv2
 import torch.nn as nn
 import os
 import argparse
-from Instance import *
+
 import numpy
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
@@ -31,8 +31,10 @@ class trainset(Dataset):
 """
 
 
-class custom_dataset(Dataset):
+class custom_dataloader(Dataset):
     def __init__(self,data_list=[],label_list=[],trainval_ratio=0.9,image_size=512):
+        print('custom_dataloader module init done.')
+        super(custom_dataloader,self).__init__()
         """
         data_list
         label_list
@@ -47,23 +49,23 @@ class custom_dataset(Dataset):
     
     
         transformslist=[
-        transform_train = transforms.Compose([
+        transforms.Compose([
         transforms.RandomCrop(512, padding=4),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-        ])
+        ])]
     def __getitem__(self, index):
         return super().__getitem__(index)
 
     def __len__(self):
         return super().__len__()
         
-    @staticmethod
-    def defaultloader(path):
-        image= Image.open(path)
-        image=image.convert('RGB')
-        tensor
+    # @staticmethod
+    # def defaultloader(path):
+    #     image= Image.open(path)
+    #     image=image.convert('RGB')
+    #     tensor
 
 
 
@@ -96,8 +98,10 @@ def namefilter(self, name, key):
         return True
 
 
-class datasetbuilder(Instance):
+class dataset_generator():
     def __init__(self,root,filtypes=['png','jpg','jepg']):
+        print()
+        super(dataset_generator,self).__init__()
         print('******* dataset builder init info ******')
         assert os.path.exists(root),'Invalid Root Path'
         assert os.path.exists(os.path.join(root,'image')),'cant find image folder'

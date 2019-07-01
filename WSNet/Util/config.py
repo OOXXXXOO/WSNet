@@ -2,10 +2,10 @@ import os
 import sys
 import numpy as np
 import json
-from Instace import *
 
 
-class cfg(Instance):
+
+class cfg():
     """
     Mission index :
     0 -> Detection Mission
@@ -15,7 +15,7 @@ class cfg(Instance):
 
 
     """
-    def __init__(self,missionType,root):
+    def __init__(self,missionType,root='./'):
         """
 
         :param missionType:
@@ -59,13 +59,14 @@ class cfg(Instance):
 
 
 
-    def generate(self,jsonfile='./config.json'):
-        instance={}
-        instance['instance id']=self.instance_id
-        net={'backbone':self.backbone,''}
-        net['backbone']=
-        instance['Net']=self.
-        instance['mode']=self.
-
-CFG=cfg(missionType='Segmentation',root='./')
-CFG2=cfg('Detection','./')
+    def generatetemplate(self,jsonfile='./config.json'):
+        pass
+        # instance={}
+        # instance['instance id']=self.instance_id
+        # net={'backbone':self.backbone,''}
+        # net['backbone']=
+        # instance['Net']=self.
+        # instance['mode']=self.
+#
+# CFG=cfg(missionType='Segmentation',root='./')
+# CFG2=cfg('Detection','./')
