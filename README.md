@@ -23,6 +23,18 @@
 ****
 
 
+> Version 2.0
+
+### huge change in Version 2.0
+
+The all Network will be two Part :
+
+# CNN+Module
+
+The CNN of any network will be independent part .
+
+
+
 
 
 ## **Doc with EN_US**

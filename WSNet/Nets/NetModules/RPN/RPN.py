@@ -6,29 +6,6 @@ import torch.nn.functional as F
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
 Features Extraction from the image.
 

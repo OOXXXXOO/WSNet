@@ -46,7 +46,7 @@ class cfg():
 
 
         elif missionType=='2':
-            assert os.path.exists(root), "Invaild root path for Mask Mission"
+            assert os.path.exists(root), "Invaild root path for Instance Segmentation Mission"
 
 
         else:
