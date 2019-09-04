@@ -8,27 +8,6 @@
 
 ****
 
-### WSNet Project update log
-#### Version 1.0 
->2019-May-4
-
-The primary feature of WSNet toolkit in **version 1.0**:
-
-* The custom data structure not has a standard form,so this toolkit rule a easy way to make that support for different NeuroNetwork (For Detection , Segmentation or both like Mask RCNN )
-
-* Detection Support for :
-  * Twostage (Faster RCNN ,Cascade RCNN ,Mask RCNN);
-  * Onestage (YOLO v3 ,SSD);
-
-* Segmentation Support for : 
-    * Deeplab v3+，Cascade Net，Seg Net
-
-In principle , When we run 'datasetbuild' will generate the dataset and relate configure file , if we custom our data with **Data structure RULE.**
-
-You could modified the configure file to change option like gpu-id ，NetWork ...... or download pre-train model.
-
-****
-
 #### Version 2.0 
 > 2019-Sep-4
 
@@ -58,6 +37,29 @@ Now support On:
     * Detection                YoloV3
     * Segmentation             --
     * Instence Segmentation    -- 
+
+
+### WSNet Project update log
+#### Version 1.0 
+>2019-May-4
+
+The primary feature of WSNet toolkit in **version 1.0**:
+
+* The custom data structure not has a standard form,so this toolkit rule a easy way to make that support for different NeuroNetwork (For Detection , Segmentation or both like Mask RCNN )
+
+* Detection Support for :
+  * Twostage (Faster RCNN ,Cascade RCNN ,Mask RCNN);
+  * Onestage (YOLO v3 ,SSD);
+
+* Segmentation Support for : 
+    * Deeplab v3+，Cascade Net，Seg Net
+
+In principle , When we run 'datasetbuild' will generate the dataset and relate configure file , if we custom our data with **Data structure RULE.**
+
+You could modified the configure file to change option like gpu-id ，NetWork ...... or download pre-train model.
+
+****
+
 
 
 
