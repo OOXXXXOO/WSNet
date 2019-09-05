@@ -97,6 +97,33 @@ For custom dataset， index file & configure neurons network is complex step in 
 **Label requiremant**：
 
 **Segmentation**:
+
+
+The Original image data like 
+
+WSNet/Data/DetectionDatasetDemo/image
+
+```
+---Root
+    |---image
+        |---image1.jpg
+        |---image2.jpg
+                   `
+                   `
+                   `
+```
+
+The labelTool    -  [labelme](WSNet/Data/labelme/README.md) could be found , you should install labelme with:
+```bash
+# python3
+conda create --name=labelme python=3.6
+source activate labelme
+# conda install -c conda-forge pyside2
+# conda install pyqt
+pip install pyqt5  # pyqt5 can be installed via pip on python3
+pip install labelme
+```
+When you finish your label work
 ```
 ---Root
     |---image

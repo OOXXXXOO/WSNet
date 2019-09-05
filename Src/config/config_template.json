@@ -1,0 +1,22 @@
+{
+    "instance_id": 0,
+    "content": {
+        "Net": {
+            "NetType": "FasterRCNN",
+            "BatchSize": 4,
+            "BackBone": "None"
+        },
+        "Dataset": {
+            "root": "WSNet/Data"
+        },
+        "Config": {
+            "mutilscale_training": true,
+            "logdir": "./root/log",
+            "gpu_id": 0,
+            "epochs": 100,
+            "down_pretrain_model": true,
+            "checkpoint_path": "./root/model"
+        }
+    },
+    "MissionType": "Detection"
+}
