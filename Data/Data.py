@@ -1,5 +1,7 @@
 import os
 import sys
+
+################################################################################################
 print('append sys path in ',os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 ################################################################################################
@@ -18,6 +20,7 @@ class WSData(Dataset,cfg):
         super(WSData,self).__init__()
         print('-----WSData Class Init-----')
     
+    def Cust
 
 
 

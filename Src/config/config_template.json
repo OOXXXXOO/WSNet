@@ -20,3 +20,16 @@
     },
     "MissionType": "Detection"
 }
+{
+    "instance_id":0,
+    "Mode":"Detection",
+    "Dataset":{
+        "root":"./root",
+        "BatchSize":4,
+        "TrainValRate":0.7
+    }
+    "Network":
+
+
+
+}

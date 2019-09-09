@@ -2,7 +2,7 @@
 ![](./quick.jpg)
 
 
-### **Doc with EN_US**
+### **Doccument with EN_US**
 
 
 
@@ -25,7 +25,7 @@ Instance[MODE]——|-->Dataset-->|——training-array generator       |
 MODE=[Segmentation,Detection,InstenceSegmentation]
 ```
 
-**A typically process：**
+#### **A typically process：**
 
 if we have a set of image & label, we need put the image files & label files into image-folder & label-folder . Now, we have the root path of two folders that include dataset like`./root/image` & `./root/label`. In addition, we need to have a text file include class names like `./root/classes.txt` that like:
 
@@ -36,11 +36,14 @@ class3
 ```
 Each class name occupies a line (please make sure the file not have gap line).
 
-Then , run as below:
-```bash
-python datasetbuilder.py --root ./root  --mode segmentation
-```
-Its gonna be start a brand new **generate instance**,the code will scan the all image file in `./root/image` and try to make a map between the image & label -files . In end of the scan process , program will generate index file of all the mapping files and  default instance configure file 
+
+
+
+
+
+
+
+Its gonna be start a brand new **Instance**,the code will scan the all image file in `./root/image` and try to make a map between the image & label -files . In end of the scan process , program will generate index file of all the mapping files and  default instance configure file 
 
 `./instance-(id)-config.json`
 
@@ -82,7 +85,16 @@ python train.py --cfg instance-(0)-config.json
 
 ##### The train will start.
 
-> Pytorch 1.1 has supported for tensorboard run like `tensorboard --logdir ./root/log` to supervise whole training flow. 
+> Pytorch 1.1 has supported for tensorboard run like `tensorboard --logdir ./root/log` to supervise whole training flow. [: Guide to use tensorbord for pytorch](https://pytorch.org/docs/stable/tensorboard.html)
+
+
+
+
+
+****
+
+
+
 
 
 #### Dataset Generator
@@ -157,7 +169,7 @@ When you finish your label work
                    `
                    `
     |---label
-        |---image1.xml/txt
+        |---image1.xml/txt/json
                     `
                     `
                     `
@@ -197,6 +209,12 @@ Now support On:
     * Detection                YoloV3
     * Segmentation             --
     * Instence Segmentation    -- 
+
+Paper Collection
+
+* [EfficientNets](https://arxiv.org/pdf/1905.11946.pdf)
+
+* [MNasNet](https://arxiv.org/pdf/1807.11626.pdf)
 
 you can run as :
 ```python

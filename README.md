@@ -6,7 +6,33 @@
  
 ## WSNet Quick Training Toolkit
 
+
+
+
+The main purpose of this project :
+
+* Start a fast training instance on the standard datasets with default pre-trained model.
+*  Automatic build the dataset from original images & labels with **the specified data structure rule**.
+* Support for some state-of-the-art models.  
+* Use Json config file configure the training instance to avoid change the project code.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ****
+
+## WSNet project update log
+
 
 #### Version 2.0 
 > 2019-Sep-4
@@ -39,8 +65,8 @@ Now support On:
     * Instence Segmentation    -- 
 
 
-### WSNet Project update log
-#### Version 1.0 
+
+#### Version 1.0 (aborted)
 >2019-May-4
 
 The primary feature of WSNet toolkit in **version 1.0**:
@@ -72,8 +98,8 @@ You could modified the configure file to change option like gpu-id ，NetWork ..
 
 
 
-#### **MIT License**
-##### Copyright (c) 2018 The Python Packaging Authority
+### **MIT License**
+#### Copyright (c) 2018 The Python Packaging Authority
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -85,10 +111,9 @@ furnished to do so, subject to the following conditions:
 **The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.**
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
