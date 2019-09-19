@@ -1,14 +1,21 @@
 import torchvision.datasets as dataset
 import torch
+from config_generator import *
 
-class DatasetGenerator():
+
+
+
+class DatasetGenerator(cfg):
     def __init__(self):
+        super(DatasetGenerator,self).__init__()
+        super(cfg,self).__init__()
+        
         print('\n\n-----Dataset Generator init-----\n\n')
 
 
 
 
-    def CustomDataset(self,root,Ratio=0.7,mode='Detection'):
+    def CustomDataset(self,root='./',Ratio=0.7,mode='Detection'):
         """
         mode:
         
@@ -21,7 +28,7 @@ class DatasetGenerator():
         
 
         """
-        print('root in : ',mode,'-----start build',DatasetName,'-----')
+        print('Custom Root in ',self.root,'Mode : ',self.MissionType,'-----start custom build-----')
 
 
 
@@ -30,7 +37,7 @@ class DatasetGenerator():
 
 
 
-    def DefaultDataset(self,DatasetName=Cityscapes,mode='Detection'):
+    def DefaultDataset(self,DatasetName='Cityscapes',mode='Detection'):
         """
         mode:
         

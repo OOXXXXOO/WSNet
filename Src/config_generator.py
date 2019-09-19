@@ -5,9 +5,13 @@ import json
 class cfg():
     def __init__(self):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        self.__defaultconfig='Src/config/config_template.json'
-        self.__json=json.load(open(self.__defaultconfig))
-        self.checkpoint=self.__json['']
+        self.__defaultconfig='./config/config_template.json'
+        self.__json=json.load(open(self.__defaultconfig,'r'))
+
+        self.MissionType=self.__json['MissionType']
+        self.InstanceID=self.__json['instance_id']
+        self.Content=self.__json['content']
+        self.checkpoint=self.__json['content']['Config']['checkpoint_path']
 
 
     def GenerateDefaultConfig(self,mode='detection'):

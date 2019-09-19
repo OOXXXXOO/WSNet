@@ -5,8 +5,8 @@ import torchvision.models as models
 
 class NetworkGenerator():
 
-    def __init__(self):
-        
+    def __init__(self,debug=False):
+        self.debug=debug
 
         print('\n\n-----Neural Network Class Init-----\n\n')
         self.model=None
@@ -32,7 +32,7 @@ class NetworkGenerator():
     """
 
 
-    def DefaultGreatBackBone(self,pretrained=False, progress=True,):
+    def DefaultGreatBackBone(self,pretrained=False, progress=True):
         """
         MNASNet with depth multiplier of 1.3 from “MnasNet: Platform-Aware Neural Architecture Search for Mobile”. 
         :param 
@@ -42,9 +42,9 @@ class NetworkGenerator():
         progress: If True, displays a progress bar of the download to stderr 
         :type progress: bool
         """
-        self.model=models.mnasnet1_3(pretrained=pretrained, progress=progress, **kwargs)
+        self.model=models.mnasnet1_3(pretrained=pretrained, progress=progress)
 
-    def DefaultDetection(self,pretrained=False, progress=True, num_classes=91, pretrained_backbone=False, **kwargs):
+    def DefaultDetection(self,pretrained=False, progress=True, num_classes=91, pretrained_backbone=False):
         """
         Constructs a Faster R-CNN model with a ResNet-50-FPN backbone.
 
@@ -58,8 +58,9 @@ class NetworkGenerator():
             labels (Int64Tensor[N]): the class label for each ground-truth box
         
         """
-        self.model=models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=num_classes, pretrained_backbone=pretrained_backbone, **kwargs)
-        print('\n\n----------------',self.model,'---------------\n\n')
+        self.model=models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=num_classes, pretrained_backbone=pretrained_backbone)
+        if self.debug:
+            print('\n\n----------------',self.model,'---------------\n\n')
 
 
     def DefaultSegmentation(self,pretrained=False, progress=True, num_classes=21, aux_loss=None):
@@ -74,7 +75,8 @@ class NetworkGenerator():
         """
 
         self.model=models.segmentation.deeplabv3_resnet101(pretrained=pretrained, progress=progress, num_classes=num_classes, aux_loss=aux_loss)
-        print('\n\n----------------',self.model,'---------------\n\n')
+        if self.debug:
+            print('\n\n----------------',self.model,'---------------\n\n')
 
 
     def DefaultInstenceSegmentation(self,pretrained=False, progress=True, num_classes=91, pretrained_backbone=True, **kwargs):
@@ -96,10 +98,23 @@ class NetworkGenerator():
          In order to obtain the final segmentation masks, the soft masks can be thresholded, generally with a value of 0.5 (mask >= 0.5)
         """
         self.model=models.detection.maskrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=num_classes, pretrained_backbone=pretrained_backbone, **kwargs)
-        print('\n\n----------------',self.model,'---------------\n\n')
+        if self.debug:
+            print('\n\n----------------',self.model,'---------------\n\n')
 
     def NetWorkInfo(self):
         print('Device info - GPU CUDA useful : ',torch.cuda.is_available())
         if torch.cuda.is_available():
             print('\t\t|==========>GPU Count',torch.cuda.device_count(),'\n\n')
+
+
+def main():
+    nets=NetworkGenerator()
+    net=nets.DefaultDetection()
+    print(net)
+
+
+
+
+if __name__ == '__main__':
+    main()
     
