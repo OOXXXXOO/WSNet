@@ -28,7 +28,6 @@ class Instence(NetworkGenerator,DatasetGenerator):
         self.root=os.path.join(root,'../')
         # super(NetworkGenerator,self).__init__()
         super(DatasetGenerator,self).__init__()
-        # super(cfg,self).__init__()
         super(Instence,self).__init__()
         print('\n\n-----instence init-----\n\n')
         

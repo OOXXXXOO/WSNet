@@ -3,37 +3,67 @@ import os
 import json
 
 class cfg():
-    def __init__(self):
+    def __init__(self,configfile='Src/config/config_template.json'):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        self.__defaultconfig='./config/config_template.json'
+
+            
+        ##File Level
+        self.__defaultconfig=configfile
         self.__json=json.load(open(self.__defaultconfig,'r'))
 
+
+        ##First Content Level
         self.MissionType=self.__json['MissionType']
         self.InstanceID=self.__json['instance_id']
         self.Content=self.__json['content']
-        self.checkpoint=self.__json['content']['Config']['checkpoint_path']
+
+        print('***** Already read Config file ,'+self.__defaultconfig,'*****')
+
+        print('***** Instance ID : ',self.InstanceID,'*****')
+
+        print('***** Mission Type : ',self.MissionType,'*****')
+
+        
+        
+        #Second Level
+        self.Net=self.Content['Net']
+        self.DataSetConfig=self.Content['Dataset']
+        self.Config=self.Content['Config']
+
+        print('***** Network Config : ',self.Net)
+        print('***** Dataset Config : ',self.DataSetConfig)
+        print('***** General Config : ',self.Config)
+
+
+
+
+        #Third Level
+        
+        #---NET
+        self.NetType=self.Net['NetType']
+        self.BatchSize=self.Net['BatchSize']
+        if self.Net['BackBone']=='None':
+            self.BackBone=None
+        else:
+            self.BackBone=self.Net['BackBone']
+        
+        #---Dataset
+        self.DataSetType=self.DataSetConfig['Type']
+        self.DataSet_Root=self.DataSetConfig['root']
+
+        #---Config
+        self.checkpoint=self.Config['checkpoint_path']
+        self.MultiScale_Training=self.Config['multiscale_training']
+        self.logdir=self.Config['logdir']
+        self.gpu_id=self.Config['gpu_id']
+        self.download_pretrain_model=self.Config['down_pretrain_model']
+        self.visualization=self.Config['visualization']
+
 
 
     def GenerateDefaultConfig(self,mode='detection'):
         print('Generate Default Config with mode :',mode)
         # print(self.__json)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

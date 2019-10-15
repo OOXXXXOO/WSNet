@@ -7,15 +7,17 @@
             "BackBone": "None"
         },
         "Dataset": {
-            "root": "WSNet/Data"
+            "Type": "COCO2014",
+            "root": "/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset"
         },
         "Config": {
-            "mutilscale_training": true,
+            "multiscale_training": true,
             "logdir": "./root/log",
             "gpu_id": 0,
             "epochs": 100,
             "down_pretrain_model": true,
-            "checkpoint_path": "./root/model"
+            "checkpoint_path": "./root/model",
+            "visualization": true
         }
     },
     "MissionType": "Detection"

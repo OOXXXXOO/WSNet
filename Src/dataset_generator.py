@@ -2,15 +2,44 @@ import torchvision.datasets as dataset
 import torch
 from config_generator import *
 from pycocotools.coco import COCO
+import os
 
-BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset/annotations_trainval2014'
+##################################################
+#For Visualization
+import skimage.io as io
+import matplotlib.pyplot as plt
+import numpy as np
+##################################################
+
+
+BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset/'
 
 class DatasetGenerator(cfg,COCO):
     def __init__(self):
         super(DatasetGenerator,self).__init__()
         super(cfg,self).__init__()
         
-        print('\n\n-----Dataset Generator init-----\n\n')
+        support_Mode=[
+        'Detection',
+        'Segmentation',
+        'InstenceSegmentation',
+        'Classification' 
+        ]
+        
+        support_Dataset=[
+            "COCO2014",
+            "COCO2017",
+            "CitysCapes",
+            "MINST",
+            "CIFAR10",
+            "CIFAR100",
+            "PascalVOC",
+            "ImageNet"
+        ]
+
+        print('\n\n-----Dataset Generator Class init-----\n\n')
+        assert self.DataSetType in support_Dataset,"Invalid Dataset Type : "+self.DataSetType
+        assert self.MissionType in support_Mode,"Invalid Mission Type : "+self.MissonType 
 
 
 
@@ -36,12 +65,13 @@ class DatasetGenerator(cfg,COCO):
         """
         Support for transfer the CustomDataset to COCO format
         """
+        print('Start Transfrom Custom Dataset 2 COCO 201x Dataset Format')
         pass
 
 
 
 
-    def DefaultDataset(self,DatasetName='Cityscapes',mode='Detection'):
+    def DefaultDataset(self):
         """
         mode:
         
@@ -57,11 +87,43 @@ class DatasetGenerator(cfg,COCO):
         InstenceSegmentation    ==>  COCO2014,COCO2017
         Segmentation            ==>  Cityscapes
 
+        (KeyPoint in future      ==>  COCO2014,17)
+        
         """
-        print('Mode : ',mode,'-----start build',DatasetName,'-----')
+        print('*****Mode : ',self.MissionType,'-----start build dataset in :',self.DataSetType,'-----')
+        print('*****DatasetRoot Dir',self.DataSet_Root,'*****')
+        if self.DataSetType=='COCO2014' or self.DataSetType=='COCO2017':
+            dataDir=self.DataSet_Root
+            dataType=self.DataSetType[4:]
+            TrainAnnFile='{}/annotations/instances_{}.json'.format(dataDir,'train'+dataType)
+            ValAnnFile='{}/annotations/instances_{}.json'.format(dataDir,'val'+dataType)
+            
+            print('\n\n*****Process Train anno file : ',TrainAnnFile)
+            self.Traincoco=COCO(TrainAnnFile)
+            
+            print('\n\n*****Process Val anno file',ValAnnFile)
+            # self.Valcoco=COCO(ValAnnFile)
 
+            cats = self.Traincoco.loadCats(self.Traincoco.getCatIds())
+            self.nms=[cat['name'] for cat in cats]
+            print('COCO categories: \n{}\n'.format(' '.join(self.nms)))
 
+            self.supernms = set([cat['supercategory'] for cat in cats])
+            print('COCO supercategories: \n{}'.format(' '.join(self.supernms)))
+            self.cats=cats
 
+            # get all images containing given categories, select one at random
+            catIds = self.Traincoco.getCatIds(catNms=['person','dog','skateboard']);
+            imgIds = self.Traincoco.getImgIds(catIds=catIds );
+            img = self.Traincoco.loadImgs(imgIds[np.random.randint(0,len(imgIds))])[0]
+            I = io.imread(img['coco_url'])
+
+            plt.imshow(I); plt.axis('off')
+            annIds = self.Traincoco.getAnnIds(imgIds=img['id'], catIds=catIds, iscrowd=None)
+            anns = self.Traincoco.loadAnns(annIds)
+            print('anns ', anns)
+            self.Traincoco.showAnns(anns)
+            plt.show()
 
 
 
@@ -81,10 +143,10 @@ class DatasetGenerator(cfg,COCO):
 
 
 def main():
+    Generator=DatasetGenerator()
+    Generator.DefaultDataset()
 
-    dataType='val2014'
-    annFile='{}/annotations/instances_{}.json'.format(BusinessCOCODatasetRoot,dataType)
-    dataset=COCO(annFile)
+
 
 
 
