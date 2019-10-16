@@ -6,7 +6,7 @@ class cfg():
     def __init__(self,configfile='Src/config/config_template.json'):
         print('\n\n-----Configure Generator Class Init -----\n\n')
 
-            
+
         ##File Level
         self.__defaultconfig=configfile
         self.__json=json.load(open(self.__defaultconfig,'r'))
@@ -84,7 +84,7 @@ class cfg():
 
 
     def print_dict(self,d,n=0):
-        print('-----config dict-----')
+        print('dict:')
         for k,v in d.items():
             print ('\t'*n)
             if type(v)==type({}):
@@ -95,7 +95,7 @@ class cfg():
         if n!=0:
             print('\t'*(n-1)+ '}')
 
-    def ConfigInfo(self):
+    def Enviroment_Info(self):
         self.print_dict(self.__json)
 
         print('\n-------------------------------------------NVCC info:\n')
