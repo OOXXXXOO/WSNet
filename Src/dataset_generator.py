@@ -15,7 +15,12 @@ import numpy as np
 BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset/'
 
 class DatasetGenerator(cfg,COCO):
-    def __init__(self):
+    def __init__(self,UseInternet=False):
+        """
+        UseInterNet=True  => load images by url from internet
+        UseInterNet=False => load images by local path
+        """
+        self.UseInternet=UseInternet
         super(DatasetGenerator,self).__init__()
         super(cfg,self).__init__()
         
@@ -166,7 +171,7 @@ class DatasetGenerator(cfg,COCO):
             if self.MissionType=='Caption':
                 print('Not Support Now~')
                 exit(0)
-            
+
         #####CityscapesFormat
         if self.DataSetType=='Cityscapes':
             self.DataSetProcessDone=True
@@ -194,33 +199,21 @@ class DatasetGenerator(cfg,COCO):
         pass
         
     def __getitemCOCO(self,index):
-        image=self.Traincoco.imgs[self.COCOimageslist[index]]
-        anns=self.Traincoco.anns[self.COCOannalist[index]]
-        cat=self.Traincoco.cats[self.COCOcatlist[index]]
-        
-        """
-        food vehicle indoor electronic person animal sports furniture kitchen appliance accessory outdoor
-        image:
-        {'license': 1, 'file_name': 'COCO_train2014_000000222016.jpg', 
-        'coco_url': 'http://images.cocodataset.org/train2014/COCO_train2014_000000222016.jpg', 
-        'height': 640, 'width': 480, 'date_captured': '2013-11-14 16:37:59',
-         'flickr_url': 'http://farm2.staticflickr.com/1431/1118526611_09172475e5_z.jpg', 
-         'id': 222016} 
-        anns:
-        {'segmentation': 
-        [[292.92, 25.6, 288.4, 41.42, 289.91, 61.75, 289.16, 180.72, 314.76, 289.16, 347.14, 324.55, 356.17, 334.34, 384.79, 328.31, 391.57, 327.56, 394.58, 326.05, 402.86, 328.31, 432.98, 337.35, 429.22, 343.37, 438.25, 349.4, 454.82, 343.37, 458.58, 330.57,
-         460.09, 333.58, 487.2, 323.8, 499.25, 312.5, 500.0, 300.45, 500.0, 281.63, 499.25, 266.57, 499.25, 236.45, 498.49, 206.33, 498.49,
-          185.24, 491.72, 168.67, 448.04, 83.58, 418.67, 48.19, 399.1, 28.61, 396.08, 24.85, 378.77, 36.14, 376.51, 36.9, 354.67, 30.12, 338.1,
-           32.38, 340.36, 36.9, 330.57, 45.18, 329.82, 48.95, 327.56, 48.95, 326.05, 44.43, 324.55, 30.87, 320.78, 19.58, 316.27, 18.07, 307.23, 18.07, 302.71, 23.34, 298.19, 24.1, 295.18, 24.85]],
-            'area': 53535.29024999999, 
-            'iscrowd': 0, 'image_id': 142589, 
-            'bbox': [288.4, 18.07, 211.6, 331.33],
-             'category_id': 58, 'id': 93} 
-        cat:
-        {'supercategory': 'vehicle', 'id': 3, 'name': 'car'}
         """
 
-        return image,anns,cat
+        """
+        if not self.UseInternet:
+            image=self.Traincoco.loadImgs(self.COCOimageslist[index])[0]
+            # print(image)
+            annIds=self.Traincoco.getAnnIds(imgIds=image['id'])
+            anns=self.Traincoco.loadAnns(annIds)
+            self.Traincoco.showAnns(anns)
+
+        else:
+            pass
+            # image=
+        print(anns)
+        # return image,anns,cat
     
     def __getitemPascal(self,index):
         pass
@@ -299,7 +292,7 @@ class DatasetGenerator(cfg,COCO):
 def main():
     COCO2014=DatasetGenerator()
     COCO2014.DefaultDataset()
-    COCO2014[2]
+    COCO2014[20]
 
 
 
