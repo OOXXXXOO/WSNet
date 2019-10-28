@@ -8,7 +8,9 @@
         },
         "Dataset": {
             "Type": "COCO2014",
-            "root": "/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset"
+            "root": "/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset",
+            "train_index_file":"annotations/instances_train2014.json",
+            "val_index_file":"annotations/instances_val2014.json"
         },
         "Config": {
             "multiscale_training": true,

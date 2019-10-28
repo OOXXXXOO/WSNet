@@ -9,20 +9,27 @@ import os
 import skimage.io as io
 import matplotlib.pyplot as plt
 import numpy as np
+from PIL import Image
+
 ##################################################
 
 
-BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset/'
+BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset'
 
 class DatasetGenerator(cfg,COCO):
-    def __init__(self,UseInternet=False):
+
+    def __init__(self,UseInternet=False,transfrom=None):
         """
         UseInterNet=True  => load images by url from internet
         UseInterNet=False => load images by local path
         """
-        self.UseInternet=UseInternet
         super(DatasetGenerator,self).__init__()
         super(cfg,self).__init__()
+        
+
+        self.UseInternet=UseInternet
+        self.transforms=transfrom
+
         
         #######################################
         #Decide the getitem & len can be use
@@ -40,11 +47,11 @@ class DatasetGenerator(cfg,COCO):
         """
 
         print('\n\n-----Dataset Generator Class init-----\n\n-----Support Mission:')
+        
         self.print_dict(support_Mission)
+        
         print('\n')
 
-        
-        
         #####Mission Type Checking
         assert self.MissionType in support_Mission.keys(),"Invalid MissionType"+self.MissionType
         
@@ -52,19 +59,20 @@ class DatasetGenerator(cfg,COCO):
         assert self.DataSetType in support_Mission[self.MissionType],"Invalid DatasetSetType For this Mission"+self.DataSetType
         
       
-        
-        
-        
         self.getitem_map={
-            "COCO2014":self.__getitemCOCO,
-            "COCO2017":self.__getitemCOCO,
-            "CitysCapes":self.__getitemCitys,
-            "MINST":self.__getitemMINST,
-            "CIFAR10":self.__getCIFAR,
-            "CIFAR100":self.__getCIFAR,
-            "PascalVOC":self.__getitemPascal,
-            "ImageNet":self.__getitemImNets
+        "COCO2014":self.__getitemCOCO,
+        "COCO2017":self.__getitemCOCO,
+        "CitysCapes":self.__getitemCitys,
+        "MINST":self.__getitemMINST,
+        "CIFAR10":self.__getCIFAR,
+        "CIFAR100":self.__getCIFAR,
+        "PascalVOC":self.__getitemPascal,
+        "ImageNet":self.__getitemImNets
         }
+        print('*****Support MAP:',self.getitem_map)
+
+        
+
 
 
     def CustomDataset(self,root='./',Ratio=0.7,mode='Detection'):
@@ -94,8 +102,14 @@ class DatasetGenerator(cfg,COCO):
 
 
 
-    def DefaultDataset(self):
+    def DefaultDataset(self,Mode='train'):
         """
+        Mode Type
+        
+        train
+        test
+        val
+
         Mission Type:
         
         Detection
@@ -109,6 +123,7 @@ class DatasetGenerator(cfg,COCO):
         Detection               ==>  COCO2014,COCO2017,Pascal_VOC
         InstenceSegmentation    ==>  COCO2014,COCO2017
         Segmentation            ==>  Cityscapes,COCO2014,COCO2017
+        Caption                 ==>  COCO2014,COCO2017
 
         (KeyPoint,Image Caption in future     ==>  COCO2014,17)
 
@@ -139,38 +154,22 @@ class DatasetGenerator(cfg,COCO):
         """
         print('*****Mode : ',self.MissionType,'-----start build dataset in :',self.DataSetType,'-----')
         print('*****DatasetRoot Dir',self.DataSet_Root,'*****')
-
-
+        assert Mode in ['train','val','test'],"Invalide DataSet Mode"
+        self.Mode=Mode
         #####COCOFormat
         if self.DataSetType=='COCO2014' or self.DataSetType=='COCO2017':
-            dataDir=self.DataSet_Root
-            dataType=self.DataSetType[4:]
-            if self.MissionType=='Detection' or self.MissionType=='InstenceSegmentation' or self.MissionType=='Segmentation':
-                TrainAnnFile='{}/annotations/instances_{}.json'.format(dataDir,'train'+dataType)
-                ValAnnFile='{}/annotations/instances_{}.json'.format(dataDir,'val'+dataType)
-                
-                print('\n\n*****Process Train anno file : ',TrainAnnFile)
-                self.Traincoco=COCO(TrainAnnFile)
-                
-                print('\n\n*****Process Val anno file',ValAnnFile)
-                self.Valcoco=COCO(ValAnnFile)
+            if Mode=='train':
+                self.coco = COCO(self.Dataset_Train_file)
+                self.ids = list(sorted(self.coco.imgs.keys()))
+                self.datasetroot=os.path.join(self.DataSet_Root,'train'+self.DataSetType[4:])
+                print('Train Folder Root :',self.datasetroot)
+            if Mode=='val':
+                self.coco = COCO(self.Dataset_Val_file)
+                self.ids = list(sorted(self.coco.imgs.keys()))
+                self.datasetroot=os.path.join(self.DataSet_Root,'train'+self.DataSetType[4:])
+                print('Val Folder Root :',self.datasetroot)
+            self.DataSetProcessDone=True
 
-                self.COCOimageslist=self.Traincoco.getImgIds()
-                self.COCOannalist=self.Traincoco.getAnnIds()
-                self.COCOcatlist=self.Traincoco.getCatIds()
-
-
-                cats = self.Traincoco.loadCats(self.Traincoco.getCatIds())
-                self.nms=[cat['name'] for cat in cats]
-                print('\n\n*****COCO categories: \n{}\n'.format(' '.join(self.nms)))
-
-                self.supernms = set([cat['supercategory'] for cat in cats])
-                print('\n\n*****COCO supercategories: \n{}'.format(' '.join(self.supernms)))
-                self.cats=cats
-                self.DataSetProcessDone=True
-            if self.MissionType=='Caption':
-                print('Not Support Now~')
-                exit(0)
 
         #####CityscapesFormat
         if self.DataSetType=='Cityscapes':
@@ -200,20 +199,36 @@ class DatasetGenerator(cfg,COCO):
         
     def __getitemCOCO(self,index):
         """
-
+        Args:
+        index (int): Index
+        Caption & Detection & Segmentation
+       
+        Returns:
+            tuple: Tuple (image, target). target is the object returned by ``coco.loadAnns``.
         """
-        if not self.UseInternet:
-            image=self.Traincoco.loadImgs(self.COCOimageslist[index])[0]
-            # print(image)
-            annIds=self.Traincoco.getAnnIds(imgIds=image['id'])
-            anns=self.Traincoco.loadAnns(annIds)
-            self.Traincoco.showAnns(anns)
+        if self.MissionType=='Detection':
+            coco = self.coco
+            img_id = self.ids[index]
+            ann_ids = coco.getAnnIds(imgIds=img_id)
+            target = coco.loadAnns(ann_ids)
+            path = coco.loadImgs(img_id)[0]['file_name']
+            img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
+            if self.transforms is not None:
+                img, target = self.transforms(img, target)
+        if self.MissionType=='Caption':
+            coco = self.coco
+            img_id = self.ids[index]
+            ann_ids = coco.getAnnIds(imgIds=img_id)
+            anns = coco.loadAnns(ann_ids)
+            target = [ann['caption'] for ann in anns]
+            path = coco.loadImgs(img_id)[0]['file_name']
+            img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
+            if self.transforms is not None:
+                img, target = self.transforms(img, target)
 
-        else:
-            pass
-            # image=
-        print(anns)
-        # return image,anns,cat
+        return img, target
+
+
     
     def __getitemPascal(self,index):
         pass
@@ -233,11 +248,12 @@ class DatasetGenerator(cfg,COCO):
 
 
 
-    def __len__(self):    
+    def __len__(self):
         assert self.DataSetProcessDone,"Invalid Dataset Object"
+        return len(self.ids)
         
     
-
+    
 
 
 
@@ -292,7 +308,7 @@ class DatasetGenerator(cfg,COCO):
 def main():
     COCO2014=DatasetGenerator()
     COCO2014.DefaultDataset()
-    COCO2014[20]
+    print(COCO2014[20])
 
 
 

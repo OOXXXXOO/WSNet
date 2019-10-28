@@ -1,10 +1,11 @@
 {
-    "python.pythonPath": "/home/winshare/.conda/envs/newtorch/bin/python",
+    "python.pythonPath": "/home/winshare/anaconda3/envs/stable/bin/python",
     "python.autoComplete.extraPaths": [
         "${env:SPARK_HOME}\\python",
         "${env:SPARK_HOME}\\python\\pyspark"
     ],
     "python.linting.flake8Enabled": false,
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "editor.fontFamily": "\"Liberation Mono\""
 }

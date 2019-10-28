@@ -1,14 +1,30 @@
 class A():
-    def __init__(self,A=0):
-        if A==0:
-            def a(self):
-                print('a')
-        if A==1:
-            def a(self):
-                print('b')
+    def __init__(self):
+        self.a=1
+        print('A:',self.a)
 
-a=A(1)
-a.a()
-aa=A(0)
-a.a()
+class B(A):
+    def __init__(self):
+        self.b=2
+        print('B:',self.b)
+
+class C(A):
+    def __init__(self):
+        self.c=3
+        print('C:',self.c)
+
+class D(B,C):
+    def __init__(self,a):
+        self.d=a
+        B.__init__(self)
+        C.__init__(self)
+        print('D:',self.d)
+
+def main():
+    print(D.mro())
+    d=D(4)
+
+
+if __name__ == '__main__':
+    main()
     

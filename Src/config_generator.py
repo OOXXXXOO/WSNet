@@ -50,6 +50,8 @@ class cfg():
         #---Dataset
         self.DataSetType=self.DataSetConfig['Type']
         self.DataSet_Root=self.DataSetConfig['root']
+        self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
+        self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
 
         #---Config
         self.checkpoint=self.Config['checkpoint_path']

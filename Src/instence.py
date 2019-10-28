@@ -1,6 +1,7 @@
 from config_generator import*
 from network_generator import*
 from dataset_generator import*
+import sys
 root=os.path.abspath(__file__)
 print('instence work on ',root)
 
@@ -19,15 +20,21 @@ class Instence(NetworkGenerator,DatasetGenerator):
                                |——Network Process——————>|
                                                         |---->Train/Val/Test
 
-    MODE=[Segmentation,Detection,Mask]
+    MODE=[Segmentation,Detection,Instence,Caption]
     """
     def __init__(self,
     instence_id=0,
     config_dir='./cfg',
     ):  
-        self.root=os.path.join(root,'../')
+        self.root=root
+        print('root in :\n',os.path.join(self.root,'..'))
+        sys.path.append(os.path.join(sys.path[0],'../'))
+        print('workspace in:\n')
+        for i in sys.path:
+            print(i)
+        
+        DatasetGenerator.__init__(self)
         # super(NetworkGenerator,self).__init__()
-        super(DatasetGenerator,self).__init__()
         super(Instence,self).__init__()
         print('\n\n-----instence init-----\n\n')
         
@@ -36,9 +43,20 @@ class Instence(NetworkGenerator,DatasetGenerator):
         self.ConfigInfo()
         self.DatasetInfo()
         # self.NetWorkInfo()
-        
-print('\n',Instence.mro(),'\n')
-instence=Instence()
-instence.DefaultDetection()
-instence.CustomDataset()
-# Net=instence.model
+
+
+def main():
+    print('\n',Instence.mro(),'\n')
+    instence=Instence()
+    instence.DefaultDetection()
+    Model=instence.model
+    instence.DefaultDataset()
+    print(Model)
+    print(instence[20])
+    # Net=instence.model
+
+
+
+if __name__ == '__main__':
+    main()
+    
