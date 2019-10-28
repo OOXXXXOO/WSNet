@@ -76,10 +76,10 @@ The main purpose of this project :
 
 1.Constructs a type of model with torchvision default model
 
-    * BackBone-               MNASNetV1.3
-    * Detection-              Faster R-CNN model with a ResNet-50-FPN
-    * Segmentation-           DeepLabV3 model with a ResNet-50
-    * Instence Segmentation-  Mask R-CNN model with a ResNet-50-FPN
+    * BackBone-                              MNASNetV1.3
+    * Detection-                               Faster R-CNN model with a ResNet-50-FPN
+    * Segmentation-                      DeepLabV3 model with a ResNet-50
+    * Instence Segmentation-    Mask R-CNN model with a ResNet-50-FPN
 
 
 With these great model ,we can start different type of mission quickly
@@ -89,10 +89,10 @@ With these great model ,we can start different type of mission quickly
 Now support On:
 
 
-    * BackBone-                EfficientNets
-    * Detection                YoloV3
-    * Segmentation             --
-    * Instence Segmentation    -- 
+    * BackBone-                                   EfficientNets
+    * Detection                                      YoloV3
+    * Segmentation                             --
+    * Instence Segmentation           -- 
 
 
 
