@@ -13,7 +13,7 @@ class Instence(NetworkGenerator,DatasetGenerator):
                  |             |——training-to DataLoader         |                  |——template-config-generator——>——>|
                  |                                               |<-->|——Config-----|——readconfig<————————————————————|  
  Instance[MODE]——|                                               |                  |     ^       
-                 |                                               |                  |——configure instance             |       
+                 |                                               |                  |——configure instance—————————————|       
                  |                                               |          
                  |——Network----|——readconfig<———————————————————>|  
                                |——Network Generator
@@ -46,12 +46,13 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
 
 def main():
-    print('\n',Instence.mro(),'\n')
+    
     instence=Instence()
     instence.DefaultDetection()
-    Model=instence.model
     instence.DefaultDataset()
-    print(Model)
+    print(instence.Optimzer)
+    print(instence.Loss_Function)
+    print(instence.model)
     print(instence[20])
     # Net=instence.model
 

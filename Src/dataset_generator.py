@@ -23,8 +23,10 @@ class DatasetGenerator(cfg,COCO):
         UseInterNet=True  => load images by url from internet
         UseInterNet=False => load images by local path
         """
+
+        cfg.__init__(self)
         super(DatasetGenerator,self).__init__()
-        super(cfg,self).__init__()
+        
         
 
         self.UseInternet=UseInternet

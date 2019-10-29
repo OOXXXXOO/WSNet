@@ -1,10 +1,12 @@
 class A():
+
     def __init__(self):
         self.a=1
         print('A:',self.a)
 
 class B(A):
     def __init__(self):
+        A.__init__(self)
         self.b=2
         print('B:',self.b)
 
@@ -22,7 +24,8 @@ class D(B,C):
 
 def main():
     print(D.mro())
-    d=D(4)
+    d=D(1)
+    print(d.a)
 
 
 if __name__ == '__main__':
