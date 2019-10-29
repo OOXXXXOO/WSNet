@@ -37,6 +37,11 @@ class Instence(NetworkGenerator,DatasetGenerator):
         # super(NetworkGenerator,self).__init__()
         super(Instence,self).__init__()
         print('\n\n-----instence init-----\n\n')
+
+    def targetmap(self):
+        """
+        
+        """
         
     def InstenceInfo(self):
         print('\n\n\t\tStart with Instence ID',self.instence_id,'\n\n')
