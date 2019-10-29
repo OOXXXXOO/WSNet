@@ -71,10 +71,8 @@ class DatasetGenerator(cfg,COCO):
         "PascalVOC":self.__getitemPascal,
         "ImageNet":self.__getitemImNets
         }
-        print('*****Support MAP:',self.getitem_map)
 
-        
-
+    
 
 
     def CustomDataset(self,root='./',Ratio=0.7,mode='Detection'):

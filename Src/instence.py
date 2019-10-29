@@ -36,18 +36,19 @@ class Instence(NetworkGenerator,DatasetGenerator):
         DatasetGenerator.__init__(self)
         # super(NetworkGenerator,self).__init__()
         super(Instence,self).__init__()
-        print('\n\n-----instence init-----\n\n')
+        print('\n\n-----Instence Class Init-----\n\n')
 
     def targetmap(self):
         """
         
         """
+        pass
         
     def InstenceInfo(self):
-        print('\n\n\t\tStart with Instence ID',self.instence_id,'\n\n')
-        self.ConfigInfo()
+        print('\n\n-----Start with Instence ID',self.InstanceID,'-----\n\n')
+        self.Enviroment_Info()
         self.DatasetInfo()
-        # self.NetWorkInfo()
+        self.NetWorkInfo()
 
 
 def main():

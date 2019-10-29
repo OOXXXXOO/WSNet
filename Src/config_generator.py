@@ -141,7 +141,6 @@ class cfg():
 
 
     def print_dict(self,d,n=0):
-        print('dict:')
         for k,v in d.items():
             print ('\t'*n)
             if type(v)==type({}):
