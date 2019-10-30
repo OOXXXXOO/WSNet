@@ -18,7 +18,7 @@ BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset'
 
 class DatasetGenerator(cfg,COCO):
 
-    def __init__(self,UseInternet=False,transfrom=None):
+    def __init__(self,UseInternet=False):
         """
         UseInterNet=True  => load images by url from internet
         UseInterNet=False => load images by local path
@@ -30,7 +30,8 @@ class DatasetGenerator(cfg,COCO):
         
 
         self.UseInternet=UseInternet
-        self.transforms=transfrom
+
+
 
         
         #######################################
@@ -48,11 +49,11 @@ class DatasetGenerator(cfg,COCO):
         KeyPoint Detection , Image Caption in 2020
         """
 
-        print('\n\n-----Dataset Generator Class init-----\n\n-----Support Mission:')
+        print('\n\n-----Dataset Generator Class init-----\n\n:')
         
-        self.print_dict(support_Mission)
+        # self.print_dict(support_Mission)
         
-        print('\n')
+        # print('\n')
 
         #####Mission Type Checking
         assert self.MissionType in support_Mission.keys(),"Invalid MissionType"+self.MissionType
@@ -80,7 +81,7 @@ class DatasetGenerator(cfg,COCO):
         mode:
         
         Detection
-        Segmentation
+        Segmentations
         InstenceSegmentation
         Classification
 

@@ -2,6 +2,7 @@
     "instance_id": 0,
     "content": {
         "Net": {
+            "DefaultNetwork":true,
             "NetType": "FasterRCNN",
             "BatchSize": 4,
             "BackBone": "None",
@@ -9,7 +10,7 @@
             "Loss_Function":"CrossEntropyLoss"
         },
         "Dataset": {
-            
+            "Transform":["ToTensor"],
             "Type": "COCO2014",
             "root": "/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset",
             "train_index_file":"annotations/instances_train2014.json",
@@ -17,14 +18,17 @@
         
         },
         "Config": {
+
             
             "multiscale_training": true,
             "logdir": "./root/log",
+            "devices":"GPU",
             "gpu_id": 0,
-            "epochs": 100,
+            "epochs": 200,
             "down_pretrain_model": true,
             "checkpoint_path": "./root/model",
-            "visualization": true
+            "visualization": true,
+            "worker_num":2
 
         }
     },

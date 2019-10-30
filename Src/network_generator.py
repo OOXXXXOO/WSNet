@@ -1,16 +1,24 @@
 import torch
 import torch.utils.model_zoo
 import torchvision.models as models
+from config_generator import *
 
-
-class NetworkGenerator():
+class NetworkGenerator(cfg):
 
     def __init__(self,debug=False):
         self.debug=debug
 
         print('\n\n-----Neural Network Class Init-----\n\n')
         self.model=None
-
+        self.modeldict={
+            "Detection":self.DefaultDetection,
+            "Segmentation":self.DefaultSegmentation,
+            "BackBone":self.DefaultBackBone,
+            "Instence Segmentation":self.DefaultInstenceSegmentation,
+            "KeyPoint":self.DefaultKeyPoint,
+        }
+        if self.DefaultNetwork:
+            self.modeldict["Detection"]()
 
 
 
@@ -21,6 +29,8 @@ class NetworkGenerator():
         * Detection-              Faster R-CNN model with a ResNet-50-FPN
         * Segmentation-           DeepLabV3 model with a ResNet-50
         * Instence Segmentation-  Mask R-CNN model with a ResNet-50-FPN
+        * KeyPoint-               KeyPointRCNN model with a ResNet-50-FPN
+
     With this great model ,we can start different type of mission quickly
     
     2.Constructs a third-party / a state of arts model
@@ -30,9 +40,21 @@ class NetworkGenerator():
         * Segmentation             --
         * Instence Segmentation    -- 
     """
+    def DefaultKeyPoint(self,pretrained=False, progress=True):
+        """
+        During training, the model expects both the input tensors, as well as a targets (list of dictionary), containing:
+
+        boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
+
+        labels (Int64Tensor[N]): the class label for each ground-truth box
+
+        keypoints (FloatTensor[N, K, 3]): the K keypoints location for each of the N instances, in the format [x, y, visibility], where visibility=0 means that the keypoint is not visible.
+        
+        """
+        self.model=models.detection.keypointrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=2, num_keypoints=17, pretrained_backbone=True)
 
 
-    def DefaultGreatBackBone(self,pretrained=False, progress=True):
+    def DefaultBackBone(self,pretrained=False, progress=True):
         """
         MNASNet with depth multiplier of 1.3 from “MnasNet: Platform-Aware Neural Architecture Search for Mobile”. 
         :param 

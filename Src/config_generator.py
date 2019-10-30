@@ -4,12 +4,15 @@ import json
 import torch.optim as optim
 import torch.nn as nn
 import torch.nn.functional as F
+import torch
+import torchvision.transforms as T
 class cfg():
     def __init__(self,configfile='Src/config/config_template.json'):
         print('\n\n-----Configure Generator Class Init -----\n\n')
         ##File Level
         self.__defaultconfig=configfile
         self.__json=json.load(open(self.__defaultconfig,'r'))
+        self.usegpu=False
 
 
         ##First Content Level
@@ -40,7 +43,10 @@ class cfg():
         #Third Level
         
         #---NET
-        self.NetType=self.Net['NetType']
+        # self.NetType=self.Net['NetType']
+        self.DefaultNetwork=self.Net["DefaultNetwork"]
+        
+    
         self.BatchSize=self.Net['BatchSize']
         if self.Net['BackBone']=='None':
             self.BackBone=None
@@ -107,14 +113,43 @@ class cfg():
         self.DataSet_Root=self.DataSetConfig['root']
         self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
         self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
+        ###########
+        #Transform
+        self.Transform=self.DataSetConfig['Transform']
+        self.Transform_dict={
+            "ToTensor":T.ToTensor()
+        }
+        """
+        
+        """
+        self.Transform=[self.Transform_dict[i] for i in self.Transform]
+        self.transforms=T.Compose(self.Transform)
+
+
+
+
+
+
+
+
 
         #---Config
         self.checkpoint=self.Config['checkpoint_path']
         self.MultiScale_Training=self.Config['multiscale_training']
         self.logdir=self.Config['logdir']
-        self.gpu_id=self.Config['gpu_id']
+        self.devices=self.Config['devices']
+        if self.devices=='GPU':
+            self.usegpu=True
+            self.gpu_id=self.Config['gpu_id']
+            os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
+            self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
+            print('train device on :',self.device)
+
+
         self.download_pretrain_model=self.Config['down_pretrain_model']
         self.visualization=self.Config['visualization']
+        self.worker_num=self.Config['worker_num']
+        self.epochs=self.Config['epochs']
 
 
 

@@ -1,11 +1,12 @@
 from config_generator import*
 from network_generator import*
 from dataset_generator import*
+from torch.utils.data import Dataset
 import sys
 root=os.path.abspath(__file__)
 print('instence work on ',root)
 
-class Instence(NetworkGenerator,DatasetGenerator):
+class Instence(NetworkGenerator,DatasetGenerator,Dataset):
     """
                  
                              
