@@ -245,3 +245,26 @@ T.ToTensor
 
 1031任务
 构建Transform来完成输入数据的变换
+
+
+1107
+Transform完成情况：
+1.对于图像的Transform以及基本完成
+但是诞生了新的问题即官方未指定读入数据的Transform
+
+所以准备构建新的
+General Transform类型
+
+```python
+class General_Transform():
+    def __init__(self):
+        
+
+
+
+```
+
+
+
+
+

@@ -1,6 +1,7 @@
 from instence import *
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+import torch
 class AverageMeter(object):
     """Computes and stores the average and current value"""
     def __init__(self):
@@ -23,34 +24,37 @@ def trainval():
     ##### Dataset init
     train=Instence()
     train.InstenceInfo()
-    train.DefaultDataset(Mode='train')
+    # train.DefaultDataset(Mode='train')
     val=Instence()
     val.DefaultDataset(Mode='val')
 
     ##### Network Init
-    # print(train.model)
     if train.usegpu:
         train.model.to(train.device)
-    train.model.train()
+
+    ##### NetworkTest
+    # train.model.eval()
+    # in_=torch.randn((1,3,800,800),dtype=torch.float32)
+    # in_=in_.to(train.device)
+    # print("in:",in_,in_.size())
+    # out_=train.model(in_)
+    # print("out",out_)
 
 
     ##### Loader Init
 
-
-    trainloader=DataLoader(train,train.BatchSize,shuffle=True,num_workers=train.worker_num)
+    # trainloader=DataLoader(train,train.BatchSize,shuffle=True,num_workers=train.worker_num)
     valloder=DataLoader(val,val.BatchSize,shuffle=True,num_workers=val.worker_num)
 
     ##### criterion Init
-
-
-
+    #
     ##### optimizer Init
-
-
+    #
     ##### train process 
+    
     for epoch in range(train.epochs):
         print("\n\n-----Epoch:",epoch)
-        for inputs,targets in tqdm(trainloader):
+        for inputs,targets in tqdm(valloder):
             if train.usegpu:
                 inputs,targets=inputs.to(train.device),targets.to(train.device)
                 output=train.model(inputs)
@@ -64,7 +68,8 @@ def trainval():
                 train.Optimzer.zero_grad()
                 loss.backward()
                 train.Optimzer.step()
-        ##### eval & model IO process
+    
+    ##### eval & model IO process
 
 
 
@@ -91,7 +96,6 @@ def trainval():
 
 def main():
     trainval()
-
 if __name__ == '__main__':
     main()
     

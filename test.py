@@ -21,11 +21,17 @@ class D(B,C):
         B.__init__(self)
         C.__init__(self)
         print('D:',self.d)
-
+    def __call__(self):
+        print('call D')
+    def __getitem__(self,index):
+        print("get ",index)
+    
 def main():
-    print(D.mro())
-    d=D(1)
-    print(d.a)
+    print(D)
+    d=D(4)
+    print(d.__dict__)
+    print(d())
+    print(d[1])
 
 
 if __name__ == '__main__':

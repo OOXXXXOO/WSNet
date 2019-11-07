@@ -115,16 +115,62 @@ class cfg():
         self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
         ###########
         #Transform
-        self.Transform=self.DataSetConfig['Transform']
         self.Transform_dict={
-            "ToTensor":T.ToTensor()
+                # "CenterCrop":T.CenterCrop(),
+                # "ColorJitter":T.ColorJitter(),
+                # "adjust_brightness":T.functional.adjust_brightness(),
+                # "adjust_contrast":T.functional.adjust_contrast(),
+                # "adjust_gamma":T.functional.adjust_gamma(),
+                # "adjust_hue":T.functional.adjust_hue(),
+                # "adjust_saturation":T.functional.adjust_saturation(),
+                # "affine":T.functional.affine(),
+                # "crop":T.functional.crop(),
+                # "erase":T.functional.erase(),
+                # "five_crop":T.functional.five_crop(),
+                # "hflip":T.functional.hflip(),
+                # "normalize":T.functional.normalize(),
+                # "pad":T.functional.pad(),
+                # "perspective":T.functional.perspective(),
+                # "resize":T.functional.resize(),
+                # "resized_crop":T.functional.resized_crop(),
+                # "rotate":T.functional.rotate(),
+                # "ten_crop":T.functional.ten_crop(),
+                # "to_grayscale":T.functional.to_grayscale(),
+                # "to_pil_image":T.functional.to_pil_image(),
+                # "to_tensor":T.functional.to_tensor(),
+                # "vflip":T.functional.vflip(),
+                # "Grayscale":T.Grayscale(),
+                # "Lambda":T.Lambda(),
+                "Normalize":T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+                # "Pad":T.Pad(),
+                # "RandomAffine":T.RandomAffine(),
+                # "RandomApply":T.RandomApply(),
+                # "RandomChoice":T.RandomChoice(),
+                # "RandomCrop":T.RandomCrop(),
+                "RandomErasing":T.RandomErasing(),
+                # "RandomGrayscale":T.RandomGrayscale(),
+                "RandomHorizontalFlip":T.RandomHorizontalFlip(0.5),
+                # "RandomOrder":T.RandomOrder(),
+                # "RandomPerspective":T.RandomPerspective(),
+                # "RandomResizedCrop":T.RandomResizedCrop(),
+                # "RandomRotation":T.RandomRotation(),
+                # "RandomSizedCrop":T.RandomSizedCrop(),
+                "RandomVerticalFlip":T.RandomVerticalFlip(),
+                # "Resize":T.Resize(),
+                # "Scale":T.Scale(),
+                # "TenCrop":T.TenCrop(),
+                "ToPILImage":T.ToPILImage(),
+                "ToTensor":T.ToTensor(),
         }
         """
-        
+        Transform function dict use name string to map Transfrom function &
+        use T.Compose() to control the transform process
         """
+        self.Transform=self.DataSetConfig['Transform']
         self.Transform=[self.Transform_dict[i] for i in self.Transform]
-        self.transforms=T.Compose(self.Transform)
-
+        self.image_transforms=T.Compose(self.Transform)
+        print(self.image_transforms)
+        
 
 
 

@@ -10,19 +10,21 @@
 
 
 #### Project Structure
-```txt
-                              |——template-config-generator——>——>|
-                |——Config-----|——readconfig<————————————————————|  
-                |     ^       |——configure instance             |  
-                |     |                                         |               
-Instance[MODE]——|-->Dataset-->|——training-array generator       |  
-                |             |——training-to DataLoader         |  
-                |                                               |          
-                |——Network----|——readconfig<————————————————————|  
-                              |——Network Generator
-                              |——Network Process——————>——————————>Train/Val/Test
-
-MODE=[Segmentation,Detection,InstenceSegmentation]
+```python
+                 
+"""                    
+                 |-->Dataset-->|——training-array generator<----->|  
+                 |             |——training-to DataLoader         |                  |——template-config-generator——>——>|
+                 |                                               |<-->|——Config-----|——readconfig<————————————————————|  
+ Instance[MODE]——|                                               |                  |     ^       
+                 |                                               |                  |——configure instance—————————————|       
+                 |                                               |          
+                 |——Network----|——readconfig<———————————————————>|  
+                               |——Network Generator
+                               |——Network Process——————>|
+                                                        |---->Train/Val/Test
+"""
+    MODE=[Segmentation,Detection,Instence,Caption]
 ```
 
 #### **A typically process：**
@@ -45,42 +47,61 @@ Each class name occupies a line (please make sure the file not have gap line).
 
 Its gonna be start a brand new **Instance**,the code will scan the all image file in `./root/image` and try to make a map between the image & label -files . In end of the scan process , program will generate index file of all the mapping files and  default instance configure file 
 
-`./instance-(id)-config.json`
+`./instance-{id}-config.json`
 
 That include all the configurable option about training instance **(not complate)**:
 
 
 ```json
 {
-    "instance_id":0,
-    "mode":0,
-    "content":{
-        "Net":{
-            "BackBone":"None",
-            "NetType":"DeeplabV3plus",
-            "BatchSize":4
+    "instance_id": 0,
+    "content": {
+        "Net": {
+            "DefaultNetwork":true,
+            "NetType": "FasterRCNN",
+            "BatchSize": 4,
+            "BackBone": "None",
+            "Optimizer":"SGD",
+            "Loss_Function":"CrossEntropyLoss"
         },
-    "Dataset":{
-        "root":"./root"
+        "Dataset": {
+            "Transform":[
+                    "RandomHorizontalFlip",
+                    "ToTensor",
+                    "Normalize"
+                ]
+            ,
+            "Type": "COCO2014",
+            "root": "/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset",
+            "train_index_file":"annotations/instances_train2014.json",
+            "val_index_file":"annotations/instances_val2014.json"
+        
+        },
+        "Config": {
+
+            
+            "multiscale_training": true,
+            "logdir": "./root/log",
+            "devices":"GPU",
+            "gpu_id": 0,
+            "epochs": 200,
+            "down_pretrain_model": true,
+            "checkpoint_path": "./root/model",
+            "visualization": true,
+            "worker_num":2
+
+        }
     },
-    "Config":{
-        "gpu_id":0,
-        "epochs":100,
-        "down_pretrain_model":true,
-        "checkpoint_path":"./root/model",
-        "mutilscale_training":true,
-        "logdir":"./root/log"
-        .......
-    }
-    }
+    "MissionType": "Detection"
 }
+
 
 ```
 
 The Json file content could be modified. When you finish your change , run as :
 
 ```bash
-python train.py --cfg instance-(0)-config.json
+python train.py --cfg instance-{intance_id}-config.json
 ```
 
 ##### The train will start.
@@ -305,15 +326,70 @@ the network will be constructd like:
 ) ---------------
 ```
 
+#### General Transform 
+The General_Transform class work for MultiMission Data Transform
+    The Pytorch-like Transform just work for image data & different Mission
+    have corresponding transform.
+      
+#####  Detection:
+
+  The models expect a list of Tensor[C, H, W], in the range 0-1. 
+  The models internally resize the images so that they have a minimum size of 800. 
+  This option can be changed by passing the option min_size to the constructor of the models.
+
+  * boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
+
+  * labels (Int64Tensor[N]): the class label for each ground-truth box
+
+
+
+#####  Segmentation:
+  
+  As with image classification models, all pre-trained models expect input images normalized in the same way. 
+  The images have to be loaded in to a range of [0, 1] and then normalized using 
+
+* mean = [0.485, 0.456, 0.406] 
+
+* std = [0.229, 0.224, 0.225]. 
+
+  They have been trained on images resized such that their minimum size is 520.
+
+
+
+##### Instance_Segmantation:
+  
+  During inference, the model requires only the input tensors, and returns the post-processed predictions as a List[Dict[Tensor]], 
+  one for each input image. The fields of the Dict are as follows:
+
+  * boxes (FloatTensor[N, 4]): the predicted boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
+
+  * labels (Int64Tensor[N]): the predicted labels for each image
+
+  * scores (Tensor[N]): the scores or each prediction
+
+  * masks (UInt8Tensor[N, 1, H, W]): the predicted masks for each instance, in 0-1 range.
+
+  In order to obtain the final segmentation masks, the soft masks can be thresholded, generally with a value of 0.5 (mask >= 0.5)
+
+
+
+#####  BackBone:
+
+  The models expect a list of Tensor[C, H, W], in the range 0-1. 
+
+
+
+#####  Caption:
 
 
 
 
+#####  KeyPoint:
 
+  During training, the model expects both the input tensors, as well as a targets (list of dictionary), containing:
 
+  * boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
 
+  * labels (Int64Tensor[N]): the class label for each ground-truth box
 
-
-
-
-
+  * keypoints (FloatTensor[N, K, 3]): the K keypoints location for each of the N instances, in the format [x, y, visibility], where visibility=0 means that the keypoint is not visible.

@@ -10,7 +10,12 @@
             "Loss_Function":"CrossEntropyLoss"
         },
         "Dataset": {
-            "Transform":["ToTensor"],
+            "Transform":[
+                    "RandomHorizontalFlip",
+                    "ToTensor",
+                    "Normalize"
+                ]
+            ,
             "Type": "COCO2014",
             "root": "/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset",
             "train_index_file":"annotations/instances_train2014.json",
