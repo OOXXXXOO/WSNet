@@ -8,20 +8,20 @@ print('instence work on ',root)
 
 class Instence(NetworkGenerator,DatasetGenerator,Dataset):
     """
-                 
-                             
-                 |-->Dataset-->|——training-array generator<----->|  
-                 |             |——training-to DataLoader         |                  |——template-config-generator——>——>|
-                 |                                               |<-->|——Config-----|——readconfig<————————————————————|  
- Instance[MODE]——|                                               |                  |     ^       
-                 |                                               |                  |——configure instance—————————————|       
-                 |                                               |          
-                 |——Network----|——readconfig<———————————————————>|  
-                               |——Network Generator
-                               |——Network Process——————>|
-                                                        |---->Train/Val/Test
+                        
+                                    
+                        |-->Dataset-->|——training-array generator<----->|  
+                        |             |——training-to DataLoader         |                  |——template-config-generator——>——>|
+                        |                                               |<-->|——Config-----|——readconfig<————————————————————|  
+        Instance[MODE]——|                                               |                  |     ^       
+                        |                                               |                  |——configure instance—————————————|       
+                        |                                               |          
+                        |——Network----|——readconfig<———————————————————>|  
+                                    |——Network Generator
+                                    |——Network Process——————>|
+                                                                |---->Train/Val/Test
 
-    MODE=[Segmentation,Detection,Instence,Caption]
+            MODE=[Segmentation,Detection,Instence,Caption]
     """
     def __init__(self,
     instence_id=0,

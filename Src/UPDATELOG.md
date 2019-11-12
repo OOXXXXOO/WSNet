@@ -255,16 +255,42 @@ Transform完成情况：
 所以准备构建新的
 General Transform类型
 
+1112
+
+
+一般来说  对于不同任务的图像和标注对应变换  都是最困难的
+
+### Detection
+
+1.图像Resize->boxes坐标 resize
+2.图像Flip -> boxes坐标 flip
+3.图像rotate -> boxes 坐标 rotate
+
+
+
+
+
+_____
+添加collate_fn
+
+### 问题  搞清楚zip
+
+#### max stack
+
+两种方式的优劣
+
+
 ```python
-class General_Transform():
-    def __init__(self):
-        
-
-
-
+def collate_fn(batch):
+    batch.sort(key=lambda x: len(x[1]), reverse=True)
+    img, label = zip(*batch)
+    pad_label = []
+    lens = []
+    max_len = len(label[0])
+    for i in range(len(label)):
+        temp_label = [0] * max_len
+        temp_label[:len(label[i])] = label[i]
+        pad_label.append(temp_label)
+        lens.append(len(label[i]))
+    return img, pad_label, lens
 ```
-
-
-
-
-

@@ -141,35 +141,49 @@ class cfg():
                 # "vflip":T.functional.vflip(),
                 # "Grayscale":T.Grayscale(),
                 # "Lambda":T.Lambda(),
-                "Normalize":T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+                "Normalize":T.Normalize,
                 # "Pad":T.Pad(),
                 # "RandomAffine":T.RandomAffine(),
                 # "RandomApply":T.RandomApply(),
                 # "RandomChoice":T.RandomChoice(),
                 # "RandomCrop":T.RandomCrop(),
-                "RandomErasing":T.RandomErasing(),
-                # "RandomGrayscale":T.RandomGrayscale(),
-                "RandomHorizontalFlip":T.RandomHorizontalFlip(0.5),
-                # "RandomOrder":T.RandomOrder(),
+                "RandomErasing":T.RandomErasing,
+                # "RandomGrayscale":T.RandomGrayscale,
+                "RandomHorizontalFlip":T.RandomHorizontalFlip,
+                # "RandomOrder":T.RandomOrder,
                 # "RandomPerspective":T.RandomPerspective(),
                 # "RandomResizedCrop":T.RandomResizedCrop(),
                 # "RandomRotation":T.RandomRotation(),
                 # "RandomSizedCrop":T.RandomSizedCrop(),
-                "RandomVerticalFlip":T.RandomVerticalFlip(),
+                "RandomVerticalFlip":T.RandomVerticalFlip,
                 # "Resize":T.Resize(),
                 # "Scale":T.Scale(),
                 # "TenCrop":T.TenCrop(),
-                "ToPILImage":T.ToPILImage(),
-                "ToTensor":T.ToTensor(),
+                "ToPILImage":T.ToPILImage,
+                "ToTensor":T.ToTensor,
         }
         """
         Transform function dict use name string to map Transfrom function &
         use T.Compose() to control the transform process
         """
         self.Transform=self.DataSetConfig['Transform']
-        self.Transform=[self.Transform_dict[i] for i in self.Transform]
-        self.image_transforms=T.Compose(self.Transform)
+        functionlist=[list(i.keys())[0] for i in self.Transform]
+        paralist=[list(i.values())[0] for i in self.Transform]
+        self.transform=[]
+        for i in range(len(functionlist)):
+            if paralist[i]=="None":
+                self.transform.append(self.Transform_dict[functionlist[i]]())
+                continue
+            if type(paralist[i])==list:
+                self.transform.append(self.Transform_dict[functionlist[i]](*paralist[i]))
+                continue
+            self.transform.append(
+                self.Transform_dict[functionlist[i]](paralist[i])
+            )
+
+        self.image_transforms=T.Compose(self.transform)
         print(self.image_transforms)
+        exit(0)
         
 
 

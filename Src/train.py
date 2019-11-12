@@ -24,9 +24,9 @@ def trainval():
     ##### Dataset init
     train=Instence()
     train.InstenceInfo()
-    # train.DefaultDataset(Mode='train')
-    val=Instence()
-    val.DefaultDataset(Mode='val')
+    train.DefaultDataset(Mode='train')
+    # val=Instence()
+    # val.DefaultDataset(Mode='val')
 
     ##### Network Init
     if train.usegpu:
@@ -43,8 +43,8 @@ def trainval():
 
     ##### Loader Init
 
-    # trainloader=DataLoader(train,train.BatchSize,shuffle=True,num_workers=train.worker_num)
-    valloder=DataLoader(val,val.BatchSize,shuffle=True,num_workers=val.worker_num)
+    trainloader=DataLoader(train,train.BatchSize,shuffle=True,num_workers=train.worker_num)
+    # valloder=DataLoader(val,val.BatchSize,shuffle=True,num_workers=val.worker_num)
 
     ##### criterion Init
     #
@@ -54,7 +54,7 @@ def trainval():
     
     for epoch in range(train.epochs):
         print("\n\n-----Epoch:",epoch)
-        for inputs,targets in tqdm(valloder):
+        for inputs,targets in tqdm(trainloader):
             if train.usegpu:
                 inputs,targets=inputs.to(train.device),targets.to(train.device)
                 output=train.model(inputs)
