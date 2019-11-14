@@ -211,10 +211,12 @@ class DatasetGenerator(cfg,COCO):
             path = coco.loadImgs(img_id)[0]['file_name']
             img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
             if self.image_transforms is not None:
+                ##############################################
+                #Wati Collate FN
                 img=self.image_transforms(img)
-                target=self.target_transforms(target)
+                # target=self.target_transforms(target)
                 print(img.size())
-                exit(0)
+                # exit(0)
 
 
         if self.MissionType=='Caption':
@@ -227,7 +229,7 @@ class DatasetGenerator(cfg,COCO):
             img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
             if self.image_transforms is not None:
                 img=self.image_transforms(img)
-                exit(0)
+                # exit(0)
 
         return img, target
 

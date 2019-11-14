@@ -294,3 +294,42 @@ def collate_fn(batch):
         lens.append(len(label[i]))
     return img, pad_label, lens
 ```
+
+
+1114:
+
+终于到达想要的错误
+：
+
+
+torch.Size([3, 427, 640])
+torch.Size([3, 640, 426])
+torch.Size([3, 436, 640])
+torch.Size([3, 334, 500])
+torch.Size([3, 640, 505])
+torch.Size([3, 360, 640])
+torch.Size([3, 425, 640])
+Traceback (most recent call last):
+  File "Src/general_transfrom.py", line 196, in <module>
+    main()
+  File "Src/general_transfrom.py", line 186, in main
+    for index,(image,target) in enumerate(trainloader):
+  File "/home/winshare/anaconda3/envs/stable/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 819, in __next__
+    return self._process_data(data)
+  File "/home/winshare/anaconda3/envs/stable/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 846, in _process_data
+    data.reraise()
+  File "/home/winshare/anaconda3/envs/stable/lib/python3.6/site-packages/torch/_utils.py", line 385, in reraise
+    raise self.exc_type(msg)
+RuntimeError: Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/home/winshare/anaconda3/envs/stable/lib/python3.6/site-packages/torch/utils/data/_utils/worker.py", line 178, in _worker_loop
+    data = fetcher.fetch(index)
+  File "/home/winshare/anaconda3/envs/stable/lib/python3.6/site-packages/torch/utils/data/_utils/fetch.py", line 47, in fetch
+    return self.collate_fn(data)
+  File "Src/general_transfrom.py", line 166, in collate_fn
+    inp = torch.stack(transposed_data[0], 0)
+RuntimeError: invalid argument 0: Sizes of tensors must match except in dimension 0. Got 427 and 436 in dimension 2 at /opt/conda/conda-bld/pytorch_1570910687230/work/aten/src/TH/generic/THTensor.cpp:689
+
+
+
+collate_fn最后修正

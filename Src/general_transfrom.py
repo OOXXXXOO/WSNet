@@ -1,6 +1,8 @@
 import torchvision.transforms as T
+from dataset_generator import*
+from torch.utils.data import DataLoader
 
-class General_Transform(T):
+class General_Transform():
     """
     The General_Transform class work for MultiMission Data Transform
     The Pytorch-like Transform just work for image data & different Mission
@@ -63,19 +65,62 @@ class General_Transform(T):
         * boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
         * labels (Int64Tensor[N]): the class label for each ground-truth box
         * keypoints (FloatTensor[N, K, 3]): the K keypoints location for each of the N instances, in the format [x, y, visibility], where visibility=0 means that the keypoint is not visible.
+    
+    TransStrList:
+    {
+
+    ToTensor
+    Normalize(std)
+
+    RanDom：{
+        resize
+        brightness
+        pad
+        grayscale
+        flip
+        rotate
+        scale
+        erasing
+        contrast
+        gamma
+        saturation
+        }
+    }
+    
     """
     def __init__(self,TransStrList=['ToTensor']):
         print('-----init General Transform Module-----')
         super(General_Transform,self).__init__()
+
+        self.ModeDict={
+            "Detection":self.__DetCall__,
+            "Segmentation":self.__Segcall__,
+            "InstenceSegmentation":self.__MaskCall__,
+            "Caption":self.__CaptionCall__
+        }
         self.Mode=None
 
+    def __keyCall__(self,image,target):
+        """
+        transform for keypoint
+        * boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
+        * labels (Int64Tensor[N]): the class label for each ground-truth box
+        * keypoints (FloatTensor[N, K, 3]): the K keypoints location for each of the N instances, in the format [x, y, visibility], where visibility=0 means that the keypoint is not visible.
+        """
+
+
+        return image,target
 
     def __DetCall__(self,image,target):
         """
         * boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
         * labels (Int64Tensor[N]): the class label for each ground-truth box
         """
-        pass
+
+
+
+
+        return image,target
 
 
 
@@ -86,7 +131,7 @@ class General_Transform(T):
         std = [0.229, 0.224, 0.225]. 
     They have been trained on images resized such that their minimum size is 520.
         """
-        pass
+        return image,target
 
     
     
@@ -97,24 +142,52 @@ class General_Transform(T):
         * scores (Tensor[N]): the scores or each prediction
         * masks (UInt8Tensor[N, 1, H, W]): the predicted masks for each instance, in 0-1 range.
         """
-        pass
+        return image,target
 
     def __CaptionCall__(self,image,target):
-        pass
+        """
+        Caption Mission
+        """
+        
+    
+        
+        return image,target
 
 
 
 
     def __call__(self,image,target):
+        self.ModeDict[self.Mode](image,target)
         
 
 
+def collate_fn(batch):
+    transposed_data=list(zip(*batch))
+    inp = torch.stack(transposed_data[0], 0)
+    tgt = torch.stack(transposed_data[1], 0)
+    for i in transposed_data:
+        print(i[0])
+
+    return inp,tgt
 
 
 def main():
+    COCO2014=DatasetGenerator()
+    COCO2014.DefaultDataset()
+    print('_____________________________')
+    # image,target=COCO2014[20]
+    # print(image)
+    # for i in target:
+    #     print(i)
+    # TT=General_Transform()
+    trainloader=DataLoader(COCO2014,COCO2014.BatchSize,shuffle=True,num_workers=COCO2014.worker_num,collate_fn=collate_fn)
 
 
-
+    for index,(image,target) in enumerate(trainloader):
+        print('\n\n',index,'\n\n')
+        print(image)
+        print(target)
+        exit(0)
 
 
 

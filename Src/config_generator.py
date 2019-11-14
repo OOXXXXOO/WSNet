@@ -180,10 +180,14 @@ class cfg():
             self.transform.append(
                 self.Transform_dict[functionlist[i]](paralist[i])
             )
+        self.image_transforms=None
 
-        self.image_transforms=T.Compose(self.transform)
-        print(self.image_transforms)
-        exit(0)
+        ####临时改动
+        ######################################################
+        #wait for collate fn 
+        self.image_transforms=T.Compose([T.ToTensor()])
+        # print(self.image_transforms)
+        # exit(0)
         
 
 
