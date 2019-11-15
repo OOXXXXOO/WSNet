@@ -22,7 +22,7 @@ class AverageMeter(object):
 def trainval():
     print('-----Train Process')
     ##### Dataset init
-    train=Instence()
+    train=Instence()    
     train.InstenceInfo()
     train.DefaultDataset(Mode='train')
     # val=Instence()
@@ -43,31 +43,42 @@ def trainval():
 
     ##### Loader Init
 
-    trainloader=DataLoader(train,train.BatchSize,shuffle=True,num_workers=train.worker_num)
+    trainloader=DataLoader(train,
+    train.BatchSize,
+    shuffle=True,
+    num_workers=train.worker_num,
+    collate_fn=train.detection_collate_fn)
+
     # valloder=DataLoader(val,val.BatchSize,shuffle=True,num_workers=val.worker_num)
 
     ##### criterion Init
     #
+    train.Optimzer(
+        train.model.parameters(),
+        lr=train.learning_rate,
+        momentum=train.momentum
+        )
     ##### optimizer Init
     #
     ##### train process 
+    train.model.train()
     
     for epoch in range(train.epochs):
         print("\n\n-----Epoch:",epoch)
         for inputs,targets in tqdm(trainloader):
             if train.usegpu:
-                inputs,targets=inputs.to(train.device),targets.to(train.device)
+                inputs=inputs.to(train.device)
+                train.Optimzer.zero_grad()
                 output=train.model(inputs)
                 loss=train.Loss_Function(output,targets)
-                train.Optimzer.zero_grad()
                 loss.backward()
                 train.Optimzer.step()
-            if not train.usegpu:
-                output=train.model(inputs)
-                loss=train.Loss_Function(output,targets)
-                train.Optimzer.zero_grad()
-                loss.backward()
-                train.Optimzer.step()
+            # if not train.usegpu:
+            #     train.Optimzer.zero_grad()
+            #     output=train.model(inputs)
+            #     loss=train.Loss_Function(output,targets)
+            #     loss.backward()
+            #     train.Optimzer.step()
     
     ##### eval & model IO process
 

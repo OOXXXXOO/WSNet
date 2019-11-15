@@ -1,6 +1,7 @@
 import torchvision.transforms as T
 from dataset_generator import*
 from torch.utils.data import DataLoader
+import torch
 
 class General_Transform():
     """
@@ -161,31 +162,78 @@ class General_Transform():
         
 
 
-def collate_fn(batch):
-    transposed_data=list(zip(*batch))
-    inp = torch.stack(transposed_data[0], 0)
-    tgt = torch.stack(transposed_data[1], 0)
-    for i in transposed_data:
-        print(i[0])
 
-    return inp,tgt
 
+
+def detection_collate_fn(batch):
+    """
+    Batch:
+    Batch[0][
+        image,
+        target
+        [
+            {
+                'segmentation':[[point1,point2...],[point1,point2..],...]
+                'category_id': int,
+                'id':int
+                'bbox:'
+                }
+                ...
+        ]
+    ]
+
+    return stack images tensor & target tensor dict
+
+    """
+    # step 1 find max image width & height in batch 
+    W_=[i[0].size[0] for i in batch]
+    H_=[i[0].size[1] for i in batch]
+    W=max(W_)
+    H=max(H_)
+    images=[T.functional.to_tensor(i[0].resize((W,H)))/255 for i in batch]
+    images=torch.stack(images,dim=0)
+    
+
+    # step 2 compute the x y transform value
+    W_=[W/i for i in W_]
+    H_=[H/i for i in H_]
+
+
+
+    # step 3 transform the target box
+    targets=[i[1] for i in batch]
+    boxes=[]
+    labels=[]
+    target=[]
+    for index,targeti in enumerate(targets):
+        target_box=[]
+        target_label=[]
+        for t in targeti:
+            box=torch.tensor(t['bbox'],dtype=torch.float32)
+            box[0]*=W_[index]
+            box[1]*=H_[index]
+            box[2]*=W_[index]
+            box[3]*=H_[index]
+            target_box.append(box)
+            target_label.append(torch.tensor(t['category_id'],dtype=torch.int64))
+        boxes.append(target_box)
+        labels.append(target_label)
+        target.append({'boxes':boxes,'labels':labels})
+
+
+    # step 4 return stack images tensor & target tensor dict
+    return images,target
 
 def main():
     COCO2014=DatasetGenerator()
     COCO2014.DefaultDataset()
-    print('_____________________________')
-    # image,target=COCO2014[20]
-    # print(image)
-    # for i in target:
-    #     print(i)
-    # TT=General_Transform()
-    trainloader=DataLoader(COCO2014,COCO2014.BatchSize,shuffle=True,num_workers=COCO2014.worker_num,collate_fn=collate_fn)
+
+    trainloader=DataLoader(COCO2014,COCO2014.BatchSize,shuffle=True,num_workers=COCO2014.worker_num,collate_fn=detection_collate_fn)
 
 
     for index,(image,target) in enumerate(trainloader):
         print('\n\n',index,'\n\n')
-        print(image)
+        print(image.size())
         print(target)
         exit(0)
 

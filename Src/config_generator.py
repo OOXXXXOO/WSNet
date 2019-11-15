@@ -67,6 +67,8 @@ class cfg():
            "Adamax":optim.Adamax
         }
         self.Optimzer=OptimDict[self.Net['Optimizer']]
+        self.learning_rate=self.Net['learning_rate']
+        self.momentum=self.Net['momentum']
 
         #####Loss Function
         self.Loss_Function_dict={
@@ -104,7 +106,7 @@ class cfg():
             ,"SoftMarginLoss":nn.SoftMarginLoss 
             ,"TripletMarginLoss":nn.TripletMarginLoss
         }
-        self.Loss_Function=self.Loss_Function_dict[self.Net['Loss_Function']]
+        self.Loss_Function=self.Loss_Function_dict[self.Net['Loss_Function']]()
 
 
 
@@ -113,6 +115,9 @@ class cfg():
         self.DataSet_Root=self.DataSetConfig['root']
         self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
         self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
+        
+        
+        
         ###########
         #Transform
         self.Transform_dict={
@@ -182,13 +187,7 @@ class cfg():
             )
         self.image_transforms=None
 
-        ####临时改动
-        ######################################################
-        #wait for collate fn 
-        self.image_transforms=T.Compose([T.ToTensor()])
-        # print(self.image_transforms)
-        # exit(0)
-        
+
 
 
 

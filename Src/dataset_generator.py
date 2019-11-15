@@ -1,6 +1,7 @@
 #################################################
 #For basic process
 import torchvision.datasets as dataset
+import torchvision.transforms as T
 import torch
 from config_generator import *
 from pycocotools.coco import COCO
@@ -211,12 +212,7 @@ class DatasetGenerator(cfg,COCO):
             path = coco.loadImgs(img_id)[0]['file_name']
             img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
             if self.image_transforms is not None:
-                ##############################################
-                #Wati Collate FN
-                img=self.image_transforms(img)
-                # target=self.target_transforms(target)
-                print(img.size())
-                # exit(0)
+                print(img.size)
 
 
         if self.MissionType=='Caption':
@@ -294,6 +290,84 @@ class DatasetGenerator(cfg,COCO):
         """
         self.Traincoco.showAnns(anns)
         plt.show()
+
+
+
+
+
+
+
+
+
+    def detection_collate_fn(self,batch):
+        """
+        Batch:
+        Batch[0][
+            image,
+            target
+            [
+                {
+                    'segmentation':[[point1,point2...],[point1,point2..],...]
+                    'category_id': int,
+                    'id':int
+                    'bbox:'
+                    }
+                    ...
+            ]
+        ]
+
+        return stack images tensor & target tensor dict
+
+        """
+        # step 1 find max image width & height in batch 
+        W_=[i[0].size[0] for i in batch]
+        H_=[i[0].size[1] for i in batch]
+        W=max(W_)
+        H=max(H_)
+        images=[T.functional.to_tensor(i[0].resize((W,H)))/255 for i in batch]
+        images=torch.stack(images,dim=0)
+        
+
+        # step 2 compute the x y transform value
+        W_=[W/i for i in W_]
+        H_=[H/i for i in H_]
+
+
+
+        # step 3 transform the target box
+        targets=[i[1] for i in batch]
+        boxes=[]
+        labels=[]
+        for index,targeti in enumerate(targets):
+            target_box=[]
+            target_label=[]
+            for t in targeti:
+                box=torch.tensor(t['bbox'],dtype=torch.float32)
+                box[0]*=W_[index]
+                box[1]*=H_[index]
+                box[2]*=W_[index]
+                box[3]*=H_[index]
+                target_box.append(box)
+                target_label.append(torch.tensor(t['category_id'],dtype=torch.int64))
+            boxes.append(target_box)
+            labels.append(target_label)
+
+        # step 4 return stack images tensor & target tensor dict
+        target={
+            'boxes':boxes,
+            'labels':labels
+        }
+        return images,target
+
+
+
+
+
+
+
+
+
+
 
 
     def DatasetInfo(self):

@@ -333,3 +333,11 @@ RuntimeError: invalid argument 0: Sizes of tensors must match except in dimensio
 
 
 collate_fn最后修正
+
+
+1115 最终设计
+
+
+所有的Tranform  在进入collat_fn之前都是 PIL格式
+
+最后在Collate_fn按照所需格式转换为tensor
