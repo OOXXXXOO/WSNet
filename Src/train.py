@@ -1,4 +1,4 @@
-from instence import *
+from instence import Instence
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import torch
