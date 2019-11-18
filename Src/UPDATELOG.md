@@ -341,3 +341,55 @@ collate_fn最后修正
 所有的Tranform  在进入collat_fn之前都是 PIL格式
 
 最后在Collate_fn按照所需格式转换为tensor
+
+1118
+
+解决了SGD Self的问题
+Optimizer需要在类内实例化
+
+1，开始了第一次训练
+---------Epoch: 0
+-----Step 0 --LOSS-- tensor(32.7564, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 1 --LOSS-- tensor(21.2340, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 2 --LOSS-- tensor(4.0840, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 3 --LOSS-- tensor(2.3075, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 4 --LOSS-- tensor(0.9804, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 5 --LOSS-- tensor(23.8030, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 6 --LOSS-- tensor(nan, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 7 --LOSS-- tensor(nan, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 8 --LOSS-- tensor(1.0128, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 9 --LOSS-- tensor(20.5972, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 10 --LOSS-- tensor(nan, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 11 --LOSS-- tensor(nan, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 12 --LOSS-- tensor(nan, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 13 --LOSS-- tensor(nan, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 14 --LOSS-- tensor(nan, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 15 --LOSS-- tensor(20.8425, device='cuda:0', grad_fn=<AddBackward0>)
+-----Step 16 --LOSS-- tensor(22.1752, device='cuda:0', grad_fn=<AddBackward0>)
+
+
+待解决问题    
+
+* xmin, ymin, xmax, ymax = boxes.unbind(1)
+IndexError: Dimension out of range (expected to be in range of [-1, 0], but got 1)时不时出现的
+
+* eval mode
+* nan
+* tensor board writer
+  [
+      Net
+      Loss
+      Precision
+      Image-label
+      Image-PredictionBox
+  ]
+
+default mode的不同任务适配
+
+* Segmantation Template Json
+* Instance Template Json
+* KeyPoiny Template Json
+
+Local Logger
+seaborn 绘图覆盖
+

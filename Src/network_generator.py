@@ -18,7 +18,19 @@ class NetworkGenerator(cfg):
             "KeyPoint":self.DefaultKeyPoint,
         }
         if self.DefaultNetwork:
-            self.modeldict["Detection"]()
+            ###########################################
+            print('\n\n-----Use The Default Network')
+            self.modeldict[self.MissionType]()
+            print(self.model,'\n\n-----Network info ')
+            ############################################
+            self.Optimzer=self.Optimzer(
+            self.model.parameters(),
+            lr=self.learning_rate,
+            momentum=self.momentum,
+            weight_decay=self.weight_decay
+            )
+
+
 
 
 
@@ -66,7 +78,7 @@ class NetworkGenerator(cfg):
         """
         self.model=models.mnasnet1_3(pretrained=pretrained, progress=progress)
 
-    def DefaultDetection(self,pretrained=False, progress=True, num_classes=91, pretrained_backbone=False):
+    def DefaultDetection(self,pretrained=True, progress=True, num_classes=91, pretrained_backbone=True):
         """
         Constructs a Faster R-CNN model with a ResNet-50-FPN backbone.
 

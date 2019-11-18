@@ -1,11 +1,3 @@
 {
-    "python.pythonPath": "C:\\Users\\tanwe\\AppData\\Local\\conda\\conda\\envs\\finacial\\python.exe",
-    "python.autoComplete.extraPaths": [
-        "${env:SPARK_HOME}\\python",
-        "${env:SPARK_HOME}\\python\\pyspark"
-    ],
-    "python.linting.flake8Enabled": false,
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "editor.fontFamily": "Courier New"
+    "python.pythonPath": "/home/winshare/anaconda3/envs/stable/bin/python"
 }

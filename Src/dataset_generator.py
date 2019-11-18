@@ -212,7 +212,9 @@ class DatasetGenerator(cfg,COCO):
             path = coco.loadImgs(img_id)[0]['file_name']
             img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
             if self.image_transforms is not None:
-                print(img.size)
+                img=self.image_transforms(img)
+
+                # print(img.size)
 
 
         if self.MissionType=='Caption':
@@ -293,30 +295,23 @@ class DatasetGenerator(cfg,COCO):
 
 
 
+    def general_collate_fn(self,batch):
+        return tuple(zip(*batch))
 
 
 
 
 
-
-    def detection_collate_fn(self,batch):
+    def detection_collate_fn(self,batch,stack=False):
         """
-        Batch:
-        Batch[0][
-            image,
-            target
-            [
-                {
-                    'segmentation':[[point1,point2...],[point1,point2..],...]
-                    'category_id': int,
-                    'id':int
-                    'bbox:'
-                    }
-                    ...
-            ]
-        ]
-
-        return stack images tensor & target tensor dict
+        Transform the dataset dict format to
+        images  : list of tensor [N,C,H,W]
+        targets : list of dict for three mission
+        {
+            detection:      "boxes"
+            segmentation    "masks"
+            keypoints       "keypoints"
+        }
 
         """
         # step 1 find max image width & height in batch 
@@ -325,7 +320,8 @@ class DatasetGenerator(cfg,COCO):
         W=max(W_)
         H=max(H_)
         images=[T.functional.to_tensor(i[0].resize((W,H)))/255 for i in batch]
-        images=torch.stack(images,dim=0)
+        if stack:
+            images=torch.stack(images,dim=0)
         
 
         # step 2 compute the x y transform value
@@ -335,29 +331,28 @@ class DatasetGenerator(cfg,COCO):
 
 
         # step 3 transform the target box
-        targets=[i[1] for i in batch]
-        boxes=[]
-        labels=[]
-        for index,targeti in enumerate(targets):
-            target_box=[]
-            target_label=[]
+        target_=[i[1] for i in batch]
+
+        targets=[]
+        for index,targeti in enumerate(target_):
+            boxes=[]
+            labels=[]
             for t in targeti:
-                box=torch.tensor(t['bbox'],dtype=torch.float32)
-                box[0]*=W_[index]
-                box[1]*=H_[index]
-                box[2]*=W_[index]
-                box[3]*=H_[index]
-                target_box.append(box)
-                target_label.append(torch.tensor(t['category_id'],dtype=torch.int64))
-            boxes.append(target_box)
-            labels.append(target_label)
+                box=t['bbox']
+                if stack:
+                    box[0]*=W_[index]
+                    box[1]*=H_[index]
+                    box[2]*=W_[index]
+                    box[3]*=H_[index]
+                boxes.append(box)
+                labels.append(t['category_id'])
+            targets.append({
+                'boxes':torch.tensor(boxes,dtype=torch.float32),
+                'labels':torch.tensor(labels,dtype=torch.int64)
+            })
 
         # step 4 return stack images tensor & target tensor dict
-        target={
-            'boxes':boxes,
-            'labels':labels
-        }
-        return images,target
+        return images,targets
 
 
 

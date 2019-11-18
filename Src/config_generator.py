@@ -69,6 +69,7 @@ class cfg():
         self.Optimzer=OptimDict[self.Net['Optimizer']]
         self.learning_rate=self.Net['learning_rate']
         self.momentum=self.Net['momentum']
+        self.weight_decay=self.Net['weight_decay']
 
         #####Loss Function
         self.Loss_Function_dict={

@@ -4,12 +4,13 @@
         "Net": {
             "DefaultNetwork":true,
             "NetType": "FasterRCNN",
-            "BatchSize": 4,
+            "BatchSize": 1,
             "BackBone": "None",
             "Optimizer":"SGD",
             "Loss_Function":"CrossEntropyLoss",
             "learning_rate":0.001,
-            "momentum":0.9
+            "momentum":0.9,
+            "weight_decay":1e-4
         },
         "Dataset": {
             "Transform":[
