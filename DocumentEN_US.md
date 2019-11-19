@@ -8,25 +8,6 @@
 
 
 
-
-#### Project Structure
-```python
-                 
-"""                    
-                 |-->Dataset-->|——training-array generator<----->|  
-                 |             |——training-to DataLoader         |                  |——template-config-generator——>——>|
-                 |                                               |<-->|——Config-----|——readconfig<————————————————————|  
- Instance[MODE]——|                                               |                  |     ^       
-                 |                                               |                  |——configure instance—————————————|       
-                 |                                               |          
-                 |——Network----|——readconfig<———————————————————>|  
-                               |——Network Generator
-                               |——Network Process——————>|
-                                                        |---->Train/Val/Test
-"""
-    MODE=[Segmentation,Detection,Instence,Caption]
-```
-
 #### **A typically process：**
 
 if we have a set of image & label, we need put the image files & label files into image-folder & label-folder . Now, we have the root path of two folders that include dataset like`./root/image` & `./root/label`. In addition, we need to have a text file include class names like `./root/classes.txt` that like:
@@ -59,16 +40,19 @@ That include all the configurable option about training instance **(not complate
         "Net": {
             "DefaultNetwork":true,
             "NetType": "FasterRCNN",
-            "BatchSize": 4,
+            "BatchSize": 1,
             "BackBone": "None",
             "Optimizer":"SGD",
-            "Loss_Function":"CrossEntropyLoss"
+            "Loss_Function":"CrossEntropyLoss",
+            "learning_rate":0.001,
+            "momentum":0.9,
+            "weight_decay":1e-4
         },
         "Dataset": {
             "Transform":[
-                    "RandomHorizontalFlip",
-                    "ToTensor",
-                    "Normalize"
+                    {"RandomHorizontalFlip":0.5},
+                    {"ToTensor":"None"},
+                    {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]}
                 ]
             ,
             "Type": "COCO2014",
@@ -241,89 +225,6 @@ you can run as :
 ```python
 instence=Instence(instence_id=0)
 instence.DefaultDetection()
-```
-the network will be constructd like:
-```bash
----------------- FasterRCNN(
-  (transform): GeneralizedRCNNTransform()
-  (backbone): BackboneWithFPN(
-    (body): IntermediateLayerGetter(
-      (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
-      (bn1): FrozenBatchNorm2d()
-      (relu): ReLU(inplace=True)
-      (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
-      (layer1): Sequential(
-        (0): Bottleneck(
-          (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-          (bn1): FrozenBatchNorm2d()
-          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (bn2): FrozenBatchNorm2d()
-          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-          (bn3): FrozenBatchNorm2d()
-          (relu): ReLU(inplace=True)
-          (downsample): Sequential(
-            (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-            (1): FrozenBatchNorm2d()
-          )
-        )
-        (1): Bottleneck(
-          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-          (bn1): FrozenBatchNorm2d()
-          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (bn2): FrozenBatchNorm2d()
-          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-          (bn3): FrozenBatchNorm2d()
-          (relu): ReLU(inplace=True)
-        )
-        (2): Bottleneck(
-          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-          (bn1): FrozenBatchNorm2d()
-          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-          (bn2): FrozenBatchNorm2d()
-          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-          (bn3): FrozenBatchNorm2d()
-          (relu): ReLU(inplace=True)
-        )
-      )
-    
-    ........
-
-    (fpn): FeaturePyramidNetwork(
-      (inner_blocks): ModuleList(
-        (0): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
-        (1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1))
-        (2): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1))
-        (3): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
-      )
-      (layer_blocks): ModuleList(
-        (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-        (2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-        (3): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      )
-      (extra_blocks): LastLevelMaxPool()
-    )
-  )
-  (rpn): RegionProposalNetwork(
-    (anchor_generator): AnchorGenerator()
-    (head): RPNHead(
-      (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      (cls_logits): Conv2d(256, 3, kernel_size=(1, 1), stride=(1, 1))
-      (bbox_pred): Conv2d(256, 12, kernel_size=(1, 1), stride=(1, 1))
-    )
-  )
-  (roi_heads): RoIHeads(
-    (box_roi_pool): MultiScaleRoIAlign()
-    (box_head): TwoMLPHead(
-      (fc6): Linear(in_features=12544, out_features=1024, bias=True)
-      (fc7): Linear(in_features=1024, out_features=1024, bias=True)
-    )
-    (box_predictor): FastRCNNPredictor(
-      (cls_score): Linear(in_features=1024, out_features=91, bias=True)
-      (bbox_pred): Linear(in_features=1024, out_features=364, bias=True)
-    )
-  )
-) ---------------
 ```
 
 #### General Transform 

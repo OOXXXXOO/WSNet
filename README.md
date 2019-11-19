@@ -16,10 +16,11 @@ The main purpose of this project :
 * Support for some state-of-the-art models.  
 * Use Json config file configure the training instance to avoid change the project code.
 
+****
 
+**Project Structure：**
 
-
-
+![](./DocResources/structure.png)
 
 
 
@@ -121,6 +122,8 @@ You could modified the configure file to change option like gpu-id ，NetWork ..
 
 
 # Documents:
+
+[Easy Guide to start](./Guide&#32;to&#32;start.md)
 
 [English Version](./DocumentEN_US.md)
 

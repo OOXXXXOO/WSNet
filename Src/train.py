@@ -32,13 +32,7 @@ def trainval():
     if train.usegpu:
         train.model.to(train.device)
 
-    ##### NetworkTest
-    # train.model.eval()
-    # in_=torch.randn((1,3,800,800),dtype=torch.float32)
-    # in_=in_.to(train.device)
-    # print("in:",in_,in_.size())
-    # out_=train.model(in_)
-    # print("out",out_)
+
 
 
     ##### Loader Init
@@ -62,10 +56,13 @@ def trainval():
             if train.usegpu:
                 images = list(image.to(train.device) for image in images)
                 targets = [{k: v.to(train.device) for k, v in t.items()} for t in targets]
+                if len(targets[0]['boxes'])==0:
+                    continue
                 train.Optimzer.zero_grad()
                 loss_dict=train.model(images,targets)
                 losses = sum(loss for loss in loss_dict.values())
-                print('-----Step',index,'--LOSS--',losses)
+                loss=losses.cpu().detach().numpy()
+                print('-----Step',index,'--LOSS--',loss)
                 losses.backward()
                 train.Optimzer.step()
             if not train.usegpu:
