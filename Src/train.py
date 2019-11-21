@@ -21,7 +21,6 @@ class AverageMeter(object):
 
 def trainval():
     print('-----Train Process')
-    ##### Dataset init
     train=Instence()    
     train.InstenceInfo()
     train.DefaultDataset(Mode='train')

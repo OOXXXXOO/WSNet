@@ -33,6 +33,23 @@ import torchvision
 # output=model(x)
 # print(output)
 
-a=[[1,2,3,4,5]]
-a=torch.tensor(a)
-print(a)
+# a=[[1,2,3,4,5]]
+# a=torch.tensor(a)
+# print(a)
+class A():
+    def __init__(self):
+        print('A')
+
+
+    def hhh(self):
+        D=A()
+        D.hhh()
+
+
+class B():
+    def __init__(self,A):
+        print('B')
+
+E=A()
+E.hhh()
+

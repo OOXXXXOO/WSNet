@@ -21,7 +21,7 @@ class NetworkGenerator(cfg):
             ###########################################
             print('\n\n-----Use The Default Network')
             self.modeldict[self.MissionType]()
-            print(self.model,'\n\n-----Network info ')
+            print('\n\n-----Network General Info: ')
             ############################################
             self.Optimzer=self.Optimzer(
             self.model.parameters(),
@@ -29,6 +29,7 @@ class NetworkGenerator(cfg):
             momentum=self.momentum,
             weight_decay=self.weight_decay
             )
+            print('Network Optimzer:',self.Optimzer)
 
 
 

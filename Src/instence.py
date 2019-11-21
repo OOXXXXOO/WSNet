@@ -1,28 +1,14 @@
-from config_generator import*
-from network_generator import*
-from dataset_generator import*
+from config_generator import cfg
+from network_generator import NetworkGenerator
+from dataset_generator import DatasetGenerator
 from torch.utils.data import Dataset
 import sys
+from torch.utils.data import DataLoader
+import os
 root=os.path.abspath(__file__)
 print('instence work on ',root)
 
 class Instence(NetworkGenerator,DatasetGenerator,Dataset):
-    """
-                        
-                                    
-                        |-->Dataset-->|——training-array generator<----->|  
-                        |             |——training-to DataLoader         |                  |——template-config-generator——>——>|
-                        |                                               |<-->|——Config-----|——readconfig<————————————————————|  
-        Instance[MODE]——|                                               |                  |     ^       
-                        |                                               |                  |——configure instance—————————————|       
-                        |                                               |          
-                        |——Network----|——readconfig<———————————————————>|  
-                                    |——Network Generator
-                                    |——Network Process——————>|
-                                                                |---->Train/Val/Test
-
-            MODE=[Segmentation,Detection,Instence,Caption]
-    """
     def __init__(self,
     instence_id=0,
     config_dir='./cfg',
@@ -39,6 +25,30 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
         super(Instence,self).__init__()
         print('\n\n-----Instence Class Init-----\n\n')
 
+        #####################################################
+        #Dataloader
+        
+        self.TrainSet=DatasetGenerator()
+        self.TrainSet.DefaultDataset(Mode='train')
+        self.Trainloader=DataLoader(
+            self.TrainSet,
+            self.BatchSize,
+            shuffle=True,
+            num_workers=self.worker_num,
+            collate_fn=self.TrainSet.detection_collate_fn
+        )
+        self.ValSet=DatasetGenerator()
+        self.ValSet.DefaultDataset(Mode='val')
+        self.Valloader=DataLoader(
+            self.ValSet,
+            self.BatchSize,
+            shuffle=True,
+            num_workers=self.worker_num,
+            collate_fn=self.ValSet.detection_collate_fn
+        )
+        #######################################################
+
+
     def targetmap(self):
         """
         
@@ -50,18 +60,32 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
         self.Enviroment_Info()
         self.DatasetInfo()
         self.NetWorkInfo()
+    def train(self):
+        print('\n\n----- Start Training -----\n\n')
+        #####
+        #Epochs
+        for epoch in range(self.epochs):
+            print('---Epoch : ',epoch)
+
+        
+
+    def val(self,valloader):
+        print('\n\n----- Val Processing -----\n\n')
+
+    
+    def inference(self):
+        print('\n\n----- Inference Processing -----\n\n')
+
+    def Evaluation(self):
+        print('\n\n----- Evaluation Processing -----\n\n')
+
+
 
 
 def main():
     
     instence=Instence()
-    instence.DefaultDetection()
-    instence.DefaultDataset()
-    print(instence.Optimzer)
-    print(instence.Loss_Function)
-    print(instence.model)
-    print(instence[20])
-    # Net=instence.model
+    instence.train()
 
 
 

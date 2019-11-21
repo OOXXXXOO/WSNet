@@ -13,6 +13,7 @@ import skimage.io as io
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
+
 ##################################################
 #For Transfrom
 
@@ -48,9 +49,7 @@ class DatasetGenerator(cfg,COCO):
 
         print('\n\n-----Dataset Generator Class init-----\n\n:')
         
-        # self.print_dict(support_Mission)
-        
-        # print('\n')
+
 
         #####Mission Type Checking
         assert self.MissionType in support_Mission.keys(),"Invalid MissionType"+self.MissionType

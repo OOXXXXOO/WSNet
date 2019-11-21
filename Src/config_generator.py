@@ -121,6 +121,24 @@ class cfg():
         
         ###########
         #Transform
+        """
+        Because the defalut detection network has transform flow 
+        so the image list should include 3d tensors
+        
+        [
+        [C, H, W],
+        [C, H, W].....
+        ]
+
+        Target should be 
+        list of dict :
+        {
+            boxes:      list of box tensor[n,4]                 (float32)
+            masks:      list of segmentation mask points [n,n]  (float32)
+            keypoints： list of key pointss[n,n]                (float32)
+            labels:     list of index of label[n]               (int64)
+        }
+        """
         self.Transform_dict={
                 # "CenterCrop":T.CenterCrop(),
                 # "ColorJitter":T.ColorJitter(),
@@ -169,8 +187,14 @@ class cfg():
                 "ToTensor":T.ToTensor,
         }
         """
-        Transform function dict use name string to map Transfrom function &
-        use T.Compose() to control the transform process
+        For Default Detection:
+
+        The transformations it perform are:
+            - input normalization (mean subtraction and std division)
+            - input / target resizing to match min_size / max_size
+
+        It returns a ImageList for the inputs, and a List[Dict[Tensor]] for the targets
+        
         """
         self.Transform=self.DataSetConfig['Transform']
         functionlist=[list(i.keys())[0] for i in self.Transform]
