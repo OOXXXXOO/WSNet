@@ -23,13 +23,13 @@ class NetworkGenerator(cfg):
             self.modeldict[self.MissionType]()
             print('\n\n-----Network General Info: ')
             ############################################
-            self.Optimzer=self.Optimzer(
+            self.optimizer=self.optimizer(
             self.model.parameters(),
             lr=self.learning_rate,
             momentum=self.momentum,
             weight_decay=self.weight_decay
             )
-            print('Network Optimzer:',self.Optimzer)
+            print('Network optimizer:',self.optimizer)
 
 
 

@@ -66,7 +66,7 @@ class cfg():
            "SparseAdam":optim.SparseAdam,
            "Adamax":optim.Adamax
         }
-        self.Optimzer=OptimDict[self.Net['Optimizer']]
+        self.optimizer=OptimDict[self.Net['Optimizer']]
         self.learning_rate=self.Net['learning_rate']
         self.momentum=self.Net['momentum']
         self.weight_decay=self.Net['weight_decay']
@@ -232,6 +232,8 @@ class cfg():
             os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
             self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
             print('train device on :',self.device)
+        if self.devices=='CPU':
+            self.device=torch.device("cpu")
 
 
         self.download_pretrain_model=self.Config['down_pretrain_model']
