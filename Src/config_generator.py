@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torch
 import torchvision.transforms as T
 class cfg():
-    def __init__(self,configfile='Src/config/config_template.json'):
+    def __init__(self,configfile='Src/config/Segmentation_Config_Template.json'):
         print('\n\n-----Configure Generator Class Init -----\n\n')
         ##File Level
         self.__defaultconfig=configfile

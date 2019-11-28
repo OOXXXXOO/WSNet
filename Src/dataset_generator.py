@@ -319,38 +319,22 @@ class DatasetGenerator(cfg,COCO):
         W=max(W_)
         H=max(H_)
         images=[T.functional.to_tensor(i[0].resize((W,H)))/255 for i in batch]
-        if stack:
-            images=torch.stack(images,dim=0)
-        
 
-        # step 2 compute the x y transform value
-        W_=[W/i for i in W_]
-        H_=[H/i for i in H_]
-
-
-
-        # step 3 transform the target box
         target_=[i[1] for i in batch]
 
         targets=[]
         for index,targeti in enumerate(target_):
             boxes=[]
             labels=[]
-            for t in targeti:
-                box=t['bbox']
-                if stack:
-                    box[0]*=W_[index]
-                    box[1]*=H_[index]
-                    box[2]*=W_[index]
-                    box[3]*=H_[index]
-                boxes.append(box)
-                labels.append(t['category_id'])
+
+            boxes=[t['bbox'] for t in targeti]
+            labels=[c['category_id'] for c in targeti]
             targets.append({
                 'boxes':torch.tensor(boxes,dtype=torch.float32),
-                'labels':torch.tensor(labels,dtype=torch.int64)
+                'labels':torch.tensor(labels,dtype=torch.int64),
+                'id':torch.tensor(index,dtype=torch.int64)
             })
-
-        # step 4 return stack images tensor & target tensor dict
+            
         return images,targets
 
 

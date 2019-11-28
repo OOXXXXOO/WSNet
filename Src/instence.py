@@ -50,8 +50,10 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
         #######################################################
 
     def ToDecive(self,images,targets):
-        images = list(img.to(self.device) for img in images)
-        targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
+        images = list(img.to(self.device,copy=True) for img in images)
+        for i in targets:
+            print('device',i)
+        targets = [{k: v.to(self.device,copy=True) for k, v in t.items()} for t in targets]
         return images,targets
 
 
@@ -66,7 +68,7 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
         self.Enviroment_Info()
         self.DatasetInfo()
         self.NetWorkInfo()
-    def train(self):
+    def default_train(self):
         print('\n\n----- Start Training -----\n\n')
 
         self.model.cuda()
@@ -78,8 +80,9 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
         IndexError: Dimension out of range (expected to be in range of [-1, 0], but got 1
         """
         for epoch in range(self.epochs):
-            print('---Epoch : ',epoch)
+            print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n---Epoch : ',epoch)
             for index,(images,targets) in enumerate(self.Trainloader):
+
                 images,targets=self.ToDecive(images,targets)
                 self.optimizer.zero_grad()
                 loss_dict=self.model(images,targets)
@@ -142,7 +145,7 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
 def main():
     
     instence=Instence()
-    instence.train()
+    instence.default_train()
 
 
 

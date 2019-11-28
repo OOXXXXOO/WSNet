@@ -1,0 +1,44 @@
+{
+    "instance_id": 0,
+    "content": {
+        "Net": {
+            "DefaultNetwork":true,
+            "NetType": "FasterRCNN",
+            "BatchSize": 4,
+            "BackBone": "None",
+            "Optimizer":"SGD",
+            "Loss_Function":"CrossEntropyLoss",
+            "learning_rate":0.001,
+            "momentum":0.1,
+            "weight_decay":5e-4
+        },
+        "Dataset": {
+            "Transform":[
+                    {"RandomHorizontalFlip":0.5},
+                    {"ToTensor":"None"},
+                    {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]}
+                ]
+            ,
+            "Type": "COCO2014",
+            "root": "/workspace/DatasetRoot/",
+            "train_index_file":"annotations/instances_train2014.json",
+            "val_index_file":"annotations/instances_val2014.json"
+        
+        },
+        "Config": {
+
+            
+            "multiscale_training": true,
+            "logdir": "./log",
+            "devices":"GPU",
+            "gpu_id": 0,
+            "epochs": 200,
+            "down_pretrain_model": true,
+            "checkpoint_path": "./model",
+            "visualization": true,
+            "worker_num":1
+
+        }
+    },
+    "MissionType": "Detection"
+}
