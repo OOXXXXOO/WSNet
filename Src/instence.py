@@ -2,9 +2,10 @@ from config_generator import cfg
 from network_generator import NetworkGenerator
 from dataset_generator import DatasetGenerator
 from torch.utils.data import Dataset
-import sys
 from torch.utils.data import DataLoader
+import torch
 import os
+import sys
 root=os.path.abspath(__file__)
 print('instence work on ',root)
 
@@ -67,19 +68,26 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
         self.NetWorkInfo()
     def train(self):
         print('\n\n----- Start Training -----\n\n')
-        #####
-        #Epochs
+
+        self.model.cuda()
+        
+
+        #############################################################
+        #11-28
+        """
+        IndexError: Dimension out of range (expected to be in range of [-1, 0], but got 1
+        """
         for epoch in range(self.epochs):
             print('---Epoch : ',epoch)
             for index,(images,targets) in enumerate(self.Trainloader):
                 images,targets=self.ToDecive(images,targets)
                 self.optimizer.zero_grad()
-                loss_dict=train.model(images,targets)
+                loss_dict=self.model(images,targets)
                 losses = sum(loss for loss in loss_dict.values())
                 loss=losses.cpu().detach().numpy()
                 print('-----Step',index,'--LOSS--',loss)
                 losses.backward()
-                train.Optimzer.step()
+                self.optimizer.step()
         
 
     def val(self,valloader):
