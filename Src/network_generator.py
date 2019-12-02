@@ -1,15 +1,69 @@
+# -*- coding: utf-8 -*-
+# @Author: Winshare
+# @Date:   2019-12-02 17:08:48
+# @Last Modified by:   Winshare
+# @Last Modified time: 2019-12-02 18:22:53
+
+# Copyright 2019 Winshare
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+'''
+@Author: Winshare
+@Date: 2019-12-02 16:44:04
+@LastEditTime: 2019-12-02 16:58:54
+@LastEditors: Please set LastEditors
+@Description: NetworkGenerator
+@FilePath: /WSNet/Src/network_generator.py
+'''
+
 import torch
 import torch.utils.model_zoo
 import torchvision.models as models
 from config_generator import *
 
+
+
+
+
 class NetworkGenerator(cfg):
 
     def __init__(self,debug=False):
-        self.debug=debug
+        """
+        The Network Generator have two way.
+        1.Constructs a type of model with torchvision default model 
+            * BackBone-               MNASNetV1.3
+            * Detection-              Faster R-CNN model with a ResNet-50-FPN
+            * Segmentation-           DeepLabV3 model with a ResNet-50
+            * Instence Segmentation-  Mask R-CNN model with a ResNet-50-FPN
+            * KeyPoint-               KeyPointRCNN model with a ResNet-50-FPN
 
+        With this great model ,we can start different type of mission quickly
+        
+        2.Constructs a third-party / a state of arts model
+        Now support On:
+            * BackBone-                EfficientNets
+            * Detection                YoloV3
+            * Segmentation             --
+            * Instence Segmentation    -- 
+        """
+        self.debug=debug
         print('\n\n-----Neural Network Class Init-----\n\n')
-        self.model=None
+                
+        # ---------------------------------------------------------------------------- #
+        #                                     Init                                     #
+        # ---------------------------------------------------------------------------- #
         self.modeldict={
             "Detection":self.DefaultDetection,
             "Segmentation":self.DefaultSegmentation,
@@ -17,12 +71,20 @@ class NetworkGenerator(cfg):
             "Instence Segmentation":self.DefaultInstenceSegmentation,
             "KeyPoint":self.DefaultKeyPoint,
         }
+        
+        self.model=None
+
+    
+        # ---------------------------------------------------------------------------- #
+        #                       Optimizer init & Instantialation in DefaultNetwork     #
+        # ---------------------------------------------------------------------------- #
+
         if self.DefaultNetwork:
-            ###########################################
+            # ─────────────────────────────────────────────────────────────────
             print('\n\n-----Use The Default Network')
-            self.modeldict[self.MissionType]()
+            self.modeldict[self.MissionType](pretrained=self.download_pretrain_model)
+            # ─────────────────────────────────────────────────────────────────
             print('\n\n-----Network General Info: ')
-            ############################################
             self.optimizer=self.optimizer(
             self.model.parameters(),
             lr=self.learning_rate,
@@ -32,27 +94,11 @@ class NetworkGenerator(cfg):
             print('Network optimizer:',self.optimizer)
 
 
+        # ---------------------------------------------------------------------------- #
+        #                             DefaultNetwork Option                            #
+        # ---------------------------------------------------------------------------- #
 
 
-
-    """
-    The Network Generator have two way.
-    1.Constructs a type of model with torchvision default model 
-        * BackBone-               MNASNetV1.3
-        * Detection-              Faster R-CNN model with a ResNet-50-FPN
-        * Segmentation-           DeepLabV3 model with a ResNet-50
-        * Instence Segmentation-  Mask R-CNN model with a ResNet-50-FPN
-        * KeyPoint-               KeyPointRCNN model with a ResNet-50-FPN
-
-    With this great model ,we can start different type of mission quickly
-    
-    2.Constructs a third-party / a state of arts model
-    Now support On:
-        * BackBone-                EfficientNets
-        * Detection                YoloV3
-        * Segmentation             --
-        * Instence Segmentation    -- 
-    """
     def DefaultKeyPoint(self,pretrained=False, progress=True):
         """
         During training, the model expects both the input tensors, as well as a targets (list of dictionary), containing:

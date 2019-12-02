@@ -8,11 +8,12 @@
             "BackBone": "None",
             "Optimizer":"SGD",
             "Loss_Function":"CrossEntropyLoss",
-            "learning_rate":0.0001,
+            "learning_rate":0.02,
             "momentum":0.9,
             "weight_decay":1e-4
         },
         "Dataset": {
+            "DefaultDataset":true,
             "Transform":[
                     {"RandomHorizontalFlip":0.5},
                     {"ToTensor":"None"},
@@ -26,8 +27,9 @@
         
         },
         "Config": {
-
-            
+            "group_factor":0,
+            "DistributedDataParallel":false,
+            "Resume":false,
             "multiscale_training": true,
             "logdir": "./root/log",
             "devices":"GPU",

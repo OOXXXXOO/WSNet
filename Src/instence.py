@@ -1,99 +1,151 @@
+# -*- coding: utf-8 -*-
+# @Author: Winshare
+# @Date:   2019-12-02 17:08:40
+# @Last Modified by:   Winshare
+# @Last Modified time: 2019-12-02 18:47:14
+
+# Copyright 2019 Winshare
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+'''
+@Author: Winshare
+@Date: 2019-12-02 16:16:48
+@LastEditTime: 2019-12-02 16:58:09
+@LastEditors: Please set LastEditors
+@Description: Instance
+@FilePath: /WSNet/Src/instence.py
+'''
 from config_generator import cfg
 from network_generator import NetworkGenerator
 from dataset_generator import DatasetGenerator
-from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 import torch
 import os
 import sys
+from general_train import train_one_epoch,evaluate
+from Utils.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
+
+
+
+
+
 root=os.path.abspath(__file__)
 print('instence work on ',root)
 
-class Instence(NetworkGenerator,DatasetGenerator,Dataset):
+class Instence(NetworkGenerator,DatasetGenerator):
     def __init__(self,
     instence_id=0,
     config_dir='./cfg',
     ):  
+
+        # ---------------------------------------------------------------------------- #
+        #                                workspace info                                #
+        # ---------------------------------------------------------------------------- #
+
         self.root=root
         print('root in :\n',os.path.join(self.root,'..'))
         sys.path.append(os.path.join(sys.path[0],'../'))
         print('workspace in:\n')
         for i in sys.path:
             print(i)
-        
+            
         DatasetGenerator.__init__(self)
-        # super(NetworkGenerator,self).__init__()
         super(Instence,self).__init__()
         print('\n\n-----Instence Class Init-----\n\n')
 
-        #####################################################
-        #Dataloader
+        # ---------------------------------------------------------------------------- #
+        #                                  dataloader                                  #
+        # ---------------------------------------------------------------------------- #
+
+        # ------------------------------ dataset object ------------------------------ #
+
+        trainset=None
+        valset=None
         
-        self.TrainSet=DatasetGenerator()
-        self.TrainSet.DefaultDataset(Mode='train')
-        self.Trainloader=DataLoader(
-            self.TrainSet,
+        if self.DefaultDataset:
+            trainset=DatasetGenerator().DefaultDatasetFunction('train')
+            valset=DatasetGenerator().DefaultDatasetFunction('val')
+ 
+        # ----------------------------- DataLoader object ---------------------------- #
+        
+        if self.DistributedDataParallel:
+            train_sampler = torch.utils.data.distributed.DistributedSampler(dataset)
+            test_sampler = torch.utils.data.distributed.DistributedSampler(dataset_test)
+
+        if not self.DistributedDataParallel:
+            train_sampler = torch.utils.data.RandomSampler(trainset)
+            test_sampler = torch.utils.data.SequentialSampler(valset)
+
+        # ---------------------------------- Sampler --------------------------------- #
+        
+        if self.aspect_ratio_factor >= 0:
+            group_ids = create_aspect_ratio_groups(trainset, k=self.aspect_ratio_factor)
+            train_batch_sampler = GroupedBatchSampler(train_sampler,
+            group_ids,
+            self.BatchSize
+            )
+        else:
+            train_batch_sampler = torch.utils.data.BatchSampler(
+            train_sampler,
             self.BatchSize,
-            shuffle=True,
-            num_workers=self.worker_num,
-            collate_fn=self.TrainSet.detection_collate_fn
-        )
-        self.ValSet=DatasetGenerator()
-        self.ValSet.DefaultDataset(Mode='val')
-        self.Valloader=DataLoader(
-            self.ValSet,
-            self.BatchSize,
-            shuffle=True,
-            num_workers=self.worker_num,
-            collate_fn=self.ValSet.detection_collate_fn
-        )
-        #######################################################
-
-    def ToDecive(self,images,targets):
-        images = list(img.to(self.device,copy=True) for img in images)
-        for i in targets:
-            print('device',i)
-        targets = [{k: v.to(self.device,copy=True) for k, v in t.items()} for t in targets]
-        return images,targets
-
-
-    def targetmap(self):
-        """
+            drop_last=True
+            )
         
-        """
-        pass
         
+        
+        self.trainloader = torch.utils.data.DataLoader(
+            trainset, 
+            batch_sampler=train_batch_sampler,
+            num_workers=self.worker_num,
+            collate_fn=self.collate_fn)
+
+        self.valloader = torch.utils.data.DataLoader(
+            valset, 
+            batch_size=self.BatchSize,
+            sampler=test_sampler,
+            num_workers=self.worker_num,
+            collate_fn=self.collate_fn)
+
+
+
+        # ---------------------------------------------------------------------------- #
+        #                               Instance Function                              #
+        # ---------------------------------------------------------------------------- #
+
     def InstenceInfo(self):
         print('\n\n-----Start with Instence ID',self.InstanceID,'-----\n\n')
         self.Enviroment_Info()
         self.DatasetInfo()
         self.NetWorkInfo()
+
+
     def default_train(self):
         print('\n\n----- Start Training -----\n\n')
+        trainloader=DataLoader(
+            
+            
+        )
 
-        self.model.cuda()
         
 
-        #############################################################
-        #11-28
-        """
-        IndexError: Dimension out of range (expected to be in range of [-1, 0], but got 1
-        """
-        for epoch in range(self.epochs):
-            print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n---Epoch : ',epoch)
-            for index,(images,targets) in enumerate(self.Trainloader):
 
-                images,targets=self.ToDecive(images,targets)
-                self.optimizer.zero_grad()
-                loss_dict=self.model(images,targets)
-                losses = sum(loss for loss in loss_dict.values())
-                loss=losses.cpu().detach().numpy()
-                print('-----Step',index,'--LOSS--',loss)
-                losses.backward()
-                self.optimizer.step()
-        
 
-    def val(self,valloader):
+
+
+
+    def default_val(self):
         print('\n\n----- Val Processing -----\n\n')
 
     
@@ -104,39 +156,7 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
         print('\n\n----- Evaluation Processing -----\n\n')
     
     
-    @torch.no_grad()
-    def evaluate(self, data_loader):
-        model=self.model
-        device=self.device
-        n_threads = torch.get_num_threads()
-        # FIXME remove this and make paste_masks_in_image run on the GPU
-        torch.set_num_threads(1)
-        cpu_device = torch.device("cpu")
-        model.eval()
-        metric_logger = utils.MetricLogger(delimiter="  ")
-        header = 'Test:'
 
-        coco = get_coco_api_from_dataset(data_loader.dataset)
-        iou_types = _get_iou_types(model)
-        coco_evaluator = CocoEvaluator(coco, iou_types)
-
-        for image, targets in metric_logger.log_every(data_loader, 100, header):
-            images = list(img.to(device) for img in images)
-            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
-
-
-            torch.cuda.synchronize()
-            model_time = time.time()
-            outputs = model(image)
-
-            outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
-            model_time = time.time() - model_time
-
-            res = {target["image_id"].item(): output for target, output in zip(targets, outputs)}
-            evaluator_time = time.time()
-            coco_evaluator.update(res)
-            evaluator_time = time.time() - evaluator_time
-            metric_logger.update(model_time=model_time, evaluator_time=evaluator_time)
 
 
 
@@ -145,7 +165,7 @@ class Instence(NetworkGenerator,DatasetGenerator,Dataset):
 def main():
     
     instence=Instence()
-    instence.default_train()
+    # instence.default_train()
 
 
 

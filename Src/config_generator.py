@@ -1,4 +1,25 @@
-# import pandas as pd
+# -*- coding: utf-8 -*-
+# @Author: Winshare
+# @Date:   2019-12-02 17:07:46
+# @Last Modified by:   Winshare
+# @Last Modified time: 2019-12-02 18:00:56
+
+# Copyright 2019 Winshare
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+
 import os
 import json
 import torch.optim as optim
@@ -7,54 +28,12 @@ import torch.nn.functional as F
 import torch
 import torchvision.transforms as T
 class cfg():
-    def __init__(self,configfile='Src/config/Segmentation_Config_Template.json'):
+    def __init__(self,configfile='Src/Config/Detection_Config_Template.json'):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        ##File Level
-        self.__defaultconfig=configfile
-        self.__json=json.load(open(self.__defaultconfig,'r'))
-        self.usegpu=False
 
+        # ─────────────────────────────────────────────────────────────────
 
-        ##First Content Level
-        self.MissionType=self.__json['MissionType']
-        self.InstanceID=self.__json['instance_id']
-        self.Content=self.__json['content']
-
-        print('***** Already read Config file ,'+self.__defaultconfig,'*****')
-
-        print('***** Instance ID : ',self.InstanceID,'*****')
-
-        print('***** Mission Type : ',self.MissionType,'*****')
-
-        
-        
-        #Second Level
-        self.Net=self.Content['Net']
-        self.DataSetConfig=self.Content['Dataset']
-        self.Config=self.Content['Config']
-
-        print('***** Network Config : ',self.Net)
-        print('***** Dataset Config : ',self.DataSetConfig)
-        print('***** General Config : ',self.Config)
-
-
-
-
-        #Third Level
-        
-        #---NET
-        # self.NetType=self.Net['NetType']
-        self.DefaultNetwork=self.Net["DefaultNetwork"]
-        
-    
-        self.BatchSize=self.Net['BatchSize']
-        if self.Net['BackBone']=='None':
-            self.BackBone=None
-        else:
-            self.BackBone=self.Net['BackBone']
-        #####Optimizer
         OptimDict={
-
            "SGD":optim.SGD,                                                                                                                                              
            "ASGD":optim.ASGD,
            "Adam":optim.Adam,
@@ -66,12 +45,9 @@ class cfg():
            "SparseAdam":optim.SparseAdam,
            "Adamax":optim.Adamax
         }
-        self.optimizer=OptimDict[self.Net['Optimizer']]
-        self.learning_rate=self.Net['learning_rate']
-        self.momentum=self.Net['momentum']
-        self.weight_decay=self.Net['weight_decay']
+        # ──────────────────────────────────────────────────────────────────
 
-        #####Loss Function
+
         self.Loss_Function_dict={
             "AdaptiveLogSoftmaxWithLoss":nn.AdaptiveLogSoftmaxWithLoss
             ,"BCELoss":nn.BCELoss 
@@ -107,38 +83,9 @@ class cfg():
             ,"SoftMarginLoss":nn.SoftMarginLoss 
             ,"TripletMarginLoss":nn.TripletMarginLoss
         }
-        self.Loss_Function=self.Loss_Function_dict[self.Net['Loss_Function']]()
 
+        # ─────────────────────────────────────────────────────────────────
 
-
-        #---Dataset
-        self.DataSetType=self.DataSetConfig['Type']
-        self.DataSet_Root=self.DataSetConfig['root']
-        self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
-        self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
-        
-        
-        
-        ###########
-        #Transform
-        """
-        Because the defalut detection network has transform flow 
-        so the image list should include 3d tensors
-        
-        [
-        [C, H, W],
-        [C, H, W].....
-        ]
-
-        Target should be 
-        list of dict :
-        {
-            boxes:      list of box tensor[n,4]                 (float32)
-            masks:      list of segmentation mask points [n,n]  (float32)
-            keypoints： list of key pointss[n,n]                (float32)
-            labels:     list of index of label[n]               (int64)
-        }
-        """
         self.Transform_dict={
                 # "CenterCrop":T.CenterCrop(),
                 # "ColorJitter":T.ColorJitter(),
@@ -186,7 +133,113 @@ class cfg():
                 "ToPILImage":T.ToPILImage,
                 "ToTensor":T.ToTensor,
         }
+        # ─────────────────────────────────────────────────────────────────
+
+
+
+
+
+        # -------------------------------- File Level -------------------------------- #
+
+        self.__defaultconfig=configfile
+        self.__json=json.load(open(self.__defaultconfig,'r'))
+        self.usegpu=False
+
+
+        self.MissionType=self.__json['MissionType']
+        self.InstanceID=self.__json['instance_id']
+        self.Content=self.__json['content']
+
+        print('***** Already read Config file ,'+self.__defaultconfig,'*****')
+
+        print('***** Instance ID : ',self.InstanceID,'*****')
+
+        print('***** Mission Type : ',self.MissionType,'*****')
+
+        
+        
+        # ------------------------------- Second Level ------------------------------- #
+
+        self.Net=self.Content['Net']
+        self.DataSetConfig=self.Content['Dataset']
+        self.Config=self.Content['Config']
+
+        print('***** Network Config : ',self.Net)
+        print('***** Dataset Config : ',self.DataSetConfig)
+        print('***** General Config : ',self.Config)
+
+
+
+
+        # -------------------------------- Third Level ------------------------------- #
+        
+        # ---------------------------------------------------------------------------- #
+        #                                      NET                                     #
+        # ---------------------------------------------------------------------------- #
+
+        # self.NetType=self.Net['NetType']
+        self.DefaultNetwork=self.Net["DefaultNetwork"]
+        
+    
+        self.BatchSize=self.Net['BatchSize']
+        if self.Net['BackBone']=='None':
+            self.BackBone=None
+        else:
+            self.BackBone=self.Net['BackBone']
+        
+
+        # --------------------------------- Optimizer -------------------------------- #
+
+        self.optimizer=OptimDict[self.Net['Optimizer']]
+        self.learning_rate=self.Net['learning_rate']
+        self.momentum=self.Net['momentum']
+        self.weight_decay=self.Net['weight_decay']
+
+        
+        # ------------------------------- Loss Function ------------------------------ #
+
+        self.Loss_Function=self.Loss_Function_dict[self.Net['Loss_Function']]()
+
+
+
+        # ---------------------------------------------------------------------------- #
+        #                                    Dataset                                   #
+        # ---------------------------------------------------------------------------- #
+
+        
+        self.DataSetType=self.DataSetConfig['Type']
+        self.DataSet_Root=self.DataSetConfig['root']
+        self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
+        self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
+        self.DefaultDataset=self.DataSetConfig['DefaultDataset']
+        
+
+        # -------------------------------- Distributed ------------------------------- #
+
+
+
+
+
+        # --------------------------------- Transform -------------------------------- #
+
         """
+        Because the defalut detection network has transform flow 
+        so the image list should include 3d tensors
+        
+        [
+        [C, H, W],
+        [C, H, W].....
+        ]
+
+        Target should be 
+        list of dict :
+        {
+            boxes:      list of box tensor[n,4]                 (float32)
+            masks:      list of segmentation mask points [n,n]  (float32)
+            keypoints： list of key pointss[n,n]                (float32)
+            labels:     list of index of label[n]               (int64)
+        }
+    
         For Default Detection:
 
         The transformations it perform are:
@@ -196,6 +249,7 @@ class cfg():
         It returns a ImageList for the inputs, and a List[Dict[Tensor]] for the targets
         
         """
+    
         self.Transform=self.DataSetConfig['Transform']
         functionlist=[list(i.keys())[0] for i in self.Transform]
         paralist=[list(i.values())[0] for i in self.Transform]
@@ -210,7 +264,7 @@ class cfg():
             self.transform.append(
                 self.Transform_dict[functionlist[i]](paralist[i])
             )
-        self.image_transforms=None
+    
 
 
 
@@ -220,50 +274,47 @@ class cfg():
 
 
 
-
-        #---Config
+        # ---------------------------------------------------------------------------- #
+        #                                    Config                                    #
+        # ---------------------------------------------------------------------------- #
+                
+        self.DistributedDataParallel=self.Config['DistributedDataParallel']
+        
+        self.resume=self.Config['Resume']
         self.checkpoint=self.Config['checkpoint_path']
+        
         self.MultiScale_Training=self.Config['multiscale_training']
         self.logdir=self.Config['logdir']
+        
         self.devices=self.Config['devices']
+        
         if self.devices=='GPU':
             self.usegpu=True
             self.gpu_id=self.Config['gpu_id']
             os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
             self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
             print('train device on :',self.device)
+        
         if self.devices=='CPU':
             self.device=torch.device("cpu")
 
 
         self.download_pretrain_model=self.Config['down_pretrain_model']
+        
         self.visualization=self.Config['visualization']
+        
         self.worker_num=self.Config['worker_num']
+        
         self.epochs=self.Config['epochs']
 
+        self.aspect_ratio_factor=self.Config['group_factor']
 
+
+    # --------------------------- Config Class Function -------------------------- #
 
     def GenerateDefaultConfig(self,mode='detection'):
         print('Generate Default Config with mode :',mode)
-        # print(self.__json)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
     def print_dict(self,d,n=0):
         for k,v in d.items():
@@ -278,7 +329,6 @@ class cfg():
 
     def Enviroment_Info(self):
         self.print_dict(self.__json)
-
         print('\n-------------------------------------------NVCC info:\n')
         os.system('nvcc -V')
         print('\n-------------------------------------------GPU info:\n')

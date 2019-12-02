@@ -1,7 +1,14 @@
-#################################################
-#For basic process
+# -*- coding: utf-8 -*-
+# @Author: Winshare
+# @Date:   2019-12-02 17:44:47
+# @Last Modified by:   Winshare
+# @Last Modified time: 2019-12-02 18:47:12
+# --------------------------------- Winshare --------------------------------- #
+
+
 import torchvision.datasets as dataset
 import torchvision.transforms as T
+from torch.utils.data import Dataset
 import torch
 from config_generator import *
 from pycocotools.coco import COCO
@@ -22,42 +29,37 @@ BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset'
 
 
 
-class DatasetGenerator(cfg,COCO):
+class DatasetGenerator(cfg,COCO,Dataset):
 
-    def __init__(self,UseInternet=False):
+    def __init__(self,UseInternet=False,transform=None):
         """
         UseInterNet=True  => load images by url from internet
         UseInterNet=False => load images by local path
         """
+    
+
+        print('\n\n-----Dataset Generator Class init-----\n\n:')
+        
         cfg.__init__(self)
         super(DatasetGenerator,self).__init__()
         self.UseInternet=UseInternet
-        #######################################
-        #Decide the getitem & len can be use
         self.DataSetProcessDone=False
+            
+        # ---------------------------------------------------------------------------- #
+        #                                 Function Dict                                #
+        # ---------------------------------------------------------------------------- #
+
         
         support_Mission={
             'Detection':['COCO2014','COCO2017','Pascal_VOC'],
             'Segmentation':['Cityscapes','COCO2014','COCO2017'],
             'InstenceSegmentation':['COCO2014','COCO2017'],   
             'Classification':['MINST','CIFAR10','CIFAR100','ImageNet'] 
-            }
+        }
         
-        """
-        KeyPoint Detection , Image Caption in 2020
-        """
-
-        print('\n\n-----Dataset Generator Class init-----\n\n:')
+        # ----------------------------- Getitem Function ----------------------------- #
         
 
-
-        #####Mission Type Checking
-        assert self.MissionType in support_Mission.keys(),"Invalid MissionType"+self.MissionType
-        
-        #####DatasetType Checking
-        assert self.DataSetType in support_Mission[self.MissionType],"Invalid DatasetSetType For this Mission"+self.DataSetType
-        
-      
         self.getitem_map={
         "COCO2014":self.__getitemCOCO,
         "COCO2017":self.__getitemCOCO,
@@ -69,7 +71,30 @@ class DatasetGenerator(cfg,COCO):
         "ImageNet":self.__getitemImNets
         }
 
-    
+        # --------------------------- Mission Type Checking -------------------------- #
+
+        assert self.MissionType in support_Mission.keys(),"Invalid MissionType"+self.MissionType
+        
+        # --------------------------- DatasetType Checking --------------------------- #
+
+        assert self.DataSetType in support_Mission[self.MissionType],"Invalid DatasetSetType For this Mission"+self.DataSetType
+                
+        # ---------------------------------------------------------------------------- #
+        #                                   Transform                                  #
+        # ---------------------------------------------------------------------------- #
+        """
+        Tips:
+        0,完成Totensor不带RandomFlip版本
+        1,改写Compose基类能够容纳Target对象
+        2,通过改写Functional中的方法,来改写对象
+        """
+        # self.DefaultTransform=T.Compose(
+            # [
+                # T.ToTensor(),
+                # T.
+            # ]
+        # )
+        
 
 
     def CustomDataset(self,root='./',Ratio=0.7,mode='Detection'):
@@ -99,7 +124,7 @@ class DatasetGenerator(cfg,COCO):
 
 
 
-    def DefaultDataset(self,Mode='train'):
+    def DefaultDatasetFunction(self,Mode='train'):
         """
         Mode Type
         
@@ -159,12 +184,12 @@ class DatasetGenerator(cfg,COCO):
                 self.coco = COCO(self.Dataset_Train_file)
                 self.ids = list(sorted(self.coco.imgs.keys()))
                 self.datasetroot=os.path.join(self.DataSet_Root,'train'+self.DataSetType[4:])
-                print('Train Folder Root :',self.datasetroot)
+                print('Train Data Folder Root :',self.datasetroot)
             if Mode=='val':
                 self.coco = COCO(self.Dataset_Val_file)
                 self.ids = list(sorted(self.coco.imgs.keys()))
-                self.datasetroot=os.path.join(self.DataSet_Root,'train'+self.DataSetType[4:])
-                print('Val Folder Root :',self.datasetroot)
+                self.datasetroot=os.path.join(self.DataSet_Root,'val'+self.DataSetType[4:])
+                print('Val Data Folder Root :',self.datasetroot)
             self.DataSetProcessDone=True
 
 
@@ -198,8 +223,8 @@ class DatasetGenerator(cfg,COCO):
         """
         Args:
         index (int): Index
-        Caption & Detection & Segmentation
-       
+        Support for Caption & Detection & Segmentation
+    
         Returns:
             tuple: Tuple (image, target). target is the object returned by ``coco.loadAnns``.
         """
@@ -210,11 +235,8 @@ class DatasetGenerator(cfg,COCO):
             target = coco.loadAnns(ann_ids)
             path = coco.loadImgs(img_id)[0]['file_name']
             img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
-            if self.image_transforms is not None:
-                img=self.image_transforms(img)
-
-                # print(img.size)
-
+            if self.transforms is not None:
+                img,target=self.transforms(img,target)
 
         if self.MissionType=='Caption':
             coco = self.coco
@@ -225,8 +247,11 @@ class DatasetGenerator(cfg,COCO):
             path = coco.loadImgs(img_id)[0]['file_name']
             img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
             if self.image_transforms is not None:
-                img=self.image_transforms(img)
-                # exit(0)
+                img,target=self.transforms(img,target)
+        if self.MissionType=='Segmentation':
+            # -------------------------- segmentation_label2mask ------------------------- #
+
+            pass
 
         return img, target
 
@@ -299,44 +324,10 @@ class DatasetGenerator(cfg,COCO):
 
 
 
+    def collate_fn(self,batch):
+        return tuple(zip(*batch))
 
-
-    def detection_collate_fn(self,batch,stack=False):
-        """
-        Transform the dataset dict format to
-        images  : list of tensor [N,C,H,W]
-        targets : list of dict for three mission
-        {
-            detection:      "boxes"
-            segmentation    "masks"
-            keypoints       "keypoints"
-        }
-
-        """
-        # step 1 find max image width & height in batch 
-        W_=[i[0].size[0] for i in batch]
-        H_=[i[0].size[1] for i in batch]
-        W=max(W_)
-        H=max(H_)
-        images=[T.functional.to_tensor(i[0].resize((W,H)))/255 for i in batch]
-
-        target_=[i[1] for i in batch]
-
-        targets=[]
-        for index,targeti in enumerate(target_):
-            boxes=[]
-            labels=[]
-
-            boxes=[t['bbox'] for t in targeti]
-            labels=[c['category_id'] for c in targeti]
-            targets.append({
-                'boxes':torch.tensor(boxes,dtype=torch.float32),
-                'labels':torch.tensor(labels,dtype=torch.int64),
-                'id':torch.tensor(index,dtype=torch.int64)
-            })
-            
-        return images,targets
-
+    
 
 
 
