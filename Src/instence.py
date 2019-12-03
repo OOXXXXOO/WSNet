@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:08:40
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-02 18:47:14
+# @Last Modified time: 2019-12-03 17:20:40
 
 # Copyright 2019 Winshare
 # 
@@ -133,11 +133,7 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
     def default_train(self):
         print('\n\n----- Start Training -----\n\n')
-        trainloader=DataLoader(
-            
-            
-        )
-
+        
         
 
 
