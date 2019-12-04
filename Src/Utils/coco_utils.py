@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# @Author: Winshare
+# @Date:   2019-12-04 18:39:24
+# @Last Modified by:   Winshare
+# @Last Modified time: 2019-12-04 18:39:58
 import copy
 import os
 from PIL import Image
@@ -9,7 +14,7 @@ import torchvision
 from pycocotools import mask as coco_mask
 from pycocotools.coco import COCO
 
-import transforms as T
+import Utils.transforms as T
 
 
 class FilterAndRemapCocoCategories(object):

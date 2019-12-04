@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:08:40
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-03 17:20:40
+# @Last Modified time: 2019-12-04 18:38:03
 
 # Copyright 2019 Winshare
 # 
@@ -34,6 +34,7 @@ from torch.utils.data import DataLoader
 import torch
 import os
 import sys
+import time
 from general_train import train_one_epoch,evaluate
 from Utils.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
 
@@ -133,7 +134,18 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
     def default_train(self):
         print('\n\n----- Start Training -----\n\n')
-        
+        start_time = time.time()
+        for epoch in range(0,self.epochs):
+            train_one_epoch(
+                self.model,
+                self.optimizer,
+                self.trainloader,
+                self.device,
+                epoch,
+                10
+            )
+            self.lr_scheduler.step()
+            
         
 
 
@@ -161,7 +173,7 @@ class Instence(NetworkGenerator,DatasetGenerator):
 def main():
     
     instence=Instence()
-    # instence.default_train()
+    instence.default_train()
 
 
 

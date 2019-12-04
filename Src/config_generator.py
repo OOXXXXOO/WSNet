@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:07:46
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-02 18:00:56
+# @Last Modified time: 2019-12-04 18:41:13
 
 # Copyright 2019 Winshare
 # 
@@ -134,6 +134,16 @@ class cfg():
                 "ToTensor":T.ToTensor,
         }
         # ─────────────────────────────────────────────────────────────────
+        self.lr_dict={
+            "StepLR":optim.lr_scheduler.StepLR,
+            "MultiStepLR":optim.lr_scheduler.MultiStepLR,
+            "ExponentialLR":optim.lr_scheduler.ExponentialLR,
+            "CosineAnnealingLR":optim.lr_scheduler.CosineAnnealingLR,
+            "ReduceLROnPlateau":optim.lr_scheduler.ReduceLROnPlateau,
+            "CyclicLR":optim.lr_scheduler.CyclicLR,
+            "OneCycleLR":optim.lr_scheduler.OneCycleLR,
+            "CosineAnnealingWarmRestarts":optim.lr_scheduler.CosineAnnealingWarmRestarts
+        }
 
 
 
@@ -195,11 +205,18 @@ class cfg():
         self.momentum=self.Net['momentum']
         self.weight_decay=self.Net['weight_decay']
 
+        # ------------------------------- lr_scheduler ------------------------------- #
+
+        self.lr_scheduler=self.Net['lr_scheduler']
+        self.lr_steps=self.Net['lr_steps']
+        self.lr_gamma=self.Net['lr_gamma']
+        self.lr_scheduler=self.lr_dict[self.lr_scheduler]
+
         
         # ------------------------------- Loss Function ------------------------------ #
 
         self.Loss_Function=self.Loss_Function_dict[self.Net['Loss_Function']]()
-
+        
 
 
         # ---------------------------------------------------------------------------- #

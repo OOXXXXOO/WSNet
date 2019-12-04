@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:08:48
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-02 18:22:53
+# @Last Modified time: 2019-12-04 16:06:48
 
 # Copyright 2019 Winshare
 # 
@@ -83,7 +83,9 @@ class NetworkGenerator(cfg):
             # ─────────────────────────────────────────────────────────────────
             print('\n\n-----Use The Default Network')
             self.modeldict[self.MissionType](pretrained=self.download_pretrain_model)
-            # ─────────────────────────────────────────────────────────────────
+            
+        # --------------------------------- optimizer -------------------------------- #
+
             print('\n\n-----Network General Info: ')
             self.optimizer=self.optimizer(
             self.model.parameters(),
@@ -92,6 +94,17 @@ class NetworkGenerator(cfg):
             weight_decay=self.weight_decay
             )
             print('Network optimizer:',self.optimizer)
+
+        
+        # ------------------------------- lr_scheduler ------------------------------- #
+
+            self.lr_scheduler=self.lr_scheduler(
+                self.optimizer,
+                milestones=self.lr_steps,
+                gamma=self.lr_gamma
+            )
+            print('Network lr_scheduler:',self.lr_scheduler)
+
 
 
         # ---------------------------------------------------------------------------- #
