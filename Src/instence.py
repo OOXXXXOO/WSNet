@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:08:40
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-04 18:38:03
+# @Last Modified time: 2019-12-05 14:04:12
 
 # Copyright 2019 Winshare
 # 
@@ -19,17 +19,10 @@
 # limitations under the License.
 
 
-'''
-@Author: Winshare
-@Date: 2019-12-02 16:16:48
-@LastEditTime: 2019-12-02 16:58:09
-@LastEditors: Please set LastEditors
-@Description: Instance
-@FilePath: /WSNet/Src/instence.py
-'''
 from config_generator import cfg
 from network_generator import NetworkGenerator
 from dataset_generator import DatasetGenerator
+
 from torch.utils.data import DataLoader
 import torch
 import os
@@ -37,7 +30,8 @@ import sys
 import time
 from general_train import train_one_epoch,evaluate
 from Utils.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
-
+import Utils.transforms as T
+from Utils.coco_utils import ConvertCocoPolysToMask
 
 
 
@@ -72,50 +66,61 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
         # ------------------------------ dataset object ------------------------------ #
 
-        trainset=None
-        valset=None
-        
+        transforms=[]
+        transforms.append(ConvertCocoPolysToMask())
+        transforms.append(T.ToTensor())
+        transforms.append(T.RandomHorizontalFlip(0.5))
+        self.transform_compose=T.Compose(transforms)
+
         if self.DefaultDataset:
-            trainset=DatasetGenerator().DefaultDatasetFunction('train')
-            valset=DatasetGenerator().DefaultDatasetFunction('val')
+            self.trainset=DatasetGenerator(transforms=self.transform_compose)
+            self.trainset.DefaultDatasetFunction(Mode='train')
+ 
+            self.valset=DatasetGenerator(transforms=self.transform_compose)
+            self.valset.DefaultDatasetFunction(Mode='val')
+            
+            print('-----train&val set already done')
  
         # ----------------------------- DataLoader object ---------------------------- #
         
         if self.DistributedDataParallel:
-            train_sampler = torch.utils.data.distributed.DistributedSampler(dataset)
-            test_sampler = torch.utils.data.distributed.DistributedSampler(dataset_test)
+            self.train_sampler = torch.utils.data.distributed.DistributedSampler(self.trainset)
+            self.test_sampler = torch.utils.data.distributed.DistributedSampler(self.valset)
+            print("-----DistributedDataParallel Sampler build done")
 
         if not self.DistributedDataParallel:
-            train_sampler = torch.utils.data.RandomSampler(trainset)
-            test_sampler = torch.utils.data.SequentialSampler(valset)
+
+            self.train_sampler = torch.utils.data.RandomSampler(self.trainset)
+            self.test_sampler = torch.utils.data.SequentialSampler(self.valset)
+            print("-----DataSampler build done")
 
         # ---------------------------------- Sampler --------------------------------- #
         
         if self.aspect_ratio_factor >= 0:
-            group_ids = create_aspect_ratio_groups(trainset, k=self.aspect_ratio_factor)
-            train_batch_sampler = GroupedBatchSampler(train_sampler,
-            group_ids,
+            self.group_ids = create_aspect_ratio_groups(self.trainset, k=self.aspect_ratio_factor)
+            self.train_batch_sampler = GroupedBatchSampler(self.train_sampler,
+            self.group_ids,
             self.BatchSize
             )
         else:
-            train_batch_sampler = torch.utils.data.BatchSampler(
-            train_sampler,
+            self.train_batch_sampler = torch.utils.data.BatchSampler(
+            self.train_sampler,
             self.BatchSize,
             drop_last=True
             )
         
-        
+        # ---------------------------------- loader ---------------------------------- #
         
         self.trainloader = torch.utils.data.DataLoader(
-            trainset, 
-            batch_sampler=train_batch_sampler,
+            self.trainset, 
+            batch_sampler=self.train_batch_sampler,
             num_workers=self.worker_num,
             collate_fn=self.collate_fn)
 
         self.valloader = torch.utils.data.DataLoader(
-            valset, 
+            self.valset, 
             batch_size=self.BatchSize,
-            sampler=test_sampler,
+            sampler=self.test_sampler,
             num_workers=self.worker_num,
             collate_fn=self.collate_fn)
 

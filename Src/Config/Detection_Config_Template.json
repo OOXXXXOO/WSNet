@@ -42,7 +42,7 @@
             "down_pretrain_model": true,
             "checkpoint_path": "./root/model",
             "visualization": true,
-            "worker_num":2
+            "worker_num":4
 
         }
     },

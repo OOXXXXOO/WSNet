@@ -34,7 +34,9 @@ import Utils.utils as utils
 
 
 
+
 def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq):
+    model.cuda()
     model.train()
     metric_logger = utils.MetricLogger(delimiter="  ")
     metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
@@ -54,6 +56,7 @@ def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq):
         loss_dict = model(images, targets)
 
         losses = sum(loss for loss in loss_dict.values())
+        # print(losses)
 
         # reduce losses over all GPUs for logging purposes
         loss_dict_reduced = utils.reduce_dict(loss_dict)
@@ -133,47 +136,3 @@ def evaluate(model, data_loader, device):
     return coco_evaluator
 
 
-
-    #     self.model.cuda()
-        
-    #     for epoch in range(self.epochs):
-    #         print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n---Epoch : ',epoch)
-    #         for index,(images,targets) in enumerate(self.Trainloader):
-    #             print('\n\nafter\n\n',targets)
-    #             images,targets=self.ToDecive(images,targets)
-           
-    #             self.optimizer.zero_grad()
-    #             loss_dict=self.model(images,targets)
-    #             losses = sum(loss for loss in loss_dict.values())
-    #             loss=losses.cpu().detach().numpy()
-    #             print('-----Step',index,'--LOSS--',loss)
-    #             losses.backward()
-    #             self.optimizer.step()
-
-
-    # def ToDecive(self,images,targets):
-    #     images = list(img.to(self.device,copy=True) for img in images)
-    #     # for i in targets:
-    #     #     print('device',i)
-    #     targets = [{k: v.to(self.device,copy=True) for k, v in t.items()} for t in targets]
-    #     return images,targets
-
-    #             self.TrainSet=DatasetGenerator()
-    #     self.TrainSet.DefaultDataset(Mode='train')
-    #     self.Trainloader=DataLoader(
-    #         self.TrainSet,
-    #         self.BatchSize,
-    #         shuffle=True,
-    #         num_workers=self.worker_num,
-    #         collate_fn=self.TrainSet.detection_collate_fn
-    #     )
-    #     self.ValSet=DatasetGenerator()
-    #     self.ValSet.DefaultDataset(Mode='val')
-    #     self.Valloader=DataLoader(
-    #         self.ValSet,
-    #         self.BatchSize,
-    #         shuffle=True,
-    #         num_workers=self.worker_num,
-    #         collate_fn=self.ValSet.detection_collate_fn
-    #     )
-    #     #######################################################

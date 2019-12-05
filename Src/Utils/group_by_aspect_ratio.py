@@ -165,7 +165,8 @@ def compute_aspect_ratios(dataset, indices=None):
         return _compute_aspect_ratios_subset_dataset(dataset, indices)
 
     # slow path
-    return _compute_aspect_ratios_slow(dataset, indices)
+    # return _compute_aspect_ratios_slow(dataset, indices)
+    return _compute_aspect_ratios_coco_dataset(dataset, indices)
 
 
 def _quantize(x, bins):

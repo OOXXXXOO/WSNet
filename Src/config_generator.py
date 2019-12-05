@@ -160,11 +160,6 @@ class cfg():
         self.InstanceID=self.__json['instance_id']
         self.Content=self.__json['content']
 
-        print('***** Already read Config file ,'+self.__defaultconfig,'*****')
-
-        print('***** Instance ID : ',self.InstanceID,'*****')
-
-        print('***** Mission Type : ',self.MissionType,'*****')
 
         
         
@@ -266,7 +261,7 @@ class cfg():
         It returns a ImageList for the inputs, and a List[Dict[Tensor]] for the targets
         
         """
-    
+            
         self.Transform=self.DataSetConfig['Transform']
         functionlist=[list(i.keys())[0] for i in self.Transform]
         paralist=[list(i.values())[0] for i in self.Transform]
@@ -332,6 +327,11 @@ class cfg():
     def GenerateDefaultConfig(self,mode='detection'):
         print('Generate Default Config with mode :',mode)
     
+    def configinfo(self):
+        print('***** Already read Config file ,'+self.__defaultconfig,'*****')
+        print('***** Instance ID : ',self.InstanceID,'*****')
+        print('***** Mission Type : ',self.MissionType,'*****')
+
 
     def print_dict(self,d,n=0):
         for k,v in d.items():

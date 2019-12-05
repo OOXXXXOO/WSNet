@@ -1,8 +1,23 @@
+# Copyright 2019 Winshare
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 # -*- coding: utf-8 -*-
 # @Author: Winshare
 # @Date:   2019-12-02 17:44:47
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-02 18:47:12
+# @Last Modified time: 2019-12-05 13:59:27
 # --------------------------------- Winshare --------------------------------- #
 
 
@@ -14,15 +29,15 @@ from config_generator import *
 from pycocotools.coco import COCO
 import os
 
-##################################################
-#For Visualization
+
+# ----------------------------- For Visualization ---------------------------- #
+
 import skimage.io as io
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
-##################################################
-#For Transfrom
+# ------------------------------- For Transfrom ------------------------------ #
 
 BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset'
 
@@ -31,7 +46,7 @@ BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset'
 
 class DatasetGenerator(cfg,COCO,Dataset):
 
-    def __init__(self,UseInternet=False,transform=None):
+    def __init__(self,UseInternet=False,transforms=None):
         """
         UseInterNet=True  => load images by url from internet
         UseInterNet=False => load images by local path
@@ -44,6 +59,7 @@ class DatasetGenerator(cfg,COCO,Dataset):
         super(DatasetGenerator,self).__init__()
         self.UseInternet=UseInternet
         self.DataSetProcessDone=False
+        self.transforms=transforms
             
         # ---------------------------------------------------------------------------- #
         #                                 Function Dict                                #
@@ -237,6 +253,7 @@ class DatasetGenerator(cfg,COCO,Dataset):
             img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
             if self.transforms is not None:
                 img,target=self.transforms(img,target)
+            
 
         if self.MissionType=='Caption':
             coco = self.coco
@@ -250,7 +267,9 @@ class DatasetGenerator(cfg,COCO,Dataset):
                 img,target=self.transforms(img,target)
         if self.MissionType=='Segmentation':
             # -------------------------- segmentation_label2mask ------------------------- #
-
+            pass
+        if self.MissionType=='Instance':
+            # --------------------------- instance segmentation -------------------------- #
             pass
 
         return img, target
@@ -319,21 +338,8 @@ class DatasetGenerator(cfg,COCO,Dataset):
 
 
 
-    def general_collate_fn(self,batch):
-        return tuple(zip(*batch))
-
-
-
     def collate_fn(self,batch):
         return tuple(zip(*batch))
-
-    
-
-
-
-
-
-
 
 
 

@@ -55,11 +55,13 @@ def convert_coco_poly_to_mask(segmentations, height, width):
 class ConvertCocoPolysToMask(object):
     def __call__(self, image, target):
         w, h = image.size
+        # print("\n\n\ntarget",target)
 
-        image_id = target["image_id"]
-        image_id = torch.tensor([image_id])
 
-        anno = target["annotations"]
+        anno = target
+        
+        # image_id = target[len(target)]["image_id"]
+        # image_id = torch.tensor([image_id])
 
         anno = [obj for obj in anno if obj['iscrowd'] == 0]
 
@@ -95,7 +97,7 @@ class ConvertCocoPolysToMask(object):
         target["boxes"] = boxes
         target["labels"] = classes
         target["masks"] = masks
-        target["image_id"] = image_id
+        # target["image_id"] = image_id
         if keypoints is not None:
             target["keypoints"] = keypoints
 
