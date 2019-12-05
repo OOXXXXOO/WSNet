@@ -60,8 +60,8 @@ class ConvertCocoPolysToMask(object):
 
         anno = target
         
-        # image_id = target[len(target)]["image_id"]
-        # image_id = torch.tensor([image_id])
+        image_id = target[0]["image_id"]
+        image_id = torch.tensor([image_id])
 
         anno = [obj for obj in anno if obj['iscrowd'] == 0]
 
@@ -97,7 +97,7 @@ class ConvertCocoPolysToMask(object):
         target["boxes"] = boxes
         target["labels"] = classes
         target["masks"] = masks
-        # target["image_id"] = image_id
+        target["image_id"] = image_id
         if keypoints is not None:
             target["keypoints"] = keypoints
 
@@ -136,7 +136,7 @@ def _coco_remove_images_without_annotations(dataset, cat_list=None):
             return True
         return False
 
-    assert isinstance(dataset, torchvision.datasets.CocoDetection)
+    # assert isinstance(dataset, torchvision.datasets.CocoDetection)
     ids = []
     for ds_idx, img_id in enumerate(dataset.ids):
         ann_ids = dataset.coco.getAnnIds(imgIds=img_id, iscrowd=None)

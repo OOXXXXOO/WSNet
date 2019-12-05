@@ -31,7 +31,7 @@ import time
 from general_train import train_one_epoch,evaluate
 from Utils.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
 import Utils.transforms as T
-from Utils.coco_utils import ConvertCocoPolysToMask
+from Utils.coco_utils import ConvertCocoPolysToMask,_coco_remove_images_without_annotations
 
 
 
@@ -72,9 +72,14 @@ class Instence(NetworkGenerator,DatasetGenerator):
         transforms.append(T.RandomHorizontalFlip(0.5))
         self.transform_compose=T.Compose(transforms)
 
+# ---------------------------------------------------------------------------- #
+#                                   temp part                                  #
+# ---------------------------------------------------------------------------- #
+
         if self.DefaultDataset:
             self.trainset=DatasetGenerator(transforms=self.transform_compose)
             self.trainset.DefaultDatasetFunction(Mode='train')
+            self.trainset=_coco_remove_images_without_annotations(self.trainset)
  
             self.valset=DatasetGenerator(transforms=self.transform_compose)
             self.valset.DefaultDatasetFunction(Mode='val')
