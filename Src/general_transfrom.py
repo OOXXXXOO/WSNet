@@ -9,7 +9,7 @@ from dataset_generator import*
 from torch.utils.data import DataLoader
 import torch
 
-class General_Transform():
+class Image_Transform():
     """
     The General_Transform class work for MultiMission Data Transform
     The Pytorch-like Transform just work for image data & different Mission
@@ -72,28 +72,10 @@ class General_Transform():
         * boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
         * labels (Int64Tensor[N]): the class label for each ground-truth box
         * keypoints (FloatTensor[N, K, 3]): the K keypoints location for each of the N instances, in the format [x, y, visibility], where visibility=0 means that the keypoint is not visible.
-    
-    TransStrList:
-    {
 
-    ToTensor
-    Normalize(std)
 
-    RanDom：{
-        resize
-        brightness
-        pad
-        grayscale
-        flip
-        rotate
-        scale
-        erasing
-        contrast
-        gamma
-        saturation
-        }
-    }
-    
+
+
     """
     def __init__(self,TransStrList=['ToTensor']):
         print('-----init General Transform Module-----')
@@ -163,72 +145,12 @@ class General_Transform():
 
 
 
-    def __call__(self,image,target):
+    def __call__(self,image):
+        """
+        PIL image
+        """
         self.ModeDict[self.Mode](image,target)
         
-
-
-
-
-
-def detection_collate_fn(batch):
-    """
-    Batch:
-    Batch[0][
-        image,
-        target
-        [
-            {
-                'segmentation':[[point1,point2...],[point1,point2..],...]
-                'category_id': int,
-                'id':int
-                'bbox:'
-                }
-                ...
-        ]
-    ]
-
-    return stack images tensor & target tensor dict
-
-    """
-    # step 1 find max image width & height in batch 
-    W_=[i[0].size[0] for i in batch]
-    H_=[i[0].size[1] for i in batch]
-    W=max(W_)
-    H=max(H_)
-    images=[T.functional.to_tensor(i[0].resize((W,H)))/255 for i in batch]
-    images=torch.stack(images,dim=0)
-    
-
-    # step 2 compute the x y transform value
-    W_=[W/i for i in W_]
-    H_=[H/i for i in H_]
-
-
-
-    # step 3 transform the target box
-    targets=[i[1] for i in batch]
-    boxes=[]
-    labels=[]
-    target=[]
-    for index,targeti in enumerate(targets):
-        target_box=[]
-        target_label=[]
-        for t in targeti:
-            box=torch.tensor(t['bbox'],dtype=torch.float32)
-            box[0]*=W_[index]
-            box[1]*=H_[index]
-            box[2]*=W_[index]
-            box[3]*=H_[index]
-            target_box.append(box)
-            target_label.append(torch.tensor(t['category_id'],dtype=torch.int64))
-        boxes.append(target_box)
-        labels.append(target_label)
-        target.append({'boxes':boxes,'labels':labels})
-
-
-    # step 4 return stack images tensor & target tensor dict
-    return images,target
 
 def main():
     COCO2014=DatasetGenerator()

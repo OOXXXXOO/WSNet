@@ -32,7 +32,7 @@ import torchvision.datasets as dataset
 class cfg():
     def __init__(self):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        self.configfile = 'Src/Config/Detection_Config_Template.json'
+        self.configfile = 'Src/Config/Segmentation_Config_Template.json'
         
 
 
@@ -41,42 +41,49 @@ class cfg():
         # ---------------------------------------------------------------------------- #
 
 
-        self.Support_Mission={
-            'Detection':['COCO2014','COCO2017','Pascal_VOC'],
-            'Segmentation':['Cityscapes','COCO2014','COCO2017'],
-            'InstenceSegmentation':['COCO2014','COCO2017'],   
-            'Classification':['MINST','CIFAR10','CIFAR100','ImageNet'] 
-        }
        
 
         self.datasets_function_dict={
-            "MINST":dataset.MNIST,
-            "FashionMINST":dataset.FashionMNIST,
-            "KMINST":dataset.KMNIST,
-            "EMINST":dataset.EMNIST,
-            "FakeData":dataset.FakeData,
-            "CocoCaptions":dataset.CocoCaptions,
-            "CocoDetection":dataset.CocoDetection,
-            "LSUN":dataset.LSUN,
-            "ImageFolder":dataset.ImageFolder,
-            "DatasetFolder":dataset.DatasetFolder,
-            "ImageNet":dataset.ImageNet,
-            "CIFAR10":dataset.CIFAR10,
-            "CIFAR100":dataset.CIFAR100,
-            "STL10":dataset.STL10,
-            "SVHN":dataset.SVHN,
-            "PhotoTour":dataset.PhotoTour,
-            "SBU":dataset.SBU,
-            "Flickr30k":dataset.Flickr30k,
-            "VOC_Detection":dataset.VOCDetection,
-            "VOC_Segmentation":dataset.VOCSegmentation,
-            "Cityscapes":dataset.Cityscapes,
-            "SBD":dataset.SBDataset,
-            "USPS":dataset.USPS,
-            "Kinetics-400":dataset.Kinetics400,
-            "HMDB51":dataset.HMDB51,
-            "UCF101":dataset.UCF101
+            "Classification":{
+                "MINST":dataset.MNIST,
+                "FashionMINST":dataset.FashionMNIST,
+                "KMINST":dataset.KMNIST,
+                "EMINST":dataset.EMNIST,
+                "CIFAR10":dataset.CIFAR10,
+                "CIFAR100":dataset.CIFAR100,
+                "ImageNet":dataset.ImageNet
+            },
+            "Detection":{
+                "CocoDetection":dataset.CocoDetection,
+                "VOC_Detection":dataset.VOCDetection
+            },
+            "Segmentation":{
+                "VOC_Segmentation":dataset.VOCSegmentation,
+                "Cityscapes":dataset.Cityscapes
+            },
+            "Caption":{
+                "CocoCaptions":dataset.CocoCaptions
+            }
+            # "Instance":{
+            #     "CocoInstance":datasets
+            # }
         }
+
+            # "FakeData":dataset.FakeData,
+            # "LSUN":dataset.LSUN,
+            # "ImageFolder":dataset.ImageFolder,
+            # "DatasetFolder":dataset.DatasetFolder,
+            # "STL10":dataset.STL10,
+            # "SVHN":dataset.SVHN,
+            # "PhotoTour":dataset.PhotoTour,
+            # "SBU":dataset.SBU,
+            # "Flickr30k":dataset.Flickr30k,
+            # "SBD":dataset.SBDataset,
+            # "USPS":dataset.USPS,
+            # "Kinetics-400":dataset.Kinetics400,
+            # "HMDB51":dataset.HMDB51,
+            # "UCF101":dataset.UCF101
+
         self.dataset_support_list=self.datasets_function_dict.keys()
 
 
@@ -198,7 +205,9 @@ class cfg():
         }
 
 
-
+        # ---------------------------------------------------------------------------- #
+        #                               Config in 3 Level                              #
+        # ---------------------------------------------------------------------------- #
 
 
         # -------------------------------- File Level -------------------------------- #
@@ -277,6 +286,7 @@ class cfg():
         self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
         self.DefaultDataset=self.DataSetConfig['DefaultDataset']
         
+        
 
         # -------------------------------- Distributed ------------------------------- #
 
@@ -332,12 +342,6 @@ class cfg():
 
 
 
-
-
-
-
-
-
         # ---------------------------------------------------------------------------- #
         #                                    Config                                    #
         # ---------------------------------------------------------------------------- #
@@ -374,7 +378,9 @@ class cfg():
         self.aspect_ratio_factor=self.Config['group_factor']
 
 
-    # --------------------------- Config Class Function -------------------------- #
+    # ---------------------------------------------------------------------------- #
+    #                             Config Class Function                            #
+    # ---------------------------------------------------------------------------- #
 
     def GenerateDefaultConfig(self,mode='detection'):
         print('Generate Default Config with mode :',mode)
@@ -383,18 +389,6 @@ class cfg():
         print('***** Already read Config file ,'+self.__defaultconfig,'*****')
         print('***** Instance ID : ',self.InstanceID,'*****')
         print('***** Mission Type : ',self.MissionType,'*****')
-
-
-    def print_dict(self,d,n=0):
-        for k,v in d.items():
-            print ('\t'*n)
-            if type(v)==type({}):
-                print("%s : {" % k)
-                self.print_dict(v,n+1)
-            else:
-                print("%s : %s" % (k,v))
-        if n!=0:
-            print('\t'*(n-1)+ '}')
 
     def Enviroment_Info(self):
         self.print_dict(self.__json)
@@ -405,3 +399,13 @@ class cfg():
         print('\n-------------------------------------------GPU info:\n')
 
     
+    def print_dict(self,d,n=0):
+        for k,v in d.items():
+            print ('\t'*n)
+            if type(v)==type({}):
+                print("%s : {" % k)
+                self.print_dict(v,n+1)
+            else:
+                print("%s : %s" % (k,v))
+        if n!=0:
+            print('\t'*(n-1)+ '}')

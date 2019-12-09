@@ -84,13 +84,11 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
 
         if self.DefaultDataset:
-            self.trainset=DatasetGenerator(transforms=self.transform_compose)
-            self.trainset.DefaultDatasetFunction(Mode='train')
-            self.trainset=_coco_remove_images_without_annotations(self.trainset)
- 
-            self.valset=DatasetGenerator(transforms=self.transform_compose)
-            self.valset.DefaultDatasetFunction(Mode='val')
-            
+            self.datasets=DatasetGenerator(transforms=self.transform_compose)
+            self.datasets.DefaultDatasetFunction()
+
+            self.trainset=_coco_remove_images_without_annotations(self.datasets.trainset)
+            self.valset=self.datasets.valset
             print('-----train&val set already done')
  
         # ----------------------------- DataLoader object ---------------------------- #

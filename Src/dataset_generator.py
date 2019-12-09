@@ -25,7 +25,7 @@
 import torchvision.transforms as T
 from torch.utils.data import Dataset
 import torch
-import config_generator.cfg as cfg 
+from config_generator import cfg
 from pycocotools.coco import COCO
 import os
 
@@ -60,7 +60,8 @@ class DatasetGenerator(cfg,COCO,Dataset):
         self.UseInternet=UseInternet
         self.DataSetProcessDone=False
         self.transforms=transforms
-        self.dataset=self.datasets_function_dict[DataSetType]
+        self.dataset_function=self.datasets_function_dict[self.MissionType][self.DataSetType]
+        self.mode='train'
 
 
 
@@ -78,43 +79,43 @@ class DatasetGenerator(cfg,COCO,Dataset):
 
 
 
-        self.getitem_map={
-            "MINST":self.__getitemMINST,
-            # "FashionMINST":self.__getitemFMINST,
-            # "KMINST":self.__getitemKMINST,
-            # "EMINST":self.__getitemEMINST,
-            # "FakeData":self.__getitemFakeData,
-            "CocoCaptions":self.__getitemCocoCaption,
-            "CocoDetection":self.__getitemCocoDetection,
-            # "LSUN":self.__getitemLSUN,
-            # "ImageFolder":self.__getitemImgFolder,
-            # "DatasetFolder":self.__getitemSetFolder,
-            "ImageNet":self.__getitemImageNet,
-            "CIFAR10":self.__getitemCIFAR10,
-            "CIFAR100":self.__getitemCIFAR100,
-            "STL10":self.__getitemSTL10,
-            # "SVHN":dataset.SVHN,
-            # "PhotoTour":dataset.PhotoTour,
-            # "SBU":dataset.SBU,
-            # "Flickr30k":dataset.Flickr30k,
-            "VOC_Detection":self.__getitemVOCDetection,
-            "VOC_Segmentation":self.__getitemVOCSegmentation,
-            "Cityscapes":self.__getitemCitysCapes
-            # "SBD":dataset.SBDataset,
-            # "USPS":dataset.USPS,
-            # "Kinetics-400":dataset.Kinetics400,
-            # "HMDB51":dataset.HMDB51,
-            # "UCF101":dataset.UCF101
-        }
+        # self.getitem_map={
+        #     # "MINST":self.__getitemMINST,
+        #     # "FashionMINST":self.__getitemFMINST,
+        #     # "KMINST":self.__getitemKMINST,
+        #     # "EMINST":self.__getitemEMINST,
+        #     # "FakeData":self.__getitemFakeData,
+        #     # "CocoCaptions":self.__getitemCocoCaption,
+        #     "CocoDetection":self.__getitemCocoDetection,
+        #     # "LSUN":self.__getitemLSUN,
+        #     # "ImageFolder":self.__getitemImgFolder,
+        #     # "DatasetFolder":self.__getitemSetFolder,
+        #     "ImageNet":self.__getitemImageNet,
+        #     "CIFAR10":self.__getitemCIFAR10,
+        #     "CIFAR100":self.__getitemCIFAR100,
+        #     "STL10":self.__getitemSTL10,
+        #     # "SVHN":dataset.SVHN,
+        #     # "PhotoTour":dataset.PhotoTour,
+        #     # "SBU":dataset.SBU,
+        #     # "Flickr30k":dataset.Flickr30k,
+        #     "VOC_Detection":self.__getitemVOCDetection,
+        #     "VOC_Segmentation":self.__getitemVOCSegmentation,
+        #     "Cityscapes":self.__getitemCitysCapes
+        #     # "SBD":dataset.SBDataset,
+        #     # "USPS":dataset.USPS,
+        #     # "Kinetics-400":dataset.Kinetics400,
+        #     # "HMDB51":dataset.HMDB51,
+        #     # "UCF101":dataset.UCF101
+        # }
 
 
         # --------------------------- Mission Type Checking -------------------------- #
 
-        assert self.MissionType in support_Mission.keys(),"Invalid MissionType"+self.MissionType
+        # assert self.MissionType in support_Mission.keys(),"Invalid MissionType"+self.MissionType
         
         # --------------------------- DatasetType Checking --------------------------- #
 
-        assert self.DataSetType in support_Mission[self.MissionType],"Invalid DatasetSetType For this Mission"+self.DataSetType
+        # assert self.DataSetType in support_Mission[self.MissionType],"Invalid DatasetSetType For this Mission"+self.DataSetType
                 
         # ---------------------------------------------------------------------------- #
         #                                   Transform                                  #
@@ -154,7 +155,8 @@ class DatasetGenerator(cfg,COCO,Dataset):
 
 
 
-    def DefaultDatasetFunction(self,Mode='train'):
+
+    def DefaultDatasetFunction(self):
         """
         Mode Type
         
@@ -196,126 +198,96 @@ class DatasetGenerator(cfg,COCO,Dataset):
         """
         print('*****Mode : ',self.MissionType,'-----start build dataset in :',self.DataSetType,'-----')
         print('*****DatasetRoot Dir',self.DataSet_Root,'*****')
-        assert Mode in ['train','val','test'],"Invalide DataSet Mode"
-        self.Mode=Mode
-
-
-
-
-
-
-
-
-        # ---------------------------------------------------------------------------- #
-        #                                     abort                                    #
-        # ---------------------------------------------------------------------------- #
-
-        ####COCOFormat
-        # if self.DataSetType=='COCO2014' or self.DataSetType=='COCO2017':
-            # if Mode=='train':
-                # self.coco = COCO(self.Dataset_Train_file)
-                # self.ids = list(sorted(self.coco.imgs.keys()))
-                # self.datasetroot=os.path.join(self.DataSet_Root,'train'+self.DataSetType[4:])
-                # print('Train Data Folder Root :',self.datasetroot)
-            # if Mode=='val':
-                # self.coco = COCO(self.Dataset_Val_file)
-                # self.ids = list(sorted(self.coco.imgs.keys()))
-                # self.datasetroot=os.path.join(self.DataSet_Root,'val'+self.DataSetType[4:])
-                # print('Val Data Folder Root :',self.datasetroot)
-            # self.DataSetProcessDone=True
-# 
-# 
-        ####CityscapesFormat
-        # if self.DataSetType=='Cityscapes':
-            # self.DataSetProcessDone=True
-    #  
-        ####MINSTFormat
-        # if self.DataSetType=='MINST':
-            # self.DataSetProcessDone=True
-    # 
-        ####PascalVocFormat
-        # if self.DataSetType=='Pascal_VOC':
-            # self.DataSetProcessDone=True
-        # 
-        ####ImageNetFormat
-        # if self.DataSetType=='ImageNet':
-            # self.DataSetProcessDone=True
         
+        self.trainset=self.dataset_function(
+            self.DataSet_Root+'/train2014',
+            self.Dataset_Train_file,
+            transforms=self.transforms
+        )
 
-
-
-
-    def __getitemCocoDetection(self,index):
-        pass
-
-
-
-    def __getCIFAR(self,index):
-        pass
         
-    def __getitemCOCO(self,index):
-        """
-        Args:
-        index (int): Index
-        Support for Caption & Detection & Segmentation
+        self.valset=self.dataset_function(
+            self.DataSet_Root+'/val2014',
+            self.Dataset_Val_file,
+            transforms=self.transforms
+        )
+
+    # ---------------------------------------------------------------------------- #
+    #                           getitem default function                           #
+    # ---------------------------------------------------------------------------- #
+
+
+
+
+
+
+
+
     
-        Returns:
-            tuple: Tuple (image, target). target is the object returned by ``coco.loadAnns``.
-        """
-        if self.MissionType=='Detection':
-            coco = self.coco
-            img_id = self.ids[index]
-            ann_ids = coco.getAnnIds(imgIds=img_id)
-            target = coco.loadAnns(ann_ids)
-            path = coco.loadImgs(img_id)[0]['file_name']
-            img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
-            if self.transforms is not None:
-                img,target=self.transforms(img,target)
+
+    # def __getitemCOCO(self,index):
+    #         """
+    #     Args:
+    #     index (int): Index
+    #     Support for Caption & Detection & Segmentation
+    
+    #     Returns:
+    #         tuple: Tuple (image, target). target is the object returned by ``coco.loadAnns``.
+    #     """
+    #     if self.MissionType=='Detection':
+    #         coco = self.coco
+    #         img_id = self.ids[index]
+    #         ann_ids = coco.getAnnIds(imgIds=img_id)
+    #         target = coco.loadAnns(ann_ids)
+    #         path = coco.loadImgs(img_id)[0]['file_name']
+    #         img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
+    #         if self.transforms is not None:
+    #             img,target=self.transforms(img,target)
             
 
-        if self.MissionType=='Caption':
-            coco = self.coco
-            img_id = self.ids[index]
-            ann_ids = coco.getAnnIds(imgIds=img_id)
-            anns = coco.loadAnns(ann_ids)
-            target = [ann['caption'] for ann in anns]
-            path = coco.loadImgs(img_id)[0]['file_name']
-            img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
-            if self.image_transforms is not None:
-                img,target=self.transforms(img,target)
-        if self.MissionType=='Segmentation':
-            # -------------------------- segmentation_label2mask ------------------------- #
-            pass
-        if self.MissionType=='Instance':
-            # --------------------------- instance segmentation -------------------------- #
-            pass
+    #     if self.MissionType=='Caption':
+    #         coco = self.coco
+    #         img_id = self.ids[index]
+    #         ann_ids = coco.getAnnIds(imgIds=img_id)
+    #         anns = coco.loadAnns(ann_ids)
+    #         target = [ann['caption'] for ann in anns]
+    #         path = coco.loadImgs(img_id)[0]['file_name']
+    #         img = Image.open(os.path.join(self.datasetroot, path)).convert('RGB')
+    #         if self.image_transforms is not None:
+    #             img,target=self.transforms(img,target)
+    #     if self.MissionType=='Segmentation':
+    #         # -------------------------- segmentation_label2mask ------------------------- #
+    #         pass
+    #     if self.MissionType=='Instance':
+    #         # --------------------------- instance segmentation -------------------------- #
+    #         pass
 
-        return img, target
+    #     return img, target
 
 
-    
-    def __getitemPascal(self,index):
-        pass
 
-    def __getitemCitys(self,index):
-        pass
-    
-    def __getitemImNets(self,index):
-        pass
 
-    def __getitemMINST(self,index):
-        pass
+    # ---------------------------------------------------------------------------- #
+    #                        GetItem Just for Custom Dataset                       #
+    # ---------------------------------------------------------------------------- #
 
+    def setmode(mode='train'):
+        self.mode=mode
     def __getitem__(self,index):
-        assert self.DataSetProcessDone,"Invalid Dataset Object"
-        return self.getitem_map[self.DataSetType](index)
+        # assert self.DataSetProcessDone,"Invalid Dataset Object"
+        # return self.getitem_map[self.DataSetType](index)
+        if self.mode=='train':
+            return self.trainset[index]
+        if self.mode=='val':
+            return self.valset[index]
 
 
 
     def __len__(self):
-        assert self.DataSetProcessDone,"Invalid Dataset Object"
-        return len(self.ids)
-        
+        if self.mode=='train':
+            return len(self.trainset)
+        if self.mode=='val':
+            return len(self.valset)
     
     
 
@@ -379,7 +351,9 @@ class DatasetGenerator(cfg,COCO,Dataset):
 
 def main():
     COCO2014=DatasetGenerator()
-    COCO2014.DefaultDataset()
+    COCO2014.DefaultDatasetFunction()
+    trainset=COCO2014.trainset
+    print(trainset[20])
     print(COCO2014[20])
 
 
