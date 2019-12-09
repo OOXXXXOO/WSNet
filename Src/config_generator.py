@@ -28,9 +28,9 @@ import torch.nn.functional as F
 import torch
 import torchvision.transforms as T
 class cfg():
-    def __init__(self,configfile='Src/Config/Detection_Config_Template.json'):
+    def __init__(self):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-
+        self.configfile = 'Src/Config/Docker_Env_Detection.json'
         # ─────────────────────────────────────────────────────────────────
 
         OptimDict={
@@ -151,7 +151,7 @@ class cfg():
 
         # -------------------------------- File Level -------------------------------- #
 
-        self.__defaultconfig=configfile
+        self.__defaultconfig=self.configfile
         self.__json=json.load(open(self.__defaultconfig,'r'))
         self.usegpu=False
 
