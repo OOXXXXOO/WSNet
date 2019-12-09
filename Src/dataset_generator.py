@@ -21,11 +21,11 @@
 # --------------------------------- Winshare --------------------------------- #
 
 
-import torchvision.datasets as dataset
+
 import torchvision.transforms as T
 from torch.utils.data import Dataset
 import torch
-from config_generator import *
+import config_generator.cfg as cfg 
 from pycocotools.coco import COCO
 import os
 
@@ -60,32 +60,53 @@ class DatasetGenerator(cfg,COCO,Dataset):
         self.UseInternet=UseInternet
         self.DataSetProcessDone=False
         self.transforms=transforms
+        self.dataset=self.datasets_function_dict[DataSetType]
+
+
+
             
         # ---------------------------------------------------------------------------- #
         #                                 Function Dict                                #
         # ---------------------------------------------------------------------------- #
 
-        
-        support_Mission={
-            'Detection':['COCO2014','COCO2017','Pascal_VOC'],
-            'Segmentation':['Cityscapes','COCO2014','COCO2017'],
-            'InstenceSegmentation':['COCO2014','COCO2017'],   
-            'Classification':['MINST','CIFAR10','CIFAR100','ImageNet'] 
-        }
+        # 
         
         # ----------------------------- Getitem Function ----------------------------- #
-        
+
+
+
+
+
 
         self.getitem_map={
-        "COCO2014":self.__getitemCOCO,
-        "COCO2017":self.__getitemCOCO,
-        "CitysCapes":self.__getitemCitys,
-        "MINST":self.__getitemMINST,
-        "CIFAR10":self.__getCIFAR,
-        "CIFAR100":self.__getCIFAR,
-        "PascalVOC":self.__getitemPascal,
-        "ImageNet":self.__getitemImNets
+            "MINST":self.__getitemMINST,
+            # "FashionMINST":self.__getitemFMINST,
+            # "KMINST":self.__getitemKMINST,
+            # "EMINST":self.__getitemEMINST,
+            # "FakeData":self.__getitemFakeData,
+            "CocoCaptions":self.__getitemCocoCaption,
+            "CocoDetection":self.__getitemCocoDetection,
+            # "LSUN":self.__getitemLSUN,
+            # "ImageFolder":self.__getitemImgFolder,
+            # "DatasetFolder":self.__getitemSetFolder,
+            "ImageNet":self.__getitemImageNet,
+            "CIFAR10":self.__getitemCIFAR10,
+            "CIFAR100":self.__getitemCIFAR100,
+            "STL10":self.__getitemSTL10,
+            # "SVHN":dataset.SVHN,
+            # "PhotoTour":dataset.PhotoTour,
+            # "SBU":dataset.SBU,
+            # "Flickr30k":dataset.Flickr30k,
+            "VOC_Detection":self.__getitemVOCDetection,
+            "VOC_Segmentation":self.__getitemVOCSegmentation,
+            "Cityscapes":self.__getitemCitysCapes
+            # "SBD":dataset.SBDataset,
+            # "USPS":dataset.USPS,
+            # "Kinetics-400":dataset.Kinetics400,
+            # "HMDB51":dataset.HMDB51,
+            # "UCF101":dataset.UCF101
         }
+
 
         # --------------------------- Mission Type Checking -------------------------- #
 
@@ -104,13 +125,6 @@ class DatasetGenerator(cfg,COCO,Dataset):
         1,改写Compose基类能够容纳Target对象
         2,通过改写Functional中的方法,来改写对象
         """
-        # self.DefaultTransform=T.Compose(
-            # [
-                # T.ToTensor(),
-                # T.
-            # ]
-        # )
-        
 
 
     def CustomDataset(self,root='./',Ratio=0.7,mode='Detection'):
@@ -176,17 +190,7 @@ class DatasetGenerator(cfg,COCO,Dataset):
             |---val201x
                 |---images.png
 
-        Throughout the API 
-        "ann"=annotation, 
-        "cat"=category, and "img"=image.
-        getAnnIdsGet ann ids that satisfy given filter conditions. 
-        getCatIdsGet cat ids that satisfy given filter conditions. 
-        getImgIdsGet img ids that satisfy given filter conditions. 
-        loadAnnsLoad anns with the specified ids. 
-        loadCatsLoad cats with the specified ids. 
-        loadImgsLoad imgs with the specified ids. 
-        loadResLoad algorithm results and create API for accessing them. 
-        showAnnsDisplay the specified annotations.
+
             
         
         """
@@ -194,41 +198,55 @@ class DatasetGenerator(cfg,COCO,Dataset):
         print('*****DatasetRoot Dir',self.DataSet_Root,'*****')
         assert Mode in ['train','val','test'],"Invalide DataSet Mode"
         self.Mode=Mode
-        #####COCOFormat
-        if self.DataSetType=='COCO2014' or self.DataSetType=='COCO2017':
-            if Mode=='train':
-                self.coco = COCO(self.Dataset_Train_file)
-                self.ids = list(sorted(self.coco.imgs.keys()))
-                self.datasetroot=os.path.join(self.DataSet_Root,'train'+self.DataSetType[4:])
-                print('Train Data Folder Root :',self.datasetroot)
-            if Mode=='val':
-                self.coco = COCO(self.Dataset_Val_file)
-                self.ids = list(sorted(self.coco.imgs.keys()))
-                self.datasetroot=os.path.join(self.DataSet_Root,'val'+self.DataSetType[4:])
-                print('Val Data Folder Root :',self.datasetroot)
-            self.DataSetProcessDone=True
 
 
-        #####CityscapesFormat
-        if self.DataSetType=='Cityscapes':
-            self.DataSetProcessDone=True
-     
-        #####MINSTFormat
-        if self.DataSetType=='MINST':
-            self.DataSetProcessDone=True
-    
-        #####PascalVocFormat
-        if self.DataSetType=='Pascal_VOC':
-            self.DataSetProcessDone=True
+
+
+
+
+
+
+        # ---------------------------------------------------------------------------- #
+        #                                     abort                                    #
+        # ---------------------------------------------------------------------------- #
+
+        ####COCOFormat
+        # if self.DataSetType=='COCO2014' or self.DataSetType=='COCO2017':
+            # if Mode=='train':
+                # self.coco = COCO(self.Dataset_Train_file)
+                # self.ids = list(sorted(self.coco.imgs.keys()))
+                # self.datasetroot=os.path.join(self.DataSet_Root,'train'+self.DataSetType[4:])
+                # print('Train Data Folder Root :',self.datasetroot)
+            # if Mode=='val':
+                # self.coco = COCO(self.Dataset_Val_file)
+                # self.ids = list(sorted(self.coco.imgs.keys()))
+                # self.datasetroot=os.path.join(self.DataSet_Root,'val'+self.DataSetType[4:])
+                # print('Val Data Folder Root :',self.datasetroot)
+            # self.DataSetProcessDone=True
+# 
+# 
+        ####CityscapesFormat
+        # if self.DataSetType=='Cityscapes':
+            # self.DataSetProcessDone=True
+    #  
+        ####MINSTFormat
+        # if self.DataSetType=='MINST':
+            # self.DataSetProcessDone=True
+    # 
+        ####PascalVocFormat
+        # if self.DataSetType=='Pascal_VOC':
+            # self.DataSetProcessDone=True
+        # 
+        ####ImageNetFormat
+        # if self.DataSetType=='ImageNet':
+            # self.DataSetProcessDone=True
         
-        #####ImageNetFormat
-        if self.DataSetType=='ImageNet':
-            self.DataSetProcessDone=True
-        
 
 
 
 
+    def __getitemCocoDetection(self,index):
+        pass
 
 
 

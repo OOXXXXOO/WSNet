@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:07:46
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-04 18:41:13
+# @Last Modified time: 2019-12-09 11:30:27
 
 # Copyright 2019 Winshare
 # 
@@ -27,10 +27,62 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 import torchvision.transforms as T
+import torchvision.datasets as dataset
+
 class cfg():
     def __init__(self):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        self.configfile = 'Src/Config/Docker_Env_Detection.json'
+        self.configfile = 'Src/Config/Detection_Config_Template.json'
+        
+
+
+        # ---------------------------------------------------------------------------- #
+        #                                support dataset                               #
+        # ---------------------------------------------------------------------------- #
+
+
+        self.Support_Mission={
+            'Detection':['COCO2014','COCO2017','Pascal_VOC'],
+            'Segmentation':['Cityscapes','COCO2014','COCO2017'],
+            'InstenceSegmentation':['COCO2014','COCO2017'],   
+            'Classification':['MINST','CIFAR10','CIFAR100','ImageNet'] 
+        }
+       
+
+        self.datasets_function_dict={
+            "MINST":dataset.MNIST,
+            "FashionMINST":dataset.FashionMNIST,
+            "KMINST":dataset.KMNIST,
+            "EMINST":dataset.EMNIST,
+            "FakeData":dataset.FakeData,
+            "CocoCaptions":dataset.CocoCaptions,
+            "CocoDetection":dataset.CocoDetection,
+            "LSUN":dataset.LSUN,
+            "ImageFolder":dataset.ImageFolder,
+            "DatasetFolder":dataset.DatasetFolder,
+            "ImageNet":dataset.ImageNet,
+            "CIFAR10":dataset.CIFAR10,
+            "CIFAR100":dataset.CIFAR100,
+            "STL10":dataset.STL10,
+            "SVHN":dataset.SVHN,
+            "PhotoTour":dataset.PhotoTour,
+            "SBU":dataset.SBU,
+            "Flickr30k":dataset.Flickr30k,
+            "VOC_Detection":dataset.VOCDetection,
+            "VOC_Segmentation":dataset.VOCSegmentation,
+            "Cityscapes":dataset.Cityscapes,
+            "SBD":dataset.SBDataset,
+            "USPS":dataset.USPS,
+            "Kinetics-400":dataset.Kinetics400,
+            "HMDB51":dataset.HMDB51,
+            "UCF101":dataset.UCF101
+        }
+        self.dataset_support_list=self.datasets_function_dict.keys()
+
+
+
+
+
         # ─────────────────────────────────────────────────────────────────
 
         OptimDict={

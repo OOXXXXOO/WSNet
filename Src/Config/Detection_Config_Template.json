@@ -24,7 +24,7 @@
                     {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]}
                 ]
             ,
-            "Type": "COCO2014",
+            "Type": "CocoDetection",
             "root": "/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset",
             "train_index_file":"annotations/instances_train2014.json",
             "val_index_file":"annotations/instances_val2014.json"

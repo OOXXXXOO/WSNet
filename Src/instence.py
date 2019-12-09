@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:08:40
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-05 14:04:12
+# @Last Modified time: 2019-12-09 11:29:49
 
 # Copyright 2019 Winshare
 # 
@@ -66,15 +66,22 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
         # ------------------------------ dataset object ------------------------------ #
 
+
+
+        
+
         transforms=[]
         transforms.append(ConvertCocoPolysToMask())
         transforms.append(T.ToTensor())
         transforms.append(T.RandomHorizontalFlip(0.5))
         self.transform_compose=T.Compose(transforms)
 
-# ---------------------------------------------------------------------------- #
-#                                   temp part                                  #
-# ---------------------------------------------------------------------------- #
+        # ---------------------------------------------------------------------------- #
+        #                                   temp part                                  #
+        # ---------------------------------------------------------------------------- #
+
+
+
 
         if self.DefaultDataset:
             self.trainset=DatasetGenerator(transforms=self.transform_compose)

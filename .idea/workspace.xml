@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
+    <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DocResources/UPDATELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/DocResources/UPDATELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/Config/Detection_Config_Template.json" beforeDir="false" afterPath="$PROJECT_DIR$/Src/Config/Detection_Config_Template.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/config_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/config_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/dataset_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/dataset_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/instence.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/instence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/test.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,103 +18,6 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Project$PyCharmEnv.coverage" NAME="PyCharmEnv Coverage Results" MODIFIED="1556790562331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/WSNet" />
-  </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="config.py" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/WSNet/Util/config.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="724">
-                    <caret line="57" column="12" selection-start-line="57" selection-start-column="12" selection-end-line="57" selection-end-column="12" />
-                    <folding>
-                      <element signature="e#0#9#0" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="network.py" pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/WSNet/Util/network.py">
-                <provider selected="true" editor-type-id="text-editor" />
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="Instance.py" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="275">
-                    <caret line="15" selection-start-line="15" selection-end-line="15" />
-                    <folding>
-                      <element signature="e#0#38#0" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/README.md">
-                <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-                  <state split_layout="SPLIT">
-                    <first_editor relative-caret-position="770">
-                      <caret line="35" selection-start-line="35" selection-end-line="35" />
-                    </first_editor>
-                    <second_editor />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="roi_align_cuda.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/ROI/roi_align/src/roi_align_cuda.c">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="ROI_Crop.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/ROI/ROI_Crop.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="nms_cuda.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/nms/src/nms_cuda.h">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="ResNet.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Detectron.pytorch/lib/modeling/ResNet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -134,115 +44,23 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/WSNet/PyCharmEnv.py" />
-        <option value="$PROJECT_DIR$/WSNet/backbone/ResNets/ResNets.py" />
-        <option value="$PROJECT_DIR$/WSNet/util/selective search.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/DeepLabv3p.py" />
-        <option value="$PROJECT_DIR$/WSNet/Backbone/DenseNet.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/__init__.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/__init__.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/datasetbuilder.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/NetWorkGenerator.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/NetProcess.py" />
-        <option value="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/cfg.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/Detection/README.md" />
-        <option value="$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/rpn.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/NetUnit/ROI_Align.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/NetUnit/ROI_Pooling.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/Detection/FasterRCNN.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/Instance.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/datasets.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" />
-        <option value="$PROJECT_DIR$/WSNet/Util/config.py" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/Resnet.py" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/WSNet/Nets/NetModules/ROI/ROI_Crop.py" />
-      </list>
-    </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths />
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1248" />
-    <option name="y" value="341" />
-    <option name="width" value="1076" />
-    <option name="height" value="783" />
-  </component>
+  <component name="ProjectId" id="1Ujzewk7wzUKMGHUCkzqzAjoKxh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Detectron.pytorch" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Detectron.pytorch" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Detectron.pytorch" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="modeling" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Nets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WSNet" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="WSNet" type="462c0819:PsiDirectoryNode" />
-              <item name="Nets" type="462c0819:PsiDirectoryNode" />
-              <item name="NetModules" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -259,18 +77,6 @@
       <recent name="$PROJECT_DIR$/WSNet/Nets/FeatureExtractor" />
       <recent name="$PROJECT_DIR$/WSNet/Backbone/DenseNet" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.PyCharmEnv">
     <configuration name="MaskDebug" type="PythonConfigurationType" factoryName="Python">
@@ -291,6 +97,9 @@
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="PyCharmEnv" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Project" />
@@ -310,6 +119,9 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Project" />
@@ -329,6 +141,9 @@
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Python.MaskDebug" />
@@ -340,6 +155,18 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -350,279 +177,30 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556790112114</updated>
+      <workItem from="1575884893462" duration="1763000" />
     </task>
     <servers />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="1080" y="27" width="1920" height="1053" extended-state="6" />
-    <layout>
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.47634408" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Python Console" order="7" weight="0.32903227" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2620064" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.32977587" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" x="0" y="0" width="434" height="846" id="Documentation" order="3" side_tool="true" weight="0.32951587" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
-    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="97" column="63" selection-start-line="97" selection-start-column="52" selection-end-line="97" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4934" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="68" column="25" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/roi_data_layer/layer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-248" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/roi_pooling/modules/roi_pool.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="36" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/_ext/roi_pooling/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/_ext/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/build.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/make.sh">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/roi_data_layer/roidb.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-396" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/roi_data_layer/roibatchLoader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3694" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/functions/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling.c">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling_cuda.c">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/model/region_proposal_network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="928">
-          <caret line="52" column="38" selection-start-line="52" selection-start-column="38" selection-end-line="52" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/src/roi_pooling_kernel.cu">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_crop/functions/crop_resize.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_crop/functions/gridgen.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/functions/roi_pool.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="24" column="48" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/rpn/proposal_target_layer_cascade.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="32" column="40" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/trainval_net.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="337" column="22" selection-start-line="337" selection-start-column="22" selection-end-line="337" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/roi_pooling/modules/roi_pool.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/datasets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-891">
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster_rcnn_pytorch/faster_rcnn/faster_rcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-952">
-          <caret line="201" lean-forward="true" selection-start-line="201" selection-end-line="201" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/resnet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="275" column="31" selection-start-line="275" selection-start-column="31" selection-end-line="275" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simple-faster-rcnn-pytorch/demo.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/faster-rcnn.pytorch/lib/model/faster_rcnn/faster_rcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetUnit/RPN.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/Resnet.py" />
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/v2-e7418072b4de7f80414c6c061033fda3_r.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/v2-d2a89c782d899c3a1116e9e65c58a309_r.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/v2-88550b31a4a06e531984ddd83ed629d9_r.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/v2-71633c4b129b187f1c6a198473b30fd8_r.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/v2-4a9567130633fe26c180c5e69f259458_r.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/buildingblock.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/bottleneck.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resources/table.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/ResNets/resnet.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/FeatureExtractor/EfficientNets/EfficientNets.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/ROI/ROI_Align.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/ROI/ROI_Pooling.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/RPN/RPN.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/ROI/roi_align/src/roi_align_cuda.c">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/ROI/ROI_Crop.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Nets/NetModules/nms/src/nms_cuda.h">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Detectron.pytorch/lib/modeling/ResNet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/Instance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="770">
-            <caret line="35" selection-start-line="35" selection-end-line="35" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="724">
-          <caret line="57" column="12" selection-start-line="57" selection-start-column="12" selection-end-line="57" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WSNet/Util/network.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+  <component name="WindowStateProjectService">
+    <state x="1822" y="264" width="418" height="539" key="FileChooserDialogImpl" timestamp="1575887128442">
+      <screen x="1080" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1822" y="264" width="418" height="539" key="FileChooserDialogImpl/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575887128442" />
+    <state x="0" y="444" width="1037" height="737" key="SettingsEditor" timestamp="1575887730792">
+      <screen x="0" y="0" width="1080" height="1920" />
+    </state>
+    <state x="0" y="444" key="SettingsEditor/1080.0.1920.1080/1080.1080.1920.1080/0.0.1080.1920@1080.0.1920.1080" timestamp="1575887730792" />
+    <state x="-104" y="333" width="1037" height="737" key="SettingsEditor/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575887509145" />
+    <state x="191" y="27" width="756" height="935" maximized="true" key="dock-window-1" timestamp="1575884939307">
+      <screen x="0" y="27" width="1080" height="1893" />
+    </state>
+    <state x="191" y="27" width="756" height="935" maximized="true" key="dock-window-1/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575884939307" />
+    <state x="1248" y="1225" width="1371" height="935" maximized="true" key="dock-window-2" timestamp="1575887168705">
+      <screen x="1080" y="1080" width="1920" height="1080" />
+    </state>
+    <state x="1248" y="1225" width="1371" height="935" maximized="true" key="dock-window-2/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575887168705" />
   </component>
 </project>
