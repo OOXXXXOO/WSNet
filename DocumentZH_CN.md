@@ -28,20 +28,7 @@
 
 
 ### 整体结构
-```txt
-                              |——template-config-generator——>——>|
-                |——Config-----|——readconfig<————————————————————|  
-                |     ^       |——configure instance             |  
-                |     |                                         |               
-Instance[MODE]——|-->Dataset-->|——training-array generator       |  
-                |             |——training-to DataLoader         |  
-                |                                               |          
-                |——Network----|——readconfig<————————————————————|  
-                              |——Network Generator
-                              |——Network Process——————>——————————>Train/Val/Test
 
-MODE=[Segmentation,Detection,Mask]
-```
 
 一个典型的处理流程，如现在获取了一批标注完成的数据，且label和imagefile按照所要求的目录结构已经放置好，例如当前数据存储于`./root/image/`,标注文件存储于`./root/label/`.类名文件`classes.txt`中包含如
 ```
@@ -146,17 +133,4 @@ tensorboard --logdir 监控训练
 > 当前版本支持json以及bbox格式
 > 
 
-### 训练测试流程
 
-在通常的Pytorch网络训练流程中，一般要经过
-数据集->单例数据->Tensor->Batch的流程
-即
-
-#### 
-
-
-
-
-
-
-****

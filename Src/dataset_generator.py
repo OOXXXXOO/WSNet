@@ -199,6 +199,7 @@ class DatasetGenerator(cfg,COCO,Dataset):
         print('*****Mode : ',self.MissionType,'-----start build dataset in :',self.DataSetType,'-----')
         print('*****DatasetRoot Dir',self.DataSet_Root,'*****')
         
+        
         self.trainset=self.dataset_function(
             self.DataSet_Root+'/train2014',
             self.Dataset_Train_file,

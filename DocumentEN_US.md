@@ -2,15 +2,21 @@
 ![](./quick.jpg)
 
 
-### **Doccument with EN_US**
+## Doccument with EN_US
 
 
 
 
 
-#### **A typically process：**
 
-if we have a set of image & label, we need put the image files & label files into image-folder & label-folder . Now, we have the root path of two folders that include dataset like`./root/image` & `./root/label`. In addition, we need to have a text file include class names like `./root/classes.txt` that like:
+
+
+
+
+
+### A typically process：
+
+if we have a set of image & label, we need put the image files & label files into image-folder & label-folder . Now, we have the root path of two folders that include dataset like `./root/image` & `./root/label` . In addition, we need to have a text file include class names like `./root/classes.txt` that like:
 
 ```
 class1
@@ -23,12 +29,6 @@ Each class name occupies a line (please make sure the file not have gap line).
 
 
 
-
-
-
-Its gonna be start a brand new **Instance**,the code will scan the all image file in `./root/image` and try to make a map between the image & label -files . In end of the scan process , program will generate index file of all the mapping files and  default instance configure file 
-
-`./instance-{id}-config.json`
 
 That include all the configurable option about training instance **(not complate)**:
 
@@ -85,7 +85,7 @@ That include all the configurable option about training instance **(not complate
 The Json file content could be modified. When you finish your change , run as :
 
 ```bash
-python train.py --cfg instance-{intance_id}-config.json
+python instance.py --cfg instance-{ intance_id }-config.json
 ```
 
 ##### The train will start.
@@ -95,8 +95,6 @@ python train.py --cfg instance-{intance_id}-config.json
 
 
 
-
-****
 
 
 

@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:08:40
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-09 11:29:49
+# @Last Modified time: 2019-12-12 16:55:28
 
 # Copyright 2019 Winshare
 # 
@@ -18,20 +18,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# ---------------------------------------------------------------------------- #
+#                           Local STructure Reference                          #
+# ---------------------------------------------------------------------------- #
 
 from config_generator import cfg
 from network_generator import NetworkGenerator
 from dataset_generator import DatasetGenerator
 
+# ---------------------------------------------------------------------------- #
+#                            Local Module reference                            #
+# ---------------------------------------------------------------------------- #
+# 
+# from general_train import train_one_epoch,evaluate
+from Utils.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
+import Utils.transforms as T
+from Utils.coco_utils import ConvertCocoPolysToMask,_coco_remove_images_without_annotations
+from Utils.coco_utils import get_coco_api_from_dataset
+from Utils.coco_eval import CocoEvaluator
+import Utils.utils as utils
+
+# ---------------------------------------------------------------------------- #
+#                           Official Module Reference                          #
+# ---------------------------------------------------------------------------- #
+
 from torch.utils.data import DataLoader
+import torchvision
 import torch
 import os
 import sys
 import time
-from general_train import train_one_epoch,evaluate
-from Utils.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
-import Utils.transforms as T
-from Utils.coco_utils import ConvertCocoPolysToMask,_coco_remove_images_without_annotations
+import math
 
 
 
@@ -97,12 +114,43 @@ class Instence(NetworkGenerator,DatasetGenerator):
             self.train_sampler = torch.utils.data.distributed.DistributedSampler(self.trainset)
             self.test_sampler = torch.utils.data.distributed.DistributedSampler(self.valset)
             print("-----DistributedDataParallel Sampler build done")
+            self.model = torch.nn.parallel.DistributedDataParallel(self.model, device_ids=self.gpu_id)
+            self.model_without_ddp = self.model.module
+            
+
+     
+
+
+
+            
 
         if not self.DistributedDataParallel:
 
             self.train_sampler = torch.utils.data.RandomSampler(self.trainset)
             self.test_sampler = torch.utils.data.SequentialSampler(self.valset)
             print("-----DataSampler build done")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
         # ---------------------------------- Sampler --------------------------------- #
         
@@ -150,18 +198,25 @@ class Instence(NetworkGenerator,DatasetGenerator):
     def default_train(self):
         print('\n\n----- Start Training -----\n\n')
         start_time = time.time()
-        for epoch in range(0,self.epochs):
-            train_one_epoch(
-                self.model,
-                self.optimizer,
-                self.trainloader,
-                self.device,
-                epoch,
-                10
-            )
-            self.lr_scheduler.step()
-            
         
+        
+        if self.resume:
+            assert os.path.exists(self.checkpoint),"Invalid resume model path"
+            self.checkpoint=torch.load(self.checkpoint)
+            self.model_without_ddp.load_state_dict(self.checkpoint['model'])
+            self.optimizer.load_state_dict(self.checkpoint['optimizer'])
+            self.lr_scheduler.load_state_dict(self.checkpoint['lr_scheduler'])
+            
+        for epoch in range(0,self.epochs):
+            # ---------------------------------------------------------------------------- #
+            #                                 epoch process                                #
+            # ---------------------------------------------------------------------------- #
+            self.train_one_epoch(epoch)
+            self.lr_scheduler.step()
+            self.evaluate()
+            # ---------------------------------------------------------------------------- #
+            #                                 epoch process                                #
+            # ---------------------------------------------------------------------------- #
 
 
 
@@ -179,6 +234,115 @@ class Instence(NetworkGenerator,DatasetGenerator):
         print('\n\n----- Evaluation Processing -----\n\n')
     
     
+    def train_one_epoch(self ,epoch, print_freq=10):
+        
+        self.model.cuda()
+        self.model.train()
+        metric_logger = utils.MetricLogger(delimiter="  ")
+        metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
+        header = 'Epoch: [{}]'.format(epoch)
+
+        # lr_scheduler = None
+        if epoch == 0:
+            warmup_factor = 1. / 1000
+            warmup_iters = min(1000, len(self.trainloader) - 1)
+
+            # lr_scheduler = utils.warmup_lr_scheduler(self.optimizer, warmup_iters, warmup_factor)
+
+        for images, targets in metric_logger.log_every(self.trainloader, print_freq, header):
+            images = list(image.to(self.device) for image in images)
+            targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
+
+            loss_dict = self.model(images, targets)
+
+            losses = sum(loss for loss in loss_dict.values())
+
+            loss_dict_reduced = utils.reduce_dict(loss_dict)
+            losses_reduced = sum(loss for loss in loss_dict_reduced.values())
+
+            loss_value = losses_reduced.item()
+
+            if not math.isfinite(loss_value):
+                print("Loss is {}, stopping training".format(loss_value))
+                print(loss_dict_reduced)
+                sys.exit(1)
+
+            self.optimizer.zero_grad()
+            losses.backward()
+            self.optimizer.step()
+
+            # if lr_scheduler is not None:
+            self.lr_scheduler.step()
+
+            metric_logger.update(loss=losses_reduced, **loss_dict_reduced)
+            metric_logger.update(lr=self.optimizer.param_groups[0]["lr"])
+
+
+
+
+    def _get_iou_types(self):
+        model_without_ddp =self.model
+        if isinstance(self.model, torch.nn.parallel.DistributedDataParallel):
+            model_without_ddp = self.model.module
+        iou_types = ["bbox"]
+
+        # ------------------------------- for detection ------------------------------ #
+
+        if isinstance(model_without_ddp, torchvision.models.detection.MaskRCNN):
+            iou_types.append("segm")
+
+        # ----------------------------- for segmentation ----------------------------- #
+
+        if isinstance(model_without_ddp, torchvision.models.detection.KeypointRCNN):
+            iou_types.append("keypoints")
+
+        # ------------------------------- for keypoint ------------------------------- #
+
+        return iou_types
+
+
+    @torch.no_grad()
+    def evaluate(self):
+        n_threads = torch.get_num_threads()
+        # FIXME remove this and make paste_masks_in_image run on the GPU
+        torch.set_num_threads(1)
+        cpu_device = torch.device("cpu")
+        self.model.eval()
+        metric_logger = utils.MetricLogger(delimiter="  ")
+        header = 'Test:'
+
+        coco = get_coco_api_from_dataset(self.valloader.dataset)
+        iou_types = _get_iou_types(self.model)
+        coco_evaluator = CocoEvaluator(coco, iou_types)
+
+        for image, targets in metric_logger.log_every(self.valloader, 100, header):
+            image = list(img.to(self.device) for img in image)
+            targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
+
+
+            torch.cuda.synchronize()
+            model_time = time.time()
+            outputs = self.model(image)
+
+            outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
+            model_time = time.time() - model_time
+
+            res = {target["image_id"].item(): output for target, output in zip(targets, outputs)}
+            evaluator_time = time.time()
+            coco_evaluator.update(res)
+            evaluator_time = time.time() - evaluator_time
+            metric_logger.update(model_time=model_time, evaluator_time=evaluator_time)
+
+        # gather the stats from all processes
+        metric_logger.synchronize_between_processes()
+        print("Averaged stats:", metric_logger)
+        coco_evaluator.synchronize_between_processes()
+
+        # accumulate predictions from all images
+        coco_evaluator.accumulate()
+        coco_evaluator.summarize()
+        torch.set_num_threads(n_threads)
+        return coco_evaluator
 
 
 

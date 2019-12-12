@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5aa1eefa-f88d-46be-bc63-24a02c7df3aa" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DocResources/UPDATELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/DocResources/UPDATELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/Config/Detection_Config_Template.json" beforeDir="false" afterPath="$PROJECT_DIR$/Src/Config/Detection_Config_Template.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/config_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/config_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Src/dataset_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/dataset_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/instence.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/instence.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Src/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +55,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -178,6 +173,11 @@
       <option name="presentableId" value="Default" />
       <updated>1556790112114</updated>
       <workItem from="1575884893462" duration="1763000" />
+      <workItem from="1575949844254" duration="151000" />
+      <workItem from="1575950063192" duration="216000" />
+      <workItem from="1575950290445" duration="212000" />
+      <workItem from="1575950535794" duration="158000" />
+      <workItem from="1575950803554" duration="1559000" />
     </task>
     <servers />
   </component>
@@ -185,22 +185,35 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1822" y="264" width="418" height="539" key="FileChooserDialogImpl" timestamp="1575887128442">
+    <state x="1822" y="264" width="424" height="525" key="FileChooserDialogImpl" timestamp="1575950823388">
       <screen x="1080" y="0" width="1920" height="1080" />
     </state>
-    <state x="1822" y="264" width="418" height="539" key="FileChooserDialogImpl/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575887128442" />
-    <state x="0" y="444" width="1037" height="737" key="SettingsEditor" timestamp="1575887730792">
-      <screen x="0" y="0" width="1080" height="1920" />
+    <state x="656" y="393" key="FileChooserDialogImpl/0.27.1920.1053/1920.0.1920.1080@0.27.1920.1053" timestamp="1575950669934" />
+    <state x="2662" y="375" width="424" height="525" key="FileChooserDialogImpl/0.27.1920.987/1920.0.1920.1080@1920.0.1920.1080" timestamp="1575950188914" />
+    <state x="1822" y="375" width="418" height="546" key="FileChooserDialogImpl/1080.0.1920.1080/1080.1080.1920.1080/0.0.1080.1920@1080.0.1920.1080" timestamp="1575949757766" />
+    <state x="1822" y="264" width="418" height="539" key="FileChooserDialogImpl/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575950823388" />
+    <state x="1883" y="27" width="1080" height="737" key="SettingsEditor" timestamp="1575951143775">
+      <screen x="1080" y="0" width="1920" height="1080" />
     </state>
-    <state x="0" y="444" key="SettingsEditor/1080.0.1920.1080/1080.1080.1920.1080/0.0.1080.1920@1080.0.1920.1080" timestamp="1575887730792" />
-    <state x="-104" y="333" width="1037" height="737" key="SettingsEditor/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575887509145" />
-    <state x="191" y="27" width="756" height="935" maximized="true" key="dock-window-1" timestamp="1575884939307">
+    <state x="76" y="279" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080@1920.0.1920.1080" timestamp="1575950501581" />
+    <state x="840" y="277" width="1080" height="737" key="SettingsEditor/0.27.1920.1053/1920.0.1920.1080@0.27.1920.1053" timestamp="1575950693363" />
+    <state x="76" y="168" width="1844" height="737" key="SettingsEditor/0.27.1920.987/1920.0.1920.1080@1920.0.1920.1080" timestamp="1575950312629" />
+    <state x="0" y="444" key="SettingsEditor/1080.0.1920.1080/1080.1080.1920.1080/0.0.1080.1920@1080.0.1920.1080" timestamp="1575949760202" />
+    <state x="1883" y="27" width="1037" height="737" key="SettingsEditor/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575951143775" />
+    <state x="194" y="787" key="com.intellij.ide.util.TipDialog" timestamp="1575950803850">
       <screen x="0" y="27" width="1080" height="1893" />
     </state>
-    <state x="191" y="27" width="756" height="935" maximized="true" key="dock-window-1/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575884939307" />
-    <state x="1248" y="1225" width="1371" height="935" maximized="true" key="dock-window-2" timestamp="1575887168705">
-      <screen x="1080" y="1080" width="1920" height="1080" />
+    <state x="2265" y="434" key="com.intellij.ide.util.TipDialog/0.27.1920.987/1920.0.1920.1080@1920.0.1920.1080" timestamp="1575950537196" />
+    <state x="194" y="787" key="com.intellij.ide.util.TipDialog/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575950803850" />
+    <state x="0" y="27" width="1080" height="1027" maximized="true" key="dock-window-1" timestamp="1575950732913">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
+    <state x="0" y="27" width="1080" height="1027" maximized="true" key="dock-window-1/0.27.1920.1053/1920.0.1920.1080@0.27.1920.1053" timestamp="1575950732913" />
+    <state x="191" y="27" width="756" height="935" maximized="true" key="dock-window-1/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575884939307" />
+    <state x="1657" y="27" width="1343" height="987" key="dock-window-2" timestamp="1575950732913">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1657" y="27" width="1343" height="987" key="dock-window-2/0.27.1920.1053/1920.0.1920.1080@0.27.1920.1053" timestamp="1575950732913" />
     <state x="1248" y="1225" width="1371" height="935" maximized="true" key="dock-window-2/1080.0.1920.1080/1080.1080.1920.1080/0.27.1080.1893@1080.0.1920.1080" timestamp="1575887168705" />
   </component>
 </project>

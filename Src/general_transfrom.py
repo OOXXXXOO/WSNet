@@ -2,14 +2,24 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:09:00
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-02 17:09:00
+# @Last Modified time: 2019-12-10 16:29:46
 
 import torchvision.transforms as T
 from dataset_generator import*
 from torch.utils.data import DataLoader
 import torch
 
-class Image_Transform():
+
+class Compose(object):
+    def __init__(self, transforms):
+        self.transforms = transforms
+
+    def __call__(self, image, target):
+        for t in self.transforms:
+            image, target = t(image, target)
+        return image, target
+
+class Transform():
     """
     The General_Transform class work for MultiMission Data Transform
     The Pytorch-like Transform just work for image data & different Mission
@@ -153,17 +163,7 @@ class Image_Transform():
         
 
 def main():
-    COCO2014=DatasetGenerator()
-    COCO2014.DefaultDataset()
 
-    trainloader=DataLoader(COCO2014,COCO2014.BatchSize,shuffle=True,num_workers=COCO2014.worker_num,collate_fn=detection_collate_fn)
-
-
-    for index,(image,target) in enumerate(trainloader):
-        print('\n\n',index,'\n\n')
-        print(image.size())
-        print(target)
-        exit(0)
 
 
 

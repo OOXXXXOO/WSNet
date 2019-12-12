@@ -37,7 +37,7 @@
             "multiscale_training": true,
             "logdir": "./root/log",
             "devices":"GPU",
-            "gpu_id": 0,
+            "gpu_id": "0",
             "epochs": 200,
             "down_pretrain_model": true,
             "checkpoint_path": "./root/model",

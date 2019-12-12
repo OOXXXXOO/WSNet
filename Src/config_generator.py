@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:07:46
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-09 11:30:27
+# @Last Modified time: 2019-12-10 15:14:56
 
 # Copyright 2019 Winshare
 # 
@@ -32,7 +32,7 @@ import torchvision.datasets as dataset
 class cfg():
     def __init__(self):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        self.configfile = 'Src/Config/Segmentation_Config_Template.json'
+        self.configfile = 'Src/Config/Detection_Config_Template.json'
         
 
 

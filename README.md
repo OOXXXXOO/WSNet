@@ -6,6 +6,9 @@
  
 ## WSNet Quick Training Toolkit
 
+##### This project work for train, validation, test, with general dataset by different model or use the custom dataset that generate by specified data structure.
+
+
 
 
 
