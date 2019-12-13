@@ -2,7 +2,7 @@
 # @Author: Winshare
 # @Date:   2019-12-02 17:08:40
 # @Last Modified by:   Winshare
-# @Last Modified time: 2019-12-12 16:55:28
+# @Last Modified time: 2019-12-13 17:25:06
 
 # Copyright 2019 Winshare
 # 
@@ -51,6 +51,8 @@ import time
 import math
 
 
+
+from torch.utils.tensorboard import SummaryWriter
 
 
 root=os.path.abspath(__file__)
@@ -184,6 +186,37 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
 
 
+
+
+
+
+        # ---------------------------------------------------------------------------- #
+        #                                  tensorboard                                 #
+        # ---------------------------------------------------------------------------- #
+
+        self.writer = SummaryWriter(log_dir=self.logdir,comment='experiment'+str(self.InstanceID))
+        self.start=False
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # ---------------------------------------------------------------------------- #
         #                               Instance Function                              #
         # ---------------------------------------------------------------------------- #
@@ -206,14 +239,20 @@ class Instence(NetworkGenerator,DatasetGenerator):
             self.model_without_ddp.load_state_dict(self.checkpoint['model'])
             self.optimizer.load_state_dict(self.checkpoint['optimizer'])
             self.lr_scheduler.load_state_dict(self.checkpoint['lr_scheduler'])
-            
+        baseloss=0
         for epoch in range(0,self.epochs):
             # ---------------------------------------------------------------------------- #
             #                                 epoch process                                #
             # ---------------------------------------------------------------------------- #
-            self.train_one_epoch(epoch)
+            sumloss=self.train_one_epoch(epoch)
             self.lr_scheduler.step()
             self.evaluate()
+            if epoch==0:
+                baseloss=sumloss
+            if sumloss<baseloss:
+                print("\n\n\n-----Model Update & Save")
+                state = {"model":self.model.state_dict(), "optimizer":self.optimizer.state_dict(), 'epoch':epoch}
+                torch.save(state, os.path.join(self.checkpoint,str(sumloss)+'.pth'))
             # ---------------------------------------------------------------------------- #
             #                                 epoch process                                #
             # ---------------------------------------------------------------------------- #
@@ -248,12 +287,18 @@ class Instence(NetworkGenerator,DatasetGenerator):
             warmup_iters = min(1000, len(self.trainloader) - 1)
 
             # lr_scheduler = utils.warmup_lr_scheduler(self.optimizer, warmup_iters, warmup_factor)
-
+    
         for images, targets in metric_logger.log_every(self.trainloader, print_freq, header):
-            images = list(image.to(self.device) for image in images)
-            targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
-
+            images,targets=self.todevice(images,targets)            
             loss_dict = self.model(images, targets)
+            """
+            {
+                'loss_classifier': tensor(0.0925, device='cuda:0', grad_fn=<NllLossBackward>), 
+                'loss_box_reg': tensor(0.0355, device='cuda:0', grad_fn=<DivBackward0>), 
+                'loss_objectness': tensor(0.0270, device='cuda:0', grad_fn=<BinaryCrossEntropyWithLogitsBackward>), 
+                'loss_rpn_box_reg': tensor(0.0112, device='cuda:0', grad_fn=<DivBackward0>)
+            }
+            """
 
             losses = sum(loss for loss in loss_dict.values())
 
@@ -276,9 +321,24 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
             metric_logger.update(loss=losses_reduced, **loss_dict_reduced)
             metric_logger.update(lr=self.optimizer.param_groups[0]["lr"])
+            return losses
 
 
+    def todevice(self,images,targets):
+        """
+        transform the local data to device 
+        """
+        images = list(image.to(self.device) for image in images)
+        targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
+        return images,targets
+        
+    # ---------------------------------------------------------------------------- #
+    #                                Writer function                               #
+    # ---------------------------------------------------------------------------- #
 
+
+    
+        
 
     def _get_iou_types(self):
         model_without_ddp =self.model
@@ -302,7 +362,7 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
 
     @torch.no_grad()
-    def evaluate(self):
+    def evaluate(self,rate=0.1):
         n_threads = torch.get_num_threads()
         # FIXME remove this and make paste_masks_in_image run on the GPU
         torch.set_num_threads(1)
@@ -315,7 +375,7 @@ class Instence(NetworkGenerator,DatasetGenerator):
         iou_types = _get_iou_types(self.model)
         coco_evaluator = CocoEvaluator(coco, iou_types)
 
-        for image, targets in metric_logger.log_every(self.valloader, 100, header):
+        for image, targets in metric_logger.log_every(self.valloader[:int(len(self.valloader)*rate)], 100, header):
             image = list(img.to(self.device) for img in image)
             targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
 
