@@ -17,7 +17,7 @@ The main purpose of this project :
 * Start a fast training instance on the standard datasets with default pre-trained model.
 *  Automatic build the dataset from original images & labels with **the specified data structure rule**.
 * Support for some state-of-the-art models.  
-* Use Json config file configure the training instance to avoid change the project code.
+* Use Json config file configure the training / validation /inference instance to avoid change the project code.
 
 ****
 
@@ -37,18 +37,20 @@ The main purpose of this project :
 
 ## WSNet project update log
 
-#### Version 3.0(Beta) in 2020 Jan
+#### Version 0.3(Beta) in 2020 Jan
 
 
-* Full Functional Training,Eval
-* Faster Instance Generator
-* Complete Standard DataSet Support
+##### Advanced :
+
 * SOTA Algorithm Support
 * DARTS Fast Training 
 
+##### Feature :
 
+* Tensorboard Monitoring support
+* Automic DataSet General Dataset Generator
 
-#### Version 2.0 
+#### Version 0.2
 
 
 > 2019-Nov plan:
@@ -63,10 +65,6 @@ The main purpose of this project :
 
 * COCO Format Dataset Support
 * Config Class Json System Support
-* General Dataset Generator Class 
-
-
-
 
 
 > 2019-Sep-4
@@ -78,7 +76,7 @@ The main purpose of this project :
 
 ****
 
-1.Constructs a type of model with torchvision default model
+#### 1.Constructs a type of model with torchvision default model
 
     * BackBone-                              MNASNetV1.3
     * Detection-                               Faster R-CNN model with a ResNet-50-FPN
@@ -88,37 +86,17 @@ The main purpose of this project :
 
 With these great model ,we can start different type of mission quickly
 
-2.Constructs a third-party / a state of arts model
+#### 2.Constructs a third-party / a state of arts model
 
-Now support On:
+Now support for:
 
 
     * BackBone-                                   EfficientNets
-    * Detection                                      YoloV3
+    * Detection                                      YoloV3,CascadeRCNN
     * Segmentation                             --
     * Instence Segmentation           -- 
 
 
-
-#### Version 1.0 (aborted)
->2019-May-4
-
-The primary feature of WSNet toolkit in **version 1.0**:
-
-* The custom data structure not has a standard form,so this toolkit rule a easy way to make that support for different NeuroNetwork (For Detection , Segmentation or both like Mask RCNN )
-
-* Detection Support for :
-  * Twostage (Faster RCNN ,Cascade RCNN ,Mask RCNN);
-  * Onestage (YOLO v3 ,SSD);
-
-* Segmentation Support for : 
-    * Deeplab v3+，Cascade Net，Seg Net
-
-In principle , When we run 'datasetbuild' will generate the dataset and relate configure file , if we custom our data with **Data structure RULE.**
-
-You could modified the configure file to change option like gpu-id ，NetWork ...... or download pre-train model.
-
-****
 
 
 
