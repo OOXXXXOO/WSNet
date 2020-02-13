@@ -32,7 +32,7 @@ import torchvision.datasets as dataset
 class cfg():
     def __init__(self):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        self.configfile = 'Src/Config/Detection_Config_Template.json'
+        # self.configfile = configfile
         
 
 

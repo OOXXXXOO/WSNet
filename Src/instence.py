@@ -49,6 +49,7 @@ import os
 import sys
 import time
 import math
+import argparse
 
 
 
@@ -69,6 +70,8 @@ class Instence(NetworkGenerator,DatasetGenerator):
         # ---------------------------------------------------------------------------- #
 
         self.root=root
+
+        self.configfile=configfile
         print('root in :\n',os.path.join(self.root,'..'))
         sys.path.append(os.path.join(sys.path[0],'../'))
         print('workspace in:\n')
@@ -190,13 +193,6 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
 
 
-        # ---------------------------------------------------------------------------- #
-        #                                  tensorboard                                 #
-        # ---------------------------------------------------------------------------- #
-
-        self.writer = SummaryWriter(log_dir=self.logdir,comment='experiment'+str(self.InstanceID))
-        self.start=False
-
         
 
 
@@ -231,6 +227,14 @@ class Instence(NetworkGenerator,DatasetGenerator):
     def default_train(self):
         print('\n\n----- Start Training -----\n\n')
         start_time = time.time()
+
+        # ---------------------------------------------------------------------------- #
+        #                                  tensorboard                                 #
+        # ---------------------------------------------------------------------------- #
+
+        self.writer = SummaryWriter(log_dir=self.logdir,comment='experiment'+str(self.InstanceID))
+        self.start=False
+
         
         
         if self.resume:
@@ -406,13 +410,20 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
 
 
-
+def parser():
+    parsers=argparse.ArgumentParser()
+    parsers.add_argument("--config",default="Src/Config/Detection_Config_Template.json", help="dir of config file")
+    args = parsers.parse_args()
+    return args
 
 
 def main():
-    
+    args=parser()
+    global configfile
+    configfile=args.config
+    print(configfile)
     instence=Instence()
-    instence.default_train()
+    # instence.default_train()
 
 
 
