@@ -22,8 +22,7 @@
 #                           Local STructure Reference                          #
 # ---------------------------------------------------------------------------- #
 
-from config_generator import cfg
-from network_generator import NetworkGenerator
+
 from dataset_generator import DatasetGenerator
 
 # ---------------------------------------------------------------------------- #
@@ -56,13 +55,14 @@ import argparse
 from torch.utils.tensorboard import SummaryWriter
 
 
+
 root=os.path.abspath(__file__)
 print('instence work on ',root)
 
-class Instence(NetworkGenerator,DatasetGenerator):
+class Instence(DatasetGenerator):
     def __init__(self,
     instence_id=0,
-    config_dir='./cfg',
+    configfile='./cfg',
     ):  
 
         # ---------------------------------------------------------------------------- #
@@ -70,7 +70,6 @@ class Instence(NetworkGenerator,DatasetGenerator):
         # ---------------------------------------------------------------------------- #
 
         self.root=root
-
         self.configfile=configfile
         print('root in :\n',os.path.join(self.root,'..'))
         sys.path.append(os.path.join(sys.path[0],'../'))
@@ -78,8 +77,10 @@ class Instence(NetworkGenerator,DatasetGenerator):
         for i in sys.path:
             print(i)
             
-        DatasetGenerator.__init__(self)
-        super(Instence,self).__init__()
+        DatasetGenerator.__init__(self,configfile=configfile)
+
+
+        # super(Instence,self).__init__()
         print('\n\n-----Instence Class Init-----\n\n')
 
         # ---------------------------------------------------------------------------- #
@@ -102,11 +103,8 @@ class Instence(NetworkGenerator,DatasetGenerator):
         #                                   temp part                                  #
         # ---------------------------------------------------------------------------- #
 
-
-
-
         if self.DefaultDataset:
-            self.datasets=DatasetGenerator(transforms=self.transform_compose)
+            self.datasets=DatasetGenerator(transforms=self.transform_compose,configfile=configfile)
             self.datasets.DefaultDatasetFunction()
 
             self.trainset=_coco_remove_images_without_annotations(self.datasets.trainset)
@@ -222,27 +220,39 @@ class Instence(NetworkGenerator,DatasetGenerator):
         self.Enviroment_Info()
         self.DatasetInfo()
         self.NetWorkInfo()
+    
 
 
-    def default_train(self):
-        print('\n\n----- Start Training -----\n\n')
-        start_time = time.time()
 
-        # ---------------------------------------------------------------------------- #
-        #                                  tensorboard                                 #
-        # ---------------------------------------------------------------------------- #
-
-        self.writer = SummaryWriter(log_dir=self.logdir,comment='experiment'+str(self.InstanceID))
-        self.start=False
-
-        
-        
+    def init_train(self):
+        """
+            PROCESS OF TRAIN:
+            1.INIT:
+            if resume：
+                load pretrain model
+            init optimizer
+            init lrscheduler
+            init tensorboard
+        """
         if self.resume:
             assert os.path.exists(self.checkpoint),"Invalid resume model path"
             self.checkpoint=torch.load(self.checkpoint)
             self.model_without_ddp.load_state_dict(self.checkpoint['model'])
             self.optimizer.load_state_dict(self.checkpoint['optimizer'])
             self.lr_scheduler.load_state_dict(self.checkpoint['lr_scheduler'])
+        # ---------------------------------------------------------------------------- #
+        #                                  tensorboard                                 #
+        # ---------------------------------------------------------------------------- #
+        if self.visualization:
+            self.writer = SummaryWriter(log_dir=self.logdir,comment='experiment'+str(self.InstanceID))
+            self.start=False
+        
+
+
+    def default_train(self):
+        print('\n\n----- Start Training -----\n\n')
+        start_time = time.time()
+        self.init_train()
         baseloss=0
         for epoch in range(0,self.epochs):
             # ---------------------------------------------------------------------------- #
@@ -293,6 +303,11 @@ class Instence(NetworkGenerator,DatasetGenerator):
             # lr_scheduler = utils.warmup_lr_scheduler(self.optimizer, warmup_iters, warmup_factor)
     
         for images, targets in metric_logger.log_every(self.trainloader, print_freq, header):
+            
+            print(images)
+            
+            print(targets)
+            
             images,targets=self.todevice(images,targets)            
             loss_dict = self.model(images, targets)
             """
@@ -412,7 +427,7 @@ class Instence(NetworkGenerator,DatasetGenerator):
 
 def parser():
     parsers=argparse.ArgumentParser()
-    parsers.add_argument("--config",default="Src/Config/Detection_Config_Template.json", help="dir of config file")
+    parsers.add_argument("--config",default="Src/Config/Demo.json", help="dir of config file")
     args = parsers.parse_args()
     return args
 
@@ -422,11 +437,10 @@ def parser():
 
 def main():
     args=parser()
-    global configfile
     configfile=args.config
     print(configfile)
-    instence=Instence()
-    # instence.default_train()
+    instence=Instence(configfile=configfile)
+    instence.default_train()
 
 
 

@@ -30,10 +30,10 @@ import torchvision.transforms as T
 import torchvision.datasets as dataset
 
 class cfg():
-    def __init__(self):
+    def __init__(self,configfile=None):
         print('\n\n-----Configure Generator Class Init -----\n\n')
-        # self.configfile = configfile
-        
+        self.configfile=configfile
+
 
 
         # ---------------------------------------------------------------------------- #

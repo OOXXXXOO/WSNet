@@ -41,12 +41,13 @@ from PIL import Image
 
 BusinessCOCODatasetRoot='/media/winshare/98CA9EE0CA9EB9C8/COCO_Dataset'
 
+from network_generator import NetworkGenerator
 
 
 
-class DatasetGenerator(cfg,COCO,Dataset):
+class DatasetGenerator(NetworkGenerator,COCO,Dataset):
 
-    def __init__(self,UseInternet=False,transforms=None):
+    def __init__(self,configfile=None,UseInternet=False,transforms=None):
         """
         UseInterNet=True  => load images by url from internet
         UseInterNet=False => load images by local path
@@ -55,13 +56,14 @@ class DatasetGenerator(cfg,COCO,Dataset):
 
         print('\n\n-----Dataset Generator Class init-----\n\n:')
         
-        cfg.__init__(self)
-        super(DatasetGenerator,self).__init__()
+        NetworkGenerator.__init__(self,configfile=configfile)
+        # super(DatasetGenerator,self).__init__()
         self.UseInternet=UseInternet
         self.DataSetProcessDone=False
         self.transforms=transforms
         self.dataset_function=self.datasets_function_dict[self.MissionType][self.DataSetType]
         self.mode='train'
+        self.configfile=configfile
 
 
 
@@ -351,11 +353,11 @@ class DatasetGenerator(cfg,COCO,Dataset):
 
 
 def main():
-    COCO2014=DatasetGenerator()
+    COCO2014=DatasetGenerator(configfile="Src/Config/Demo.json")
     COCO2014.DefaultDatasetFunction()
     trainset=COCO2014.trainset
-    print(trainset[20])
-    print(COCO2014[20])
+    print(trainset[0])
+    print(COCO2014[0])
 
 
 

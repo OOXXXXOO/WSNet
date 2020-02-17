@@ -32,14 +32,14 @@ import torch
 import torch.utils.model_zoo
 import torchvision.models as models
 from config_generator import *
-
+from config_generator import cfg
 
 
 
 
 class NetworkGenerator(cfg):
 
-    def __init__(self,debug=False):
+    def __init__(self,debug=False,configfile=None):
         """
         The Network Generator have two way.
         1.Constructs a type of model with torchvision default model 
@@ -58,6 +58,7 @@ class NetworkGenerator(cfg):
             * Segmentation             --
             * Instence Segmentation    -- 
         """
+        cfg.__init__(self,configfile=configfile)
         self.debug=debug
         print('\n\n-----Neural Network Class Init-----\n\n')
                 
@@ -80,9 +81,9 @@ class NetworkGenerator(cfg):
         # ---------------------------------------------------------------------------- #
 
         if self.DefaultNetwork:
-            # ─────────────────────────────────────────────────────────────────
             print('\n\n-----Use The Default Network')
             self.modeldict[self.MissionType](pretrained=self.download_pretrain_model)
+            # print(self.model)
             
         # --------------------------------- optimizer -------------------------------- #
 
