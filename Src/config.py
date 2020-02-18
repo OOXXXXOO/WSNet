@@ -43,7 +43,14 @@ class CFG():
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
-        print("Start Read Config :",self.configfile)
+        for i in range(5):
+            print("----------------------------------------------------------------------------")
+        print("------------------------------ Framework Start -----------------------------")
+        for i in range(5):
+            print("----------------------------------------------------------------------------")
+
+       
+        print("-----Read Config :\n\n",self.configfile)
 
 
 
@@ -83,7 +90,7 @@ class CFG():
             }
         }
         self.dataset_support_list=self.datasets_function_dict.keys()
-        print("\n-----Support Mission Mode: ",self.dataset_support_list)
+        print("\n-----Support Mission Mode:\n\n",self.dataset_support_list)
 
         # ---------------------------------------------------------------------------- #
         self.OptimDict={
@@ -136,11 +143,58 @@ class CFG():
         }
         # ---------------------------------------------------------------------------- #
 
-        self.Transform_Dict={
-            """
-            General Transform add
-            """
+        self.Transform_Function_Dict={
+                "adjust_brightness":T.functional.adjust_brightness,
+                "adjust_contrast":T.functional.adjust_contrast,
+                "adjust_gamma":T.functional.adjust_gamma,
+                "adjust_hue":T.functional.adjust_hue,
+                "adjust_saturation":T.functional.adjust_saturation,
+                "affine":T.functional.affine,
+                "crop":T.functional.crop,
+                "erase":T.functional.erase,
+                "five_crop":T.functional.five_crop,
+                "hflip":T.functional.hflip,
+                "normalize":T.functional.normalize,
+                "pad":T.functional.pad,
+                "perspective":T.functional.perspective,
+                "resize":T.functional.resize,
+                "resized_crop":T.functional.resized_crop,
+                "rotate":T.functional.rotate,
+                "ten_crop":T.functional.ten_crop,
+                "to_grayscale":T.functional.to_grayscale,
+                "to_pil_image":T.functional.to_pil_image,
+                "to_tensor":T.functional.to_tensor,
+                "vflip":T.functional.vflip
         }
+        self.Transform_Class_Dict={
+                "Grayscale":T.Grayscale,
+                "Lambda":T.Lambda,
+                "Normalize":T.Normalize,
+                "Pad":T.Pad,
+                "RandomAffine":T.RandomAffine,
+                "RandomApply":T.RandomApply,
+                "RandomChoice":T.RandomChoice,
+                "RandomCrop":T.RandomCrop,
+                "RandomErasing":T.RandomErasing,
+                "RandomGrayscale":T.RandomGrayscale,
+                "RandomHorizontalFlip":T.RandomHorizontalFlip,
+                "RandomOrder":T.RandomOrder,
+                "RandomPerspective":T.RandomPerspective,
+                "RandomResizedCrop":T.RandomResizedCrop,
+                "RandomRotation":T.RandomRotation,
+                "RandomSizedCrop":T.RandomSizedCrop,
+                "RandomVerticalFlip":T.RandomVerticalFlip,
+                "Resize":T.Resize,
+                "Scale":T.Scale,
+                "TenCrop":T.TenCrop,
+                "ToPILImage":T.ToPILImage,
+                "ToTensor":T.ToTensor,
+
+
+        }
+
+
+
         # ---------------------------------------------------------------------------- #
 
         self.Lr_Dict={
@@ -154,16 +208,205 @@ class CFG():
             "CosineAnnealingWarmRestarts":optim.lr_scheduler.CosineAnnealingWarmRestarts
         }
 
+        # ---------------------------------------------------------------------------- #
+        #                               Config in 3 Level                              #
+        # ---------------------------------------------------------------------------- #
+
+
+        # -------------------------------- File Level -------------------------------- #
         self.__configfile=self.configfile
         self.__json=json.load(open(self.__configfile,'r'))
         self.usegpu=False
-
 
         self.MissionType=self.__json['MissionType']
         self.InstanceID=self.__json['instance_id']
         self.Content=self.__json['content']
 
 
+        # ------------------------------- Second Level ------------------------------- #
+        self.Net=self.Content['Net']
+        self.DataSetConfig=self.Content['Dataset']
+        self.Config=self.Content['Config']
+
+        print('\n\n---------------------------------- config ----------------------------------')
+        print('----- Network Config : ')
+        self.print_dict(self.Net)
+        print('\n\n----- Dataset Config : ')
+        self.print_dict(self.DataSetConfig)
+        print('\n\n----- General Config : ')
+        self.print_dict(self.Config)
+        print('---------------------------------- config ----------------------------------')
+
+
+        # -------------------------------- Third Level ------------------------------- #
+        # ---------------------------------------------------------------------------- #
+        #                                      NET                                     #
+        # ---------------------------------------------------------------------------- #
+
+        # self.NetType=self.Net['NetType']
+        self.DefaultNetwork=self.Net["DefaultNetwork"]
+        
+    
+        self.BatchSize=self.Net['BatchSize']
+        if self.Net['BackBone']=='None':
+            self.BackBone=None
+        else:
+            self.BackBone=self.Net['BackBone']
+        
+
+        # --------------------------------- Optimizer -------------------------------- #
+
+        self.optimizer=self.OptimDict[self.Net['Optimizer']]
+        self.learning_rate=self.Net['learning_rate']
+        self.momentum=self.Net['momentum']
+        self.weight_decay=self.Net['weight_decay']
+
+        # ------------------------------- lr_scheduler ------------------------------- #
+
+        self.lr_scheduler=self.Net['lr_scheduler']
+        self.lr_steps=self.Net['lr_steps']
+        self.lr_gamma=self.Net['lr_gamma']
+        self.lr_scheduler=self.Lr_Dict[self.lr_scheduler]
+
+        
+        # ------------------------------- Loss Function ------------------------------ #
+
+        self.Loss_Function=self.Loss_Function_Dict[self.Net['Loss_Function']]()
+        
+
+
+        # ---------------------------------------------------------------------------- #
+        #                                    Dataset                                   #
+        # ---------------------------------------------------------------------------- #
+
+        
+        self.DataSetType=self.DataSetConfig['Type']
+        self.DataSet_Root=self.DataSetConfig['root']
+        self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
+        self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
+        self.DefaultDataset=self.DataSetConfig['DefaultDataset']
+        
+
+        # --------------------------------- Transform -------------------------------- #
+
+        """
+        Because the defalut detection network has transform flow 
+        so the image list should include 3d tensors
+        
+        [
+        [C, H, W],
+        [C, H, W].....
+        ]
+
+        Target should be 
+        list of dict :
+        {
+            boxes:      list of box tensor[n,4]                 (float32)
+            masks:      list of segmentation mask points [n,n]  (float32)
+            keypoints： list of key pointss[n,n]                (float32)
+            labels:     list of index of label[n]               (int64)
+        }
+    
+        For Default Detection:
+
+        The transformations it perform are:
+            - input normalization (mean subtraction and std division)
+            - input / target resizing to match min_size / max_size
+
+        It returns a ImageList for the inputs, and a List[Dict[Tensor]] for the targets
+        
+        """
+        print('\n\n--------------------------------- Transform --------------------------------')
+        self.Transform=self.DataSetConfig['Transform']
+        functionlist=[list(i.keys())[0] for i in self.Transform]
+        paralist=[list(i.values())[0] for i in self.Transform]
+        self.transforms=[]
+        for i in range(len(functionlist)):
+            print("-----Transform function :",functionlist[i]," para : ",paralist[i])
+
+            if paralist[i]=="None":
+                self.transforms.append(self.Transform_Class_Dict[functionlist[i]]())
+                continue
+            if type(paralist[i])==list:
+                self.transforms.append(self.Transform_Class_Dict[functionlist[i]](*paralist[i]))
+                continue
+            # self.transforms.append(
+            #     self.Transform_Function_Dict[functionlist[i]](paralist[i])
+            # )
+    
+
+
+
+        # ---------------------------------------------------------------------------- #
+        #                                    Config                                    #
+        # ---------------------------------------------------------------------------- #
+                
+        self.DistributedDataParallel=self.Config['DistributedDataParallel']
+        self.resume=self.Config['Resume']
+        self.checkpoint=self.Config['checkpoint_path']
+        self.MultiScale_Training=self.Config['multiscale_training']
+        self.logdir=self.Config['logdir']
+        self.devices=self.Config['devices']
+
+        
+        if self.devices=='GPU':
+            self.usegpu=True
+            self.gpu_id=self.Config['gpu_id']
+            os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
+            self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
+            print('--------------------------------- Transform --------------------------------\n\n-----Device:\n\n',self.device)
+        
+        if self.devices=='CPU':
+            self.device=torch.device("cpu")
+
+
+        self.download_pretrain_model=self.Config['down_pretrain_model']
+        self.visualization=self.Config['visualization']
+        self.worker_num=self.Config['worker_num']
+        self.epochs=self.Config['epochs']
+        self.aspect_ratio_factor=self.Config['group_factor']
+
+
         print("\n\n---------------------- Configure Class Init Successful ---------------------\n\n")
 
 
+
+
+
+
+
+
+
+
+
+    # ---------------------------------------------------------------------------- #
+    #                             Config Class Function                            #
+    # ---------------------------------------------------------------------------- #
+
+    def GenerateDefaultConfig(self,mode='detection'):
+        print('Generate Default Config with mode :',mode)
+    
+    def configinfo(self):
+        print('***** Already read Config file ,'+self.__configfile,'*****')
+        print('***** Instance ID : ',self.InstanceID,'*****')
+        print('***** Mission Type : ',self.MissionType,'*****')
+
+    def Enviroment_Info(self):
+        self.print_dict(self.__json)
+        print('\n-------------------------------------------NVCC info:\n')
+        os.system('nvcc -V')
+        print('\n-------------------------------------------GPU info:\n')
+        os.system('nvidia-smi')
+        print('\n-------------------------------------------GPU info:\n')
+
+    
+    def print_dict(self,d,n=0):
+        for k,v in d.items():
+            # print ('\t'*n)
+            if type(v)==type({}):
+                print("%s : {" % k)
+                self.print_dict(v,n+1)
+            else:
+                print("%s : %s" % (k,v))
+        if n!=0:
+            print('\t'*(n-1)+ '}')
