@@ -30,7 +30,6 @@
 import sys
 import os
 from dataset import DATASET
-
 class INSTANCE(DATASET):
     def __init__(self):
         self.configfile="Config/Demo.json"

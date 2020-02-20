@@ -24,7 +24,7 @@
                 ]
             ,
             "Type": "CocoDetection",
-            "root": "./Data/Instance_DataSet_Demo/",
+            "root": "/workspace/WSNets/Data/labelme/demo",
             "train_index_file":"annotation.json",
             "val_index_file":"annotation.json"
         
@@ -45,5 +45,5 @@
 
         }
     },
-    "MissionType": "Detection"
+    "MissionType": "Segmentation"
 }

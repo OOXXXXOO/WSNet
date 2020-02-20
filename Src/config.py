@@ -44,10 +44,10 @@ class CFG():
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
         for i in range(5):
-            print("----------------------------------------------------------------------------")
-        print("------------------------------ Framework Start -----------------------------")
+            print("#####------------------------------------------------------------------#####")
+        print("#####------------------------- Framework Start ------------------------#####")
         for i in range(5):
-            print("----------------------------------------------------------------------------")
+            print("#####------------------------------------------------------------------#####")
 
        
         print("-----Read Config :\n\n",self.configfile)
@@ -80,13 +80,14 @@ class CFG():
             },
             "Segmentation":{
                 "VOC_Segmentation":dataset.VOCSegmentation,
-                "Cityscapes":dataset.Cityscapes
+                "Cityscapes":dataset.Cityscapes,
+                "CocoDetection":dataset.CocoDetection
             },
             "Caption":{
                 "CocoCaptions":dataset.CocoCaptions
             },
             "Instance":{
-                "CocoInstance":dataset.CocoDetection
+                "CocoDetection":dataset.CocoDetection
             }
         }
         self.dataset_support_list=self.datasets_function_dict.keys()
