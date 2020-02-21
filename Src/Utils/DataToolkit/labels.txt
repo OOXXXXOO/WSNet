@@ -1,0 +1,6 @@
+__background__
+hourse
+dog
+panda
+cat
+MobilePhone

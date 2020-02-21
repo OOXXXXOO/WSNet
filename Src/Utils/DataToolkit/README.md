@@ -19,20 +19,48 @@
 
 ### labelmejson transform to coco annotation
 
-### usage:
+* This script work for transform a set of annotated `Labelme JSON` files to one COCO201x-like JSON file. 
+* Support for Detection,Semantic Segmantation ,Instance Segmentation. 
 
-` labelme2coco.py [-h] [--a A] [--l L] [--o O]`
+### usage:
+    
+    labelme2coco.py [-h] [--a A] [--o O] [--v V]
 
 #### optional arguments:
 
-      -h, --help  show this help message and exit
-      --a A       dir of anno file like ./annotation/
-      --l L       dir of label name file like label.txt
-      --o O       dir of output annotation file like annotation.json
+
+    optional arguments:
+    -h, --help  show this help message and exit
+    --a A       dir of anno file like ./annotation/
+    --o O       dir of output annotation file like annotation.json
+    --v V       bool type about output label visualization or not
+
 
 #### example:
 
 ```bash
-python labelme2coco.py --l labels.txt --a ./labelme/demo/train2014/ --o annotation.json
+python labelme2coco.py  --a ./labelme/demo/train2014/ --o ./dataset --v True
 ```
 
+The Script will be generate :
+* `labels.txt` include the class name of whole cocojson file
+* The `annotation.json` with **COCO JSON** format,
+* The Label file of Mask
+* The Visualization of label:
+![](./dataset/viz/cat-11_viz_label.png)
+
+****
+
+The transformed folder structure like:
+
+```bash
+---root
+    |---dataset
+        |---label
+            |---label1.png(or npy,npz)
+            |---label2.png...
+        |---viz
+            |---label1_viz.png
+            |---label2_viz.png
+        |---annotations.json
+```

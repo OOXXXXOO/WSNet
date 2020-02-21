@@ -26,7 +26,7 @@
 
 
 from pycocotools.coco import COCO
-
+import glob
 def polygons_to_mask(img_shape, polygons, shape_type=None):
     logger.warning(
         "The 'polygons_to_mask' function is deprecated, "
@@ -140,6 +140,13 @@ def sample():
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('json_path')
+    parser.add_argument('-o', '--out', default=None)
+    args = parser.parse_args()
+    
+    
+
 
     
     print()

@@ -7,56 +7,101 @@ from labelme import utils
 import numpy as np
 import glob
 import PIL.Image
-
+from tqdm import tqdm
+import imgviz
+import os
 class labelme2coco(object):
-    def __init__(self,label=None,labelme_json=[],save_json_path='./new.json'):
+    def __init__(self,labelme_json=[],outputpath='./',visualization=False):
         '''
         :param labelme_json: 所有labelme的json文件路径组成的列表
         :param save_json_path: json保存位置
         '''
         self.labelme_json=labelme_json
-        self.save_json_path=save_json_path
+        self.save_json_path=outputpath
         self.images=[]
         self.categories=[]
         self.annotations=[]
-        # self.data_coco = {}
-        self.label=label
+        self.label=['__background__']
         self.annID=1
         self.height=0
         self.width=0
+        self.visualization=visualization
 
         self.save_json()
+        with open(outputpath+'labels.txt',"w") as labelfp:
+            self.label=[i+"\n" for i in self.label]
+            labelfp.writelines(self.label)
+            labelfp.close()
 
     def data_transfer(self):
+        label_name_to_value = {'_background_': 0}
         for num,json_file in enumerate(self.labelme_json):
             print('processing file :',json_file)
+            lbl=None
             with open(json_file,'r') as fp:
                 data = json.load(fp)  # 加载json文件
-                # print(data)
-                self.images.append(self.image(data,num))
-                for shapes in data['shapes']:
-                    label=shapes['label']
-                    if label not in self.label:
-                        self.categories.append(self.categorie(label))
-                        self.label.append(label)
-                    points=shapes['points']
-                    self.annotations.append(self.annotation(points,label,num))
+
+                image={}
+                img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
+                height, width = img.shape[:2]
+                
+                image['height']=height
+                image['width'] = width
+                image['id']=num+1
+                image['file_name'] = data['imagePath'].split('/')[-1]
+
+                self.height=height
+                self.width=width
+
+
+                self.images.append(image)
+                
+                for num,shape in tqdm(enumerate(sorted(data['shapes'], key=lambda x: len(x['points']),reverse=True))):
+                    
+                    label_name = None
+                    label_name = shape['label'] 
+                    if label_name in label_name_to_value.keys():
+                        label_value = label_name_to_value[label_name]
+                    else:
+                        self.categories.append(self.categorie(label_name))
+                        self.label.append(label_name)
+                        label_value = len(label_name_to_value)
+                        label_name_to_value[label_name] = label_value
+                    
+                    points=shape['points']
+                    self.annotations.append(self.annotation(points,label_name,num))
                     self.annID+=1
 
-    def image(self,data,num):
-        image={}
-        img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
-        height, width = img.shape[:2]
-        img = None
-        image['height']=height
-        image['width'] = width
-        image['id']=num+1
-        image['file_name'] = data['imagePath'].split('/')[-1]
+                lbl, _ = utils.shapes_to_label(
+                    img.shape, data['shapes'], label_name_to_value
+                )
 
-        self.height=height
-        self.width=width
+                labelpath=os.path.join(self.save_json_path,"./label/")
+                if not os.path.exists(labelpath):
+                    print("Create path in ",labelpath)
+                    os.makedirs(labelpath)
+            
+                filename=image['file_name'].split('.')[0]
+                
+                labelfile=labelpath+filename+"_label.png"
+                print("write in:",labelfile)
+                cv2.imwrite(labelfile,lbl)
+                if self.visualization:
+                    vizpath=os.path.join(self.save_json_path,"./viz/")
+                    if not os.path.exists(vizpath):
+                        os.makedirs(vizpath)
+                    lbl_viz = imgviz.label2rgb(
+                        label=lbl,
+                        img=imgviz.rgb2gray(img),
+                        label_names=self.label,
+                        font_size=30,
+                        loc='rb',
+                    )
+                    plt.imshow(lbl_viz),plt.show()
+                    plt.imsave(vizpath+filename+"_viz_label.png",lbl_viz)
+                    
 
-        return image
+                
 
     def categorie(self,label):
         categorie={}
@@ -134,15 +179,15 @@ class labelme2coco(object):
         self.data_coco = self.data2coco()
         # 保存json文件
         print("whole annotation file already save in :",self.save_json_path)
-        json.dump(self.data_coco, open(self.save_json_path, 'w'), indent=4)  # indent=4 更加美观显示
+        json.dump(self.data_coco, open(self.save_json_path+"annotation.json", 'w'), indent=4)  # indent=4 更加美观显示
 
 
 
 def parser():
     parsers=argparse.ArgumentParser()
-    parsers.add_argument("--a",default="./annotation/", help="dir of anno file like ./annotation/")
-    parsers.add_argument("--l",default="label.txt", help="dir of label name file like label.txt")
-    parsers.add_argument("--o",default="annotation.json", help="dir of output annotation file like annotation.json")
+    parsers.add_argument("--a",default="./annotation/", type=str,help="dir of anno file like ./annotation/")
+    parsers.add_argument("--o",default="annotation.json",type=str, help="dir of output annotation file like annotation.json")
+    parsers.add_argument("--v",default=False,type=bool, help="bool type about output label visualization or not")
     args = parsers.parse_args()
     return args
 
@@ -150,28 +195,11 @@ def parser():
 
 
 def main():
-
-
-    # label=['background','dog','hourse','cat','panda']
-    # labelme_annotation_path='./WSNet/Data/DetectionDatasetDemo/image/*.json'
-    # output_annotation_path='annotation.json'
-    # labelme_json=glob.glob(labelme_annotation_path)
-    # labelme2coco(label=label,labelme_json,output_annotation_path)
     args=parser()
     anno=args.a
-    labels=args.l
-
-    """
-    labels need from label.txt  2 labelname list
-    """
-    with open(labels,'r') as labelfp:
-        lines = labelfp.readlines()
-    lines=[str(i)[:-1] for i in lines]
-    print("class name:\n",lines)
     output=args.o
-
     labelme_json=glob.glob(anno+'*.json')
-    labelme2coco(label=lines,labelme_json=labelme_json,save_json_path=output)
+    labelme2coco(labelme_json=labelme_json,outputpath=output,visualization=args.v)
 
 if __name__ == '__main__':
     main()

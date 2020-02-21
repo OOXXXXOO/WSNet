@@ -333,38 +333,6 @@
       "group_id": null,
       "shape_type": "polygon",
       "flags": {}
-    },
-    {
-      "label": "panda",
-      "points": [
-        [
-          96.01223241590213,
-          124.77064220183486
-        ],
-        [
-          288.9785932721712,
-          253.21100917431193
-        ]
-      ],
-      "group_id": null,
-      "shape_type": "rectangle",
-      "flags": {}
-    },
-    {
-      "label": "panda",
-      "points": [
-        [
-          3.963302752293579,
-          66.20795107033639
-        ],
-        [
-          146.01223241590213,
-          182.56880733944953
-        ]
-      ],
-      "group_id": null,
-      "shape_type": "rectangle",
-      "flags": {}
     }
   ],
   "imagePath": "panda.jpeg",
