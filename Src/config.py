@@ -36,7 +36,7 @@ import torch.nn.functional as F
 import torch
 import torchvision.transforms as T
 import torchvision.datasets as dataset
-
+from Utils.Transform.transform import GeneralTransform
 class CFG():
     def __init__(self):
 
@@ -142,57 +142,7 @@ class CFG():
             ,"SoftMarginLoss":nn.SoftMarginLoss 
             ,"TripletMarginLoss":nn.TripletMarginLoss
         }
-        # ---------------------------------------------------------------------------- #
-
-        self.Transform_Function_Dict={
-                "adjust_brightness":T.functional.adjust_brightness,
-                "adjust_contrast":T.functional.adjust_contrast,
-                "adjust_gamma":T.functional.adjust_gamma,
-                "adjust_hue":T.functional.adjust_hue,
-                "adjust_saturation":T.functional.adjust_saturation,
-                "affine":T.functional.affine,
-                "crop":T.functional.crop,
-                "erase":T.functional.erase,
-                "five_crop":T.functional.five_crop,
-                "hflip":T.functional.hflip,
-                "normalize":T.functional.normalize,
-                "pad":T.functional.pad,
-                "perspective":T.functional.perspective,
-                "resize":T.functional.resize,
-                "resized_crop":T.functional.resized_crop,
-                "rotate":T.functional.rotate,
-                "ten_crop":T.functional.ten_crop,
-                "to_grayscale":T.functional.to_grayscale,
-                "to_pil_image":T.functional.to_pil_image,
-                "to_tensor":T.functional.to_tensor,
-                "vflip":T.functional.vflip
-        }
-        self.Transform_Class_Dict={
-                "Grayscale":T.Grayscale,
-                "Lambda":T.Lambda,
-                "Normalize":T.Normalize,
-                "Pad":T.Pad,
-                "RandomAffine":T.RandomAffine,
-                "RandomApply":T.RandomApply,
-                "RandomChoice":T.RandomChoice,
-                "RandomCrop":T.RandomCrop,
-                "RandomErasing":T.RandomErasing,
-                "RandomGrayscale":T.RandomGrayscale,
-                "RandomHorizontalFlip":T.RandomHorizontalFlip,
-                "RandomOrder":T.RandomOrder,
-                "RandomPerspective":T.RandomPerspective,
-                "RandomResizedCrop":T.RandomResizedCrop,
-                "RandomRotation":T.RandomRotation,
-                "RandomSizedCrop":T.RandomSizedCrop,
-                "RandomVerticalFlip":T.RandomVerticalFlip,
-                "Resize":T.Resize,
-                "Scale":T.Scale,
-                "TenCrop":T.TenCrop,
-                "ToPILImage":T.ToPILImage,
-                "ToTensor":T.ToTensor,
-
-
-        }
+       
 
 
 
@@ -289,6 +239,8 @@ class CFG():
         
 
         # --------------------------------- Transform -------------------------------- #
+        # ---------------------------------------------------------------------------- #
+
 
         """
         Because the defalut detection network has transform flow 
@@ -321,20 +273,38 @@ class CFG():
         self.Transform=self.DataSetConfig['Transform']
         functionlist=[list(i.keys())[0] for i in self.Transform]
         paralist=[list(i.values())[0] for i in self.Transform]
-        self.transforms=[]
-        for i in range(len(functionlist)):
-            print("-----Transform function :",functionlist[i]," para : ",paralist[i])
+        
+        
+        
+        
+        self.transforms=GeneralTransform(self.TransformDict)
+        self.target_transform=self.transforms
+        # for i in range(len(functionlist)):
+        #     print("-----Transform function :",functionlist[i]," para : ",paralist[i])
 
-            if paralist[i]=="None":
-                self.transforms.append(self.Transform_Class_Dict[functionlist[i]]())
-                continue
-            if type(paralist[i])==list:
-                self.transforms.append(self.Transform_Class_Dict[functionlist[i]](*paralist[i]))
-                continue
-            # self.transforms.append(
-            #     self.Transform_Function_Dict[functionlist[i]](paralist[i])
-            # )
-    
+        #     if paralist[i]=="None":
+        #         self.transforms.append(self.Transform_Class_Dict[functionlist[i]]())
+        #         continue
+        #     if type(paralist[i])==list:
+        #         self.transforms.append(self.Transform_Class_Dict[functionlist[i]](*paralist[i]))
+        #         continue
+        #     # self.transforms.append(
+        #     #     self.Transform_Function_Dict[functionlist[i]](paralist[i])
+        #     # )
+
+        # for i in range(len(functionlist)):
+        #     print("-----Transform function :",functionlist[i]," para : ",paralist[i])
+        #     if paralist[i]!="None": 
+        #         self.transforms.append(
+        #             self.Transform_Class_Dict[functionlist[i]](*paralist[i])
+        #         )
+        #     else:
+        #         self.transforms.append(
+        #             self.Transform_Class_Dict[functionlist[i]]()
+        #         )
+            
+
+
 
 
 
