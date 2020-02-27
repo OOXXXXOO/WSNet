@@ -30,8 +30,9 @@ import torchvision.transforms as T
 import os
 import glob
 import PIL.Image as Image
-
-
+import matplotlib.pyplot as plt
+import numpy as np
+from custom import *
 Transform_Function_Dict={
                 "adjust_brightness":T.functional.adjust_brightness,
                 "adjust_contrast":T.functional.adjust_contrast,
@@ -88,6 +89,7 @@ class Compose(object):
         self.transforms = transforms
     def __call__(self, data):
         for t in self.transforms:
+            print(t)
             data = t(data)
         return data
 
@@ -246,24 +248,48 @@ def main():
     
     # ---------------------------------- Usage: ---------------------------------- #
     
+
+
+
     DemoTransformDict=[
-            {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]},
+            # {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]},
             {"RandomResizedCrop":512},
             {"RandomRotation":90},
-            {"ToTensor":"None"}
+            # {"ToTensor":"None"}
         ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Imagelist=glob.glob("/workspace/WSNets/Data/labelme/demo/train2014/*.jpg")
 
     images=[]
     for i in Imagelist:
         images.append(Image.open(i))
+        
 
 
     # Detection:
 
     A=GeneralTransform(DemoTransformDict,"Detection")
 
-    
+    image_transform=A.image_transform
+    for i in images:
+        img=image_transform(i)
+        plt.imshow(np.array(img)),plt.show()
+
     # Segmentation:
 
 

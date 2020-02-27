@@ -280,6 +280,8 @@ class CFG():
         self.transforms=GeneralTransform(self.TransformDict)
         self.target_transform=self.transforms
         # for i in range(len(functionlist)):
+
+        
         #     print("-----Transform function :",functionlist[i]," para : ",paralist[i])
 
         #     if paralist[i]=="None":
