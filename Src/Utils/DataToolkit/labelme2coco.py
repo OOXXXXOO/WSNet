@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    labelme2coco.py                                    :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/28 11:47:12 by winshare          #+#    #+#              #
+#    Updated: 2020/02/28 11:50:17 by winshare         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Copyright 2020 winshare
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,18 +23,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    labelme2coco.py                                    :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/02/25 18:19:36 by winshare          #+#    #+#              #
-#    Updated: 2020/02/25 18:19:36 by winshare         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 
 

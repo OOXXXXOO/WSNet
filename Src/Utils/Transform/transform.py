@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    transform.py                                       :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
+#    Updated: 2020/02/28 19:46:27 by winshare         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Copyright 2020 winshare
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,50 +24,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    transform.py                                       :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/02/18 15:25:09 by winshare          #+#    #+#              #
-#    Updated: 2020/02/18 15:25:09 by winshare         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+
 
 
 import sys
-import torchvision.transforms as T
+import custom as T
 import os
 import glob
 import PIL.Image as Image
 import matplotlib.pyplot as plt
 import numpy as np
 from custom import *
-Transform_Function_Dict={
-                "adjust_brightness":T.functional.adjust_brightness,
-                "adjust_contrast":T.functional.adjust_contrast,
-                "adjust_gamma":T.functional.adjust_gamma,
-                "adjust_hue":T.functional.adjust_hue,
-                "adjust_saturation":T.functional.adjust_saturation,
-                "affine":T.functional.affine,
-                "crop":T.functional.crop,
-                "erase":T.functional.erase,
-                "five_crop":T.functional.five_crop,
-                "hflip":T.functional.hflip,
-                "normalize":T.functional.normalize,
-                "pad":T.functional.pad,
-                "perspective":T.functional.perspective,
-                "resize":T.functional.resize,
-                "resized_crop":T.functional.resized_crop,
-                "rotate":T.functional.rotate,
-                "ten_crop":T.functional.ten_crop,
-                "to_grayscale":T.functional.to_grayscale,
-                "to_pil_image":T.functional.to_pil_image,
-                "to_tensor":T.functional.to_tensor,
-                "vflip":T.functional.vflip
-                }
+# Transform_Function_Dict={
+#                 "adjust_brightness":T.functional.adjust_brightness,
+#                 "adjust_contrast":T.functional.adjust_contrast,
+#                 "adjust_gamma":T.functional.adjust_gamma,
+#                 "adjust_hue":T.functional.adjust_hue,
+#                 "adjust_saturation":T.functional.adjust_saturation,
+#                 "affine":T.functional.affine,
+#                 "crop":T.functional.crop,
+#                 "erase":T.functional.erase,
+#                 "five_crop":T.functional.five_crop,
+#                 "hflip":T.functional.hflip,
+#                 "normalize":T.functional.normalize,
+#                 "pad":T.functional.pad,
+#                 "perspective":T.functional.perspective,
+#                 "resize":T.functional.resize,
+#                 "resized_crop":T.functional.resized_crop,
+#                 "rotate":T.functional.rotate,
+#                 "ten_crop":T.functional.ten_crop,
+#                 "to_grayscale":T.functional.to_grayscale,
+#                 "to_pil_image":T.functional.to_pil_image,
+#                 "to_tensor":T.functional.to_tensor,
+#                 "vflip":T.functional.vflip
+#                 }
 
 
 Transform_Class_Dict={
@@ -96,53 +98,106 @@ class Compose(object):
 
 
 class target_transform():
-    def __init__(self,transformlist=None):
+    def __init__(self,transformlist=None,randomdict=None):
+        """
+        target transform will recieve the transformlist & random transform parameter in image transform
+
+        if the target is dictionry:
+            all the position relate transform will be process
+
+        if the target is ndarray:
+            will process all transform after remove the pixel value relate transform
+
+        """
         print("-----target transform")
         assert not transformlist==None,"Invalid Target Transform List"
+        self.transformlist=transformlist
         self.TargetNeedPara={
-            "Pad":T.Pad,
-            "Resize":T.Resize,
-            "Scale":T.Scale,
-            "TenCrop":T.TenCrop
+                "Pad":T.Pad,#填充
+                "Resize":T.Resize,
+                "Scale":T.Scale,
+                "TenCrop":T.TenCrop
         }
         self.random_transform={
-            "RandomAffine":T.RandomAffine,#随机仿射变换
-            "RandomCrop":T.RandomCrop,#随机自由裁切
-            "RandomErasing":T.RandomErasing,#随机擦除
-            "RandomGrayscale":T.RandomGrayscale,#随机灰度
-            "RandomHorizontalFlip":T.RandomHorizontalFlip,#随机水平翻转
-            "RandomPerspective":T.RandomPerspective,#随机透视变换
-            "RandomResizedCrop":T.RandomResizedCrop,#随机重采样并裁切
-            "RandomRotation":T.RandomRotation,#随机旋转
-            "RandomVerticalFlip":T.RandomVerticalFlip,#随机垂直翻转
+                "RandomAffine":T.RandomAffine,#随机仿射变换
+                "RandomCrop":T.RandomCrop,#随机自由裁切
+                "RandomErasing":T.RandomErasing,#随机擦除
+                "RandomGrayscale":T.RandomGrayscale,#随机灰度
+                "RandomHorizontalFlip":T.RandomHorizontalFlip,#随机水平翻转
+                "RandomPerspective":T.RandomPerspective,#随机透视变换
+                "RandomResizedCrop":T.RandomResizedCrop,#随机重采样并裁切
+                "RandomRotation":T.RandomRotation,#随机旋转
+                "RandomVerticalFlip":T.RandomVerticalFlip,#随机垂直翻转
+        }
+        self.ndarray_transform={
+                "Pad":T.Pad,
+                "RandomAffine":T.RandomAffine,
+                "RandomApply":T.RandomApply,
+                "RandomChoice":T.RandomChoice,
+                "RandomCrop":T.RandomCrop,
+                "RandomErasing":T.RandomErasing,
+                "RandomHorizontalFlip":T.RandomHorizontalFlip,
+                "RandomOrder":T.RandomOrder,
+                "RandomPerspective":T.RandomPerspective,
+                "RandomResizedCrop":T.RandomResizedCrop,
+                "RandomRotation":T.RandomRotation,
+                "RandomSizedCrop":T.RandomSizedCrop,
+                "RandomVerticalFlip":T.RandomVerticalFlip,
+                "Resize":T.Resize,
+                "Scale":T.Scale,
+                "TenCrop":T.TenCrop,
+                "ToPILImage":T.ToPILImage,
+                "ToTensor":T.ToTensor
+        }
+        self.dict_transform={
+                "Pad":T.Pad,
+                "RandomCrop":T.RandomCrop,
+                "RandomErasing":T.RandomErasing,
+                "RandomHorizontalFlip":T.RandomHorizontalFlip,
+                "RandomPerspective":T.RandomPerspective,
+                "RandomResizedCrop":T.RandomResizedCrop,
+                "RandomRotation":T.RandomRotation,
+                "RandomSizedCrop":T.RandomSizedCrop,
+                "RandomVerticalFlip":T.RandomVerticalFlip,
+                "Resize":T.Resize,
+                "Scale":T.Scale,
+                "TenCrop":T.TenCrop
         }
         self.target_transforms=[]
-        functionlist=[list(i.keys())[0] for i in transformlist]
-        paralist=[list(i.values())[0] for i in transformlist]
-        for i in range(len(functionlist)):
-            if functionlist[i] in self.random_transform.keys():
-                if type(paralist[i])==list:
-                    
-                    function=Transform_Class_Dict[functionlist[i]](*paralist[i])
-                    
-                else:
-                    para=paralist[i]
-                    function=Transform_Class_Dict[functionlist[i]](para)
+        self.dict,self.arr=self.filter()
+        self.target_dict_transforms=Compose(self.dict)
+        self.target_arr_transforms=Compose(self.arr)
 
-                
-                A=function.__repr__()
-                print("-----Random Function & Para:",A)
 
-            if functionlist[i] in self.TargetNeedPara.keys():
-                para=paralist[i]
-                print(para)
-            
-            else:
-                print("-----Warning : Unnecessary Transform for Target has been deprecated",functionlist[i])
-        self.target_transforms=Compose(self.target_transforms)
+
+
+
+
+
     def __call__(self,target):
-        return self.target_transforms(target)
+        if isinstance(target,dict):
+            return self.target_dict_transforms(target)
+        else:
+            return self.target_arr_transforms(target)
+    
+    def filter(self):
 
+        """
+        1. classify the dict/arr create dict & arr list
+        2. classify the random or not ,init the para
+        3. return the dict compose and arr compose
+         
+    
+        """
+
+        functionlist=[list(i.keys())[0] for i in self.transformlist]
+        paralist=[list(i.values())[0] for i in self.transformlist]
+        dict_=[]
+        arr_=[]
+        if functionlist[i] in self.
+
+
+        return dict_,arr_
 
 
 class image_transform():
@@ -207,6 +262,20 @@ class GeneralTransform():
         __call__:(image,target)
         return transformed image,target
 
+
+
+        Random transform will be different  
+        
+        Whole Structurelike:
+                                  |->ndarray_transform<---------|______
+                       |->target->|->dict_vector_transform <----|filter|
+        transformlist->|                                        |
+                       |->image-->|->image_transform->|->random_para_dict
+
+        The target in different mission just include two support way:
+        image->image mask label | ndarray
+        image->dict label       | dict
+        
  
         """
         SupportMission=[
@@ -219,8 +288,9 @@ class GeneralTransform():
         print("----------------------------- GeneralTransform -----------------------------")
         assert not transformlist==None,"Invalid General Transform List"
         assert Mission in SupportMission,"Invalid Transform Dictionary"
+        self.Mission=Mission
         self.image_transform=image_transform(transformlist=transformlist)
-        self.target_transform=target_transform(transformlist=transformlist)
+        self.target_transform=target_transform(transformlist=transformlist,Mission=self.Mission)
 
 
     def __call__(self,images,targets):

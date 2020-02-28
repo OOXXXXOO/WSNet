@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    custom.py                                          :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/28 18:14:02 by winshare          #+#    #+#              #
+#    Updated: 2020/02/28 18:35:16 by winshare         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Copyright 2020 winshare
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +38,108 @@ import numbers
 import types
 import collections
 import warnings
-import torchvision.transforms.transforms as F
+import torchvision.transforms.functional as F
+# def _is_pil_image(img):
+#     if accimage is not None:
+#         return isinstance(img, (Image.Image, accimage.Image))
+#     else:
+#         return isinstance(img, Image.Image)
+def _get_image_size(img):
+    if F._is_pil_image(img):
+        return img.size
+    elif isinstance(img, torch.Tensor) and img.dim() > 2:
+        return img.shape[-2:][::-1]
+    else:
+        raise TypeError("Unexpected type {}".format(type(img)))
+
+
+
+_pil_interpolation_to_str = {
+    Image.NEAREST: 'PIL.Image.NEAREST',
+    Image.BILINEAR: 'PIL.Image.BILINEAR',
+    Image.BICUBIC: 'PIL.Image.BICUBIC',
+    Image.LANCZOS: 'PIL.Image.LANCZOS',
+    Image.HAMMING: 'PIL.Image.HAMMING',
+    Image.BOX: 'PIL.Image.BOX',
+}
+
+
+class ToTensor(object):
+    """Convert a ``PIL Image`` or ``numpy.ndarray`` to tensor.
+
+    Converts a PIL Image or numpy.ndarray (H x W x C) in the range
+    [0, 255] to a torch.FloatTensor of shape (C x H x W) in the range [0.0, 1.0]
+    if the PIL Image belongs to one of the modes (L, LA, P, I, F, RGB, YCbCr, RGBA, CMYK, 1)
+    or if the numpy.ndarray has dtype = np.uint8
+
+    In the other cases, tensors are returned without scaling.
+    """
+
+    def __call__(self, pic):
+        """
+        Args:
+            pic (PIL Image or numpy.ndarray): Image to be converted to tensor.
+
+        Returns:
+            Tensor: Converted image.
+        """
+        return F.to_tensor(pic)
+
+
+    def __repr__(self):
+        return self.__class__.__name__ + '()'
+
+
+
+class ToPILImage(object):
+    """Convert a tensor or an ndarray to PIL Image.
+
+    Converts a torch.*Tensor of shape C x H x W or a numpy ndarray of shape
+    H x W x C to a PIL Image while preserving the value range.
+
+    Args:
+        mode (`PIL.Image mode`_): color space and pixel depth of input data (optional).
+            If ``mode`` is ``None`` (default) there are some assumptions made about the input data:
+             - If the input has 4 channels, the ``mode`` is assumed to be ``RGBA``.
+             - If the input has 3 channels, the ``mode`` is assumed to be ``RGB``.
+             - If the input has 2 channels, the ``mode`` is assumed to be ``LA``.
+             - If the input has 1 channel, the ``mode`` is determined by the data type (i.e ``int``, ``float``,
+               ``short``).
+
+    .. _PIL.Image mode: https://pillow.readthedocs.io/en/latest/handbook/concepts.html#concept-modes
+    """
+    def __init__(self, mode=None):
+        self.mode = mode
+
+    def __call__(self, pic):
+        """
+        Args:
+            pic (Tensor or numpy.ndarray): Image to be converted to PIL Image.
+
+        Returns:
+            PIL Image: Image converted to PIL Image.
+
+        """
+        return F.to_pil_image(pic, self.mode)
+
+
+    def __repr__(self):
+        format_string = self.__class__.__name__ + '('
+        if self.mode is not None:
+            format_string += 'mode={0}'.format(self.mode)
+        format_string += ')'
+        return format_string
+
+
+
+
+
+
+
+
+
+
+
 
 class Normalize(object):
     """Normalize a tensor image with mean and standard deviation.

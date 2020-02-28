@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    dataset.py                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
+#    Updated: 2020/02/28 12:21:36 by winshare         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Copyright 2020 winshare
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +24,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    dataset.py                                         :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/02/18 15:23:49 by winshare          #+#    #+#              #
-#    Updated: 2020/02/18 15:23:49 by winshare         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+
 
 # ---------------------------- Official Reference ---------------------------- #
 
