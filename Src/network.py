@@ -6,7 +6,11 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2020/02/28 11:50:20 by winshare         ###   ########.fr        #
+=======
+#    Updated: 2020/03/04 21:40:09 by winshare         ###   ########.fr        #
+>>>>>>> push test
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,7 +118,12 @@ class NETWORK(CFG):
 
 
 
+<<<<<<< HEAD
 
+=======
+        if self.download_pretrain_model:
+            self._initialize_weights(self.model)
+>>>>>>> push test
 
 
 
@@ -122,6 +131,23 @@ class NETWORK(CFG):
         #                             DefaultNetwork Option                            #
         # ---------------------------------------------------------------------------- #
 
+<<<<<<< HEAD
+=======
+    def _initialize_weights(self,model):
+        for m in model.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, math.sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+            elif isinstance(m, nn.Linear):
+                m.weight.data.normal_(0, 0.01)
+                m.bias.data.zero_()
+
+>>>>>>> push test
 
     def DefaultKeyPoint(self,pretrained=False, progress=True):
         """
@@ -168,7 +194,11 @@ class NETWORK(CFG):
             print('\n\n----------------',self.model,'---------------\n\n')
 
 
+<<<<<<< HEAD
     def DefaultSegmentation(self,pretrained=False, progress=True, num_classes=21, aux_loss=None):
+=======
+    def DefaultSegmentation(self,pretrained=False, progress=True, num_classes=2, aux_loss=None):
+>>>>>>> push test
         """
         Constructs a DeepLabV3 model with a ResNet-50 backbone.
 
@@ -214,6 +244,7 @@ class NETWORK(CFG):
     
     # ----------------------------- Collate Function for Temperory ----------------------------- #
 
+<<<<<<< HEAD
     def collate_fn(self, batch):
         paths, imgs, targets = list(zip(*batch))
         # Remove empty placeholder targets
@@ -229,3 +260,41 @@ class NETWORK(CFG):
         imgs = torch.stack([resize(img, self.img_size) for img in imgs])
         self.batch_count += 1
         return paths, imgs, targets
+=======
+    # def collate_fn(self, batch):
+    #     paths, imgs, targets = list(zip(*batch))
+    #     # Remove empty placeholder targets
+    #     targets = [boxes for boxes in targets if boxes is not None]
+    #     # Add sample index to targets
+    #     for i, boxes in enumerate(targets):
+    #         boxes[:, 0] = i
+    #     targets = torch.cat(targets, 0)
+    #     # Selects new image size every tenth batch
+    #     if self.multiscale and self.batch_count % 10 == 0:
+    #         self.img_size = random.choice(range(self.min_size, self.max_size + 1, 32))
+    #     # Resize images to input shape
+    #     imgs = torch.stack([resize(img, self.img_size) for img in imgs])
+    #     self.batch_count += 1
+    #     return paths, imgs, targets
+
+    def collate_fn(self,batch):
+        images,targets=list(zip(*batch))
+        print('target',targets.size())
+        images=torch.stack(images,dim=0)
+
+        return images,targets
+
+
+
+def main():
+    input=torch.randn((2,3,768,768))
+
+    model=models.segmentation.deeplabv3_resnet101(pretrained=False,num_classes=2)
+    output=model(input)
+    print(output.size())
+
+if __name__ == '__main__':
+    main()
+    
+
+>>>>>>> push test

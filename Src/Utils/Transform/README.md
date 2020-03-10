@@ -53,10 +53,17 @@ self.image_transform: list of image transform
         Random transform will be different  
         
         Whole Structurelike:
+<<<<<<< HEAD
                                   |->ndarray_transform<---------|______
                        |->target->|->dict_vector_transform <----|filter|
         transformlist->|                                        |
                        |->image-->|->image_transform->|->random_para_dict
+=======
+                                        |->ndarray_transform<---------|______
+                             |->target->|->dict_vector_transform <----|filter|
+        keys->transformlist->|                                        |
+                             |->image-->|->image_transform->|->random_para_dict
+>>>>>>> push test
 
         The target in different mission just include two support way:
         image->image mask label | ndarray

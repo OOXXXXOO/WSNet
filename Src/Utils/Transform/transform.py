@@ -6,7 +6,11 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2020/02/28 19:46:27 by winshare         ###   ########.fr        #
+=======
+#    Updated: 2020/03/04 21:12:58 by winshare         ###   ########.fr        #
+>>>>>>> push test
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +32,23 @@
 
 
 import sys
+<<<<<<< HEAD
 import custom as T
+=======
+import Src.Utils.Transform.custom as T
+>>>>>>> push test
 import os
 import glob
 import PIL.Image as Image
 import matplotlib.pyplot as plt
 import numpy as np
+<<<<<<< HEAD
 from custom import *
+=======
+from Src.Utils.Transform.custom import *
+import torch
+import torchvision.transforms.functional as F
+>>>>>>> push test
 # Transform_Function_Dict={
 #                 "adjust_brightness":T.functional.adjust_brightness,
 #                 "adjust_contrast":T.functional.adjust_contrast,
@@ -91,7 +105,11 @@ class Compose(object):
         self.transforms = transforms
     def __call__(self, data):
         for t in self.transforms:
+<<<<<<< HEAD
             print(t)
+=======
+            # print(t)
+>>>>>>> push test
             data = t(data)
         return data
 
@@ -164,7 +182,17 @@ class target_transform():
                 "TenCrop":T.TenCrop
         }
         self.target_transforms=[]
+<<<<<<< HEAD
         self.dict,self.arr=self.filter()
+=======
+
+
+        # self.dict,self.arr=self.filter()
+        """
+        Temp change
+        """
+
+>>>>>>> push test
         self.target_dict_transforms=Compose(self.dict)
         self.target_arr_transforms=Compose(self.arr)
 
@@ -194,7 +222,11 @@ class target_transform():
         paralist=[list(i.values())[0] for i in self.transformlist]
         dict_=[]
         arr_=[]
+<<<<<<< HEAD
         if functionlist[i] in self.
+=======
+
+>>>>>>> push test
 
 
         return dict_,arr_
@@ -208,7 +240,11 @@ class image_transform():
         functionlist=[list(i.keys())[0] for i in transformlist]
         paralist=[list(i.values())[0] for i in transformlist]
         for i in range(len(functionlist)):
+<<<<<<< HEAD
             print(paralist[i])
+=======
+            # print(paralist[i])
+>>>>>>> push test
             if paralist[i]!='None':
                 if type(paralist[i])==list:
                     self.image_transforms.append(Transform_Class_Dict[functionlist[i]](*paralist[i]))
@@ -287,15 +323,31 @@ class GeneralTransform():
         ]
         print("----------------------------- GeneralTransform -----------------------------")
         assert not transformlist==None,"Invalid General Transform List"
+<<<<<<< HEAD
         assert Mission in SupportMission,"Invalid Transform Dictionary"
         self.Mission=Mission
         self.image_transform=image_transform(transformlist=transformlist)
         self.target_transform=target_transform(transformlist=transformlist,Mission=self.Mission)
+=======
+        assert not Mission in SupportMission,"Invalid Transform Dictionary"
+        self.Mission=Mission
+        self.image_transform=image_transform(transformlist=transformlist)
+        #self.target_transform=target_transform(transformlist=transformlist,Mission=self.Mission)
+>>>>>>> push test
 
 
     def __call__(self,images,targets):
         images=self.image_transform(images)
+<<<<<<< HEAD
         targets=self.target_transform(targets)
+=======
+        # targets=self.target_transform(targets)
+        """
+        temprary change
+        """
+        targets=F.to_tensor(targets*255)
+    
+>>>>>>> push test
         return images,targets
 
 
@@ -322,10 +374,18 @@ def main():
 
 
     DemoTransformDict=[
+<<<<<<< HEAD
             # {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]},
             {"RandomResizedCrop":512},
             {"RandomRotation":90},
             # {"ToTensor":"None"}
+=======
+            {"ToTensor":"None"},
+            {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]},
+            # {"RandomResizedCrop":512},
+            # {"RandomRotation":90},
+        
+>>>>>>> push test
         ]
 
 
@@ -358,8 +418,13 @@ def main():
     image_transform=A.image_transform
     for i in images:
         img=image_transform(i)
+<<<<<<< HEAD
         plt.imshow(np.array(img)),plt.show()
 
+=======
+
+        # plt.imshow(np.array(img.numpy())),plt.show()
+>>>>>>> push test
     # Segmentation:
 
 

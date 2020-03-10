@@ -6,7 +6,11 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2020/02/28 11:50:14 by winshare         ###   ########.fr        #
+=======
+#    Updated: 2020/03/04 22:01:37 by winshare         ###   ########.fr        #
+>>>>>>> push test
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +42,11 @@ import torch
 import torchvision.transforms as T
 import torchvision.datasets as dataset
 from Utils.Transform.transform import GeneralTransform
+<<<<<<< HEAD
+=======
+from Data.custom.segmentation_loader import Costum_NPY_DataSet
+import numpy as np
+>>>>>>> push test
 class CFG():
     def __init__(self):
 
@@ -82,7 +91,12 @@ class CFG():
             "Segmentation":{
                 "VOC_Segmentation":dataset.VOCSegmentation,
                 "Cityscapes":dataset.Cityscapes,
+<<<<<<< HEAD
                 "CocoDetection":dataset.CocoDetection
+=======
+                "CocoDetection":dataset.CocoDetection,
+                "Costum_NPY_DataSet":Costum_NPY_DataSet
+>>>>>>> push test
             },
             "Caption":{
                 "CocoCaptions":dataset.CocoCaptions
@@ -204,6 +218,10 @@ class CFG():
             self.BackBone=None
         else:
             self.BackBone=self.Net['BackBone']
+<<<<<<< HEAD
+=======
+        self.NetType=self.Net["NetType"]
+>>>>>>> push test
         
 
         # --------------------------------- Optimizer -------------------------------- #
@@ -219,7 +237,11 @@ class CFG():
         self.lr_steps=self.Net['lr_steps']
         self.lr_gamma=self.Net['lr_gamma']
         self.lr_scheduler=self.Lr_Dict[self.lr_scheduler]
+<<<<<<< HEAD
 
+=======
+        self.class_num=self.Net['class_num']
+>>>>>>> push test
         
         # ------------------------------- Loss Function ------------------------------ #
 
@@ -237,7 +259,12 @@ class CFG():
         self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
         self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
         self.DefaultDataset=self.DataSetConfig['DefaultDataset']
+<<<<<<< HEAD
         
+=======
+        self.NPY=self.DataSetConfig["NPY"]
+        self.NPY_Data=np.load(self.NPY,allow_pickle=True)
+>>>>>>> push test
 
         # --------------------------------- Transform -------------------------------- #
         # ---------------------------------------------------------------------------- #
@@ -271,14 +298,21 @@ class CFG():
         
         """
         print('\n\n--------------------------------- Transform --------------------------------')
+<<<<<<< HEAD
         self.Transform=self.DataSetConfig['Transform']
         functionlist=[list(i.keys())[0] for i in self.Transform]
         paralist=[list(i.values())[0] for i in self.Transform]
+=======
+        self.TransformDict=self.DataSetConfig['Transform']
+        functionlist=[list(i.keys())[0] for i in self.TransformDict]
+        paralist=[list(i.values())[0] for i in self.TransformDict]
+>>>>>>> push test
         
         
         
         
         self.transforms=GeneralTransform(self.TransformDict)
+<<<<<<< HEAD
         self.target_transform=self.transforms
         # for i in range(len(functionlist)):
 
@@ -307,6 +341,9 @@ class CFG():
         #         )
             
 
+=======
+  
+>>>>>>> push test
 
 
 
@@ -322,6 +359,13 @@ class CFG():
         self.logdir=self.Config['logdir']
         self.devices=self.Config['devices']
 
+<<<<<<< HEAD
+=======
+        if not os.path.exists(self.checkpoint):
+            os.makedirs(self.checkpoint)
+
+
+>>>>>>> push test
         
         if self.devices=='GPU':
             self.usegpu=True
