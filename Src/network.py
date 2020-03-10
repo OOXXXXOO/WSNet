@@ -118,12 +118,8 @@ class NETWORK(CFG):
 
 
 
-<<<<<<< HEAD
-
-=======
         if self.download_pretrain_model:
             self._initialize_weights(self.model)
->>>>>>> push test
 
 
 
@@ -131,8 +127,6 @@ class NETWORK(CFG):
         #                             DefaultNetwork Option                            #
         # ---------------------------------------------------------------------------- #
 
-<<<<<<< HEAD
-=======
     def _initialize_weights(self,model):
         for m in model.modules():
             if isinstance(m, nn.Conv2d):
@@ -147,7 +141,6 @@ class NETWORK(CFG):
                 m.weight.data.normal_(0, 0.01)
                 m.bias.data.zero_()
 
->>>>>>> push test
 
     def DefaultKeyPoint(self,pretrained=False, progress=True):
         """
@@ -194,11 +187,7 @@ class NETWORK(CFG):
             print('\n\n----------------',self.model,'---------------\n\n')
 
 
-<<<<<<< HEAD
-    def DefaultSegmentation(self,pretrained=False, progress=True, num_classes=21, aux_loss=None):
-=======
     def DefaultSegmentation(self,pretrained=False, progress=True, num_classes=2, aux_loss=None):
->>>>>>> push test
         """
         Constructs a DeepLabV3 model with a ResNet-50 backbone.
 
@@ -244,23 +233,6 @@ class NETWORK(CFG):
     
     # ----------------------------- Collate Function for Temperory ----------------------------- #
 
-<<<<<<< HEAD
-    def collate_fn(self, batch):
-        paths, imgs, targets = list(zip(*batch))
-        # Remove empty placeholder targets
-        targets = [boxes for boxes in targets if boxes is not None]
-        # Add sample index to targets
-        for i, boxes in enumerate(targets):
-            boxes[:, 0] = i
-        targets = torch.cat(targets, 0)
-        # Selects new image size every tenth batch
-        if self.multiscale and self.batch_count % 10 == 0:
-            self.img_size = random.choice(range(self.min_size, self.max_size + 1, 32))
-        # Resize images to input shape
-        imgs = torch.stack([resize(img, self.img_size) for img in imgs])
-        self.batch_count += 1
-        return paths, imgs, targets
-=======
     # def collate_fn(self, batch):
     #     paths, imgs, targets = list(zip(*batch))
     #     # Remove empty placeholder targets
@@ -297,4 +269,3 @@ if __name__ == '__main__':
     main()
     
 
->>>>>>> push test

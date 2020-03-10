@@ -83,9 +83,6 @@ class DATASET(NETWORK,COCO,Dataset):
             )
             print("\nval dataset process done !\n")
             print('\n\n-------------------------- COCO Dataset Init Done --------------------------\n\n')
-<<<<<<< HEAD
-
-=======
                  # ---------------------------------- Sampler --------------------------------- #
         
             if self.aspect_ratio_factor >= 0:
@@ -100,7 +97,6 @@ class DATASET(NETWORK,COCO,Dataset):
                 self.BatchSize,
                 drop_last=True
                 )
->>>>>>> push test
         # ----------------------------- COCO Dataset Init ---------------------------- #
         
         # ------------------------------- Support list ------------------------------- #
@@ -121,8 +117,6 @@ class DATASET(NETWORK,COCO,Dataset):
             print("Not Support Now")
         if self.DataSetType == "ImageNet":
             print("Not Support Now")
-<<<<<<< HEAD
-=======
         if self.DataSetType == "Costum_NPY_DataSet":
             
             print('\n\n-----Start Costum_NPY_DataSet Buidling...')
@@ -140,7 +134,6 @@ class DATASET(NETWORK,COCO,Dataset):
             )
             print("\nval dataset process done !\n")
             print('\n\n-------------------------- Costum_NPY_DataSet Dataset Init Done --------------------------\n\n')
->>>>>>> push test
 
 
 
@@ -162,23 +155,6 @@ class DATASET(NETWORK,COCO,Dataset):
             print("-----DataSampler build done")
 
 
-<<<<<<< HEAD
-
-        # ---------------------------------- Sampler --------------------------------- #
-        
-        if self.aspect_ratio_factor >= 0:
-            self.group_ids = create_aspect_ratio_groups(self.trainset, k=self.aspect_ratio_factor)
-            self.train_batch_sampler = GroupedBatchSampler(self.train_sampler,
-            self.group_ids,
-            self.BatchSize
-            )
-        else:
-            self.train_batch_sampler = torch.utils.data.BatchSampler(
-            self.train_sampler,
-            self.BatchSize,
-            drop_last=True
-            )
-=======
         self.train_batch_sampler = torch.utils.data.BatchSampler(
                 self.train_sampler,
                 self.BatchSize,
@@ -187,7 +163,6 @@ class DATASET(NETWORK,COCO,Dataset):
 
 
    
->>>>>>> push test
 
 
 
@@ -198,31 +173,12 @@ class DATASET(NETWORK,COCO,Dataset):
         self.trainloader = torch.utils.data.DataLoader(
             self.trainset, 
             batch_sampler=self.train_batch_sampler,
-<<<<<<< HEAD
-            num_workers=self.worker_num,
-            collate_fn=self.collate_fn)
-=======
             num_workers=self.worker_num)
->>>>>>> push test
 
         print("---------------------- Training DataLoader Init Finish ---------------------")
 
         self.valloader = torch.utils.data.DataLoader(
             self.valset, 
-<<<<<<< HEAD
-            batch_size=self.BatchSize,
-            sampler=self.test_sampler,
-            num_workers=self.worker_num,
-            collate_fn=self.collate_fn)
-
-        print("---------------------- Validation DataLoader Init Finish ---------------------")
-
-
-        # ---------------------------------------------------------------------------- #
-        #                                 init process                                 #
-        # ---------------------------------------------------------------------------- #
-        print("\n\n----------------------- DATASET Class Init Successful ----------------------\n\n")
-=======
             batch_size=1,
             sampler=self.test_sampler,
             num_workers=self.worker_num)
@@ -248,7 +204,6 @@ class DATASET(NETWORK,COCO,Dataset):
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
         print("\n\n-------------------- DATASET Class Init Successful --------------------\n\n")
->>>>>>> push test
 
 
         # ---------------------------------------------------------------------------- #
@@ -278,27 +233,4 @@ class DATASET(NETWORK,COCO,Dataset):
 
 
 
-<<<<<<< HEAD
-
-
-
-
-    # def __getitem__(self,index):
-    #     # assert self.DataSetProcessDone,"Invalid Dataset Object"
-    #     # return self.getitem_map[self.DataSetType](index)
-    #     if self.mode=='train':
-    #         return self.trainset[index]
-    #     if self.mode=='val':
-    #         return self.valset[index]
-
-
-
-    # def __len__(self):
-    #     if self.mode=='train':
-    #         return len(self.trainset)
-    #     if self.mode=='val':
-    #         return len(self.valset)
-    
-=======
->>>>>>> push test
     

@@ -6,11 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2020/02/28 12:21:35 by winshare         ###   ########.fr        #
-=======
-#    Updated: 2020/03/04 22:09:13 by winshare         ###   ########.fr        #
->>>>>>> push test
+#    Updated: 2020/03/10 19:07:10 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,14 +30,6 @@
 
 
 import sys
-<<<<<<< HEAD
-import os
-from dataset import DATASET
-class INSTANCE(DATASET):
-    def __init__(self,cfg):
-        self.configfile=cfg
-        DATASET.__init__(self,cfg=cfg)
-=======
 sys.path.append(sys.path[0][:-3])
 import os
 from dataset import DATASET
@@ -61,46 +49,12 @@ class INSTANCE(DATASET):
     def __init__(self,cfg):
         self.configfile=cfg
         DATASET.__init__(self)
->>>>>>> push test
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
 
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-        # -------------------------------- DataLoader -------------------------------- #
-        print("-------------------------------- DataLoader --------------------------------")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
         self.evaluator = Evaluator(self.class_num)
->>>>>>> push test
 
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
@@ -108,12 +62,6 @@ class INSTANCE(DATASET):
         print("\n\n---------------------- INSTANCE Class Init Successful ----------------------\n\n")
 
 
-<<<<<<< HEAD
-
-def parser():
-    parsers=argparse.ArgumentParser()
-    parsers.add_argument("--config",default="Src/Config/Demo.json", help="dir of config file")
-=======
         
 
     def train(self):
@@ -272,7 +220,6 @@ def parser():
 def parser():
     parsers=argparse.ArgumentParser()
     parsers.add_argument("--config",default="./Config/Demo.json", help="dir of config file")
->>>>>>> push test
     args = parsers.parse_args()
     return args
 
@@ -282,14 +229,9 @@ def main():
     args=parser()
     configfile=args.config
     print(configfile)
-<<<<<<< HEAD
-    instence=Instence(configfile=configfile)
-    instence.default_train()
-=======
     instence=INSTANCE(cfg=configfile)
     instence.train()
 
->>>>>>> push test
 
 
 
