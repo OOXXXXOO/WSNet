@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/10 15:29:29 by winshare          #+#    #+#              #
-#    Updated: 2020/03/10 18:24:17 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/11 14:17:00 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,5 +37,61 @@ import numpy as np
 class bridge():
     def __init__(self):
         print('----- data bridge activate ')
+        """
+        The data bridge work for transform the different data exchange port in specific format
+        like :
+        model output->loss function format
+
+        BackBone:
+
+            Input always is (N,C,W,H) Tensor ,BackBone (CNN) for Classification
+
+
+            BackBone -> Segmentation
+            
+            BackBone -> Detection
+
+            BackBone -> InstanceSegmentation
+
+            BackBone -> Caption
+
+            BackBone -> KeyPoint
+            
+        Segmentation:
+
+            Segmentation DataDict
+            {
+                Official Segmentation Network
+                Custom Segmentation Network
+            }
+            Segmentation Mask Label
+            {
+                Official Segmentation Network
+                Custom Segmentation Network
+            }
+
+            inference -> ndarray
+            
+            inference -> Image
+
+        Detection :
+
+            Detection Datadict ->{
+                Official RCNN Series
+                Custom Detection Network
+            }
+
+            inference -> ndarray （np data vector）
+            
+            inference -> Visualization(Image)
+
+        Instance :
+            Instance Datadict ->{
+                Official MaskRCNN Series
+            }
+
+        """
+        def __init__(self):
+            print("----------------------------- data bridge init -----------------------------")
 
     
