@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/03/10 19:07:10 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/11 19:23:32 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,7 @@ class INSTANCE(DATASET):
         self.ACC=0
         train_loss=0
         
-        self.writer = SummaryWriter(log_dir=self.logdir,comment="Instance "+self.InstanceID+self.MissionType)
+        self.writer = SummaryWriter(log_dir=self.logdir,comment="Instance "+str(self.InstanceID)+self.MissionType)
         # boardcommand="tensorboard --logdir="+self.logdir
         # os.system(boardcommand)
 

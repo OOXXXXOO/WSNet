@@ -6,11 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2020/02/28 12:21:36 by winshare         ###   ########.fr        #
-=======
-#    Updated: 2020/03/04 18:57:04 by winshare         ###   ########.fr        #
->>>>>>> push test
+#    Updated: 2020/03/11 19:18:57 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,12 +42,12 @@ from torch.utils.data import DataLoader
 
 # ------------------------------ Local Reference ----------------------------- #
 
-from Utils.COCO.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
-import Utils.COCO.transforms as T
-from Utils.COCO.coco_utils import ConvertCocoPolysToMask,_coco_remove_images_without_annotations
-from Utils.COCO.coco_utils import get_coco_api_from_dataset
-from Utils.COCO.coco_eval import CocoEvaluator
-import Utils.COCO.utils
+from Data.coco.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
+import Data.coco.transforms as T
+from Data.coco.coco_utils import ConvertCocoPolysToMask,_coco_remove_images_without_annotations
+from Data.coco.coco_utils import get_coco_api_from_dataset
+from Data.coco.coco_eval import CocoEvaluator
+import Data.coco.utils
 
 
 
