@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/03/11 19:17:58 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/11 20:06:11 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,9 @@
 
 
 from config import CFG
+from Src.Nets.BackBone.efficientnet.model import EfficientNet
+
+# ------------------------------ local reference ----------------------------- #
 
 import torch
 import torch.utils.model_zoo
@@ -33,26 +36,29 @@ import torchvision.models as models
 import torch.nn as nn
 import random
 
+# ---------------------------- official reference ---------------------------- #
+
 class NETWORK(CFG):
     def __init__(self):
         CFG.__init__(self)
         """
-            The Network Generator have two way.
-            1.Constructs a type of model with torchvision default model 
-                * BackBone-               MNASNetV1.3
-                * Detection-              Faster R-CNN model with a ResNet-50-FPN
-                * Segmentation-           DeepLabV3 model with a ResNet-50
-                * Instence Segmentation-  Mask R-CNN model with a ResNet-50-FPN
-                * KeyPoint-               KeyPointRCNN model with a ResNet-50-FPN
+        1.Constructs a type of model with torchvision default model
 
-            With this great model ,we can start different type of mission quickly
-            
-            2.Constructs a third-party / a state of arts model
-            Now support On:
-                * BackBone-                EfficientNets
-                * Detection                YoloV3
-                * Segmentation             --
-                * Instence Segmentation    -- 
+            * BackBone-                             MNASNetV1.3
+            * Detection-                            Faster R-CNN model with a ResNet-50-FPN
+            * Segmentation-                         DeepLabV3 model with a ResNet-50
+            * Instence Segmentation-                Mask R-CNN model with a ResNet-50-FPN
+
+
+        With these great model ,we can start different type of mission quickly
+
+        2.Constructs a third-party / a state of arts model
+
+        Now support for:
+            * BackBone-                             EfficientNets
+            * Detection-                            YoloV3
+            * Segmentation-                         DeeplabV3-Xception
+            * Instence Segmentation-                Mask R-CNN with DenseNet152 
         """
 
         # ---------------------------------------------------------------------------- #
@@ -73,13 +79,25 @@ class NETWORK(CFG):
         # ---------------------------------------------------------------------------- #
         #                            Network Dictionary Init                           #
         # ---------------------------------------------------------------------------- #
-        self.modeldict={
+        self.default_modeldict={
             "Detection":self.DefaultDetection,
             "Segmentation":self.DefaultSegmentation,
             "BackBone":self.DefaultBackBone,
             "Instence Segmentation":self.DefaultInstenceSegmentation,
             "KeyPoint":self.DefaultKeyPoint,
         }
+        self.custom_modeldict={
+            "BackBone":EfficientNet
+            
+
+            # ----------------------------------- Yolo3 ---------------------------------- #
+
+            # ------------------------------- MaskRCNN-FPN ------------------------------- #
+
+            # ----------------------- DeeplabV3+ Xception Need Add ----------------------- #
+                        
+        }
+
         self.model=None
         # ---------------------------------------------------------------------------- #
         #                       Optimizer init & Instantialation in DefaultNetwork     #
@@ -87,7 +105,7 @@ class NETWORK(CFG):
 
         if self.DefaultNetwork:
             print('\n\n-----Use The Default Network')
-            self.modeldict[self.MissionType](pretrained=self.download_pretrain_model)
+            self.default_modeldict[self.MissionType](pretrained=self.download_pretrain_model)
             # print(self.model)
             
         # --------------------------------- optimizer -------------------------------- #
@@ -245,18 +263,17 @@ class NETWORK(CFG):
     #     self.batch_count += 1
     #     return paths, imgs, targets
 
-    def collate_fn(self,batch):
-        images,targets=list(zip(*batch))
-        print('target',targets.size())
-        images=torch.stack(images,dim=0)
+    # def collate_fn(self,batch):
+    #     images,targets=list(zip(*batch))
+    #     print('target',targets.size())
+    #     images=torch.stack(images,dim=0)
 
-        return images,targets
+    #     return images,targets
 
 
 
 def main():
     input=torch.randn((2,3,768,768))
-
     model=models.segmentation.deeplabv3_resnet101(pretrained=False,num_classes=2)
     output=model(input)
     print(output.size())

@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/03/10 19:14:54 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/11 20:08:54 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,15 +31,24 @@
 import sys
 import os
 import json
+import numpy as np
 import torch.optim as optim
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
 import torchvision.transforms as T
 import torchvision.datasets as dataset
+
+# ---------------------------- Official Reference ---------------------------- #
+
+
+
 from Utils.Transform.transform import GeneralTransform
 from Data.custom.segmentation_loader import Costum_NPY_DataSet
-import numpy as np
+
+
+# ------------------------------ Local Reference ----------------------------- #
+
 class CFG():
     def __init__(self):
 

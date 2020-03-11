@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/03/11 19:18:57 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/11 20:06:53 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,7 +124,7 @@ class DATASET(NETWORK,COCO,Dataset):
             print("\ntrain dataset process done !\n")
             self.valset=self.dataset_function(
                 npy=self.NPY_Data,
-                forward=True,
+                forward=False,
                 transforms=self.transforms,
                 data_ratio=0.8
             )
