@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/03/11 19:23:32 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/12 13:30:21 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,18 +32,27 @@
 import sys
 sys.path.append(sys.path[0][:-3])
 import os
-from dataset import DATASET
+
+# ------------------------------- sys reference ------------------------------ #
+
+import time
 import argparse
-import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
 from torchvision.utils import make_grid
 import torch
 import numpy as np
 from tqdm import tqdm
 
-from Src.Utils.Evaluator.metrics import Evaluator
+# ---------------------------- official reference ---------------------------- #
 
-import time
+from Src.Utils.Evaluator.metrics import Evaluator
+from dataset import DATASET
+import matplotlib.pyplot as plt
+
+# ------------------------------ local reference ----------------------------- #
+
+
+
 
 class INSTANCE(DATASET):
     def __init__(self,cfg):
@@ -52,7 +61,6 @@ class INSTANCE(DATASET):
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
-
 
         self.evaluator = Evaluator(self.class_num)
 

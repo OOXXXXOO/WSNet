@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/03/11 20:06:53 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/12 18:01:42 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,10 +33,6 @@ print("---dataset.py workspace in :\n",sys.path)
 import torchvision.transforms as T
 from torch.utils.data import Dataset
 import torch
-from Utils.Transform.transform import Compose
-from Utils.Transform.transform import GeneralTransform
-
-from network import NETWORK
 from pycocotools.coco import COCO
 from torch.utils.data import DataLoader
 
@@ -48,7 +44,9 @@ from Data.coco.coco_utils import ConvertCocoPolysToMask,_coco_remove_images_with
 from Data.coco.coco_utils import get_coco_api_from_dataset
 from Data.coco.coco_eval import CocoEvaluator
 import Data.coco.utils
-
+from network import NETWORK
+from Utils.Transform.transform import Compose
+from Utils.Transform.transform import GeneralTransform
 
 
 
@@ -67,13 +65,13 @@ class DATASET(NETWORK,COCO,Dataset):
         self.dataset_function=self.datasets_function_dict[self.MissionType][self.DataSetType]
         if self.DataSetType == "CocoDetection":
             self.trainset=self.dataset_function(
-                self.DataSet_Root+'/train2014',
+                os.path.join(self.DataSet_Root,'/train2014'),
                 self.Dataset_Train_file,
                 transforms=self.transforms
             )
             print("\ntrain dataset process done !\n")
             self.valset=self.dataset_function(
-                self.DataSet_Root+'/val2014',
+                os.path.join(self.DataSet_Root,'/train2014'),
                 self.Dataset_Val_file,
                 transforms=self.transforms
             )
