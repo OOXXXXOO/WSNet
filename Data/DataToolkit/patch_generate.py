@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 Size=768
 Overlap=0.5
-sample_ratio=0.09
+sample_ratio=0.05
 patch_size=Size
 patch=[]
 debug=False
@@ -44,8 +44,8 @@ def sample(imagery,label):
         image_=imagery[x:x+patch_size,y:y+patch_size,:]
         label_=label[x:x+patch_size,y:y+patch_size]
 
-        label_[label_==4]=1
-        label_[label_>1]=0
+        # label_[label_==4]=1
+        # label_[label_>1]=0
         if debug:
             plt.imshow(image_),plt.show()
             plt.imshow(label_),plt.show()
@@ -112,12 +112,12 @@ def main():
         }
     """
     dataset="/workspace/RawDataset.npy"
-    dataset_raw=np.load(dataset,allow_pickle=True)
+    dataset_raw=np.load(dataset,allow_pickle=True)[:2]
     # plt.imshow(dataset_raw[3]["label"]),plt.show()
     binary_patch(dataset_raw)
 
-    np.save("/workspace/SampledDatasetMini",patch[:128])
-    print("/workspace/SampledDatasetMini.npy is already save")
+    np.save("/workspace/SampledDatasetHTSJ",patch)
+    # print("/workspace/SampledDatasetMini.npy is already save")
     
 
 

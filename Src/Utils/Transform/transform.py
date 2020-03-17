@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
-#    Updated: 2020/03/12 19:25:47 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/17 16:44:08 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -199,13 +199,14 @@ class GeneralTransform():
             ndarray,PIL image
         target :
             dict={
-                boxes:[[ 53.         68.0000175 405.        478.9998225   0.       ]
+                "boxes":
+                    [[ 53.         68.0000175 405.        478.9998225   0.       ]
                     [202.         20.99992   496.        486.99978     0.       ]
                     [589.         77.0001275 737.        335.9999825   0.       ]
                     [723.        327.000125  793.        396.000295    1.       ]],
-                class index:
+                "class index":
                     [1,3,14,4],
-                segmantation:
+                "segmantation":
                     [[poinset1],[pointset2],[pointset3],[pointset4]]        
                 }
             ndarray:
@@ -225,7 +226,7 @@ class GeneralTransform():
         self.Mission=Mission
 
 
-        if self.Mission=="Detection":
+        if self.Mission=="Detection" or self.Mission=="InstanceSegmentation"::
             """
             {
                 boxes:      list of box tensor[n,4]                 (float32)
@@ -237,8 +238,8 @@ class GeneralTransform():
             self.supprtlist=Detection_Overall
             self.supprtlist["ToPILImage"]=T.ToPILImage
             self.supprtlist["ToTensor"]=T.ToTensor
-        if self.Mission=="InstanceSegmentation":
-
+        
+        if self.Mission==""
         
         
         
