@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/03/12 18:01:42 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/18 17:17:46 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ class DATASET(NETWORK,COCO,Dataset):
             )
             print("\ntrain dataset process done !\n")
             self.valset=self.dataset_function(
-                os.path.join(self.DataSet_Root,'/train2014'),
+                os.path.join(self.DataSet_Root,'/val2014'),
                 self.Dataset_Val_file,
                 transforms=self.transforms
             )

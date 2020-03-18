@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
-#    Updated: 2020/03/17 16:44:08 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/18 18:13:17 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ import matplotlib.pyplot as plt
 
 # ------------------------------ local reference ----------------------------- #
 
-from Src.Utils.Transform.custom import *
+
 import Src.Utils.Transform.data_aug.data_aug as A
 
 
@@ -104,23 +104,18 @@ ClassFunction={
 # ------------------------ Transform With Pixel Value ------------------------ #
 WithValue={
 "Normalize":T.Normalize,
-"Normalize":T.Normalize,
 "ToPILImage":T.ToPILImage,
 "ToTensor":T.ToTensor,
 "RandomGrayscale":T.RandomGrayscale
 }
-
 # ------------------ NeedPara Transform Without Pixel Value ------------------ #
-
 NeedsPara={
 "Pad":T.Pad,#填充
 "Resize":T.Resize,
 "Scale":T.Scale,
 "TenCrop":T.TenCrop
 }
-
 # -------------------------- Random Transform Without Pixel Value ------------------------- #
-
 Random={
 "RandomAffine":T.RandomAffine,#随机仿射变换
 "RandomCrop":T.RandomCrop,#随机自由裁切
@@ -134,7 +129,7 @@ Random={
 }
 
 
-# ----------------------------- Custom Transform ----------------------------- #
+# ----------------------------- Custom Transform For Detection ----------------------------- #
 
 Detection_Overall={
 "RandomHorizontalFlip":A.RandomHorizontalFlip,
@@ -186,7 +181,7 @@ class GeneralTransform():
                 {"ToTensor":"None"}
             ]
             ```
-            SupportMission=[
+            Mission: String SupportMission=[
                 "Detection",
                 "Segmentation",
                 "InstanceSegmentation",
@@ -194,23 +189,6 @@ class GeneralTransform():
                 "Caption"
             ]
 
-        __call__:(image,target)
-        image  :
-            ndarray,PIL image
-        target :
-            dict={
-                "boxes":
-                    [[ 53.         68.0000175 405.        478.9998225   0.       ]
-                    [202.         20.99992   496.        486.99978     0.       ]
-                    [589.         77.0001275 737.        335.9999825   0.       ]
-                    [723.        327.000125  793.        396.000295    1.       ]],
-                "class index":
-                    [1,3,14,4],
-                "segmantation":
-                    [[poinset1],[pointset2],[pointset3],[pointset4]]        
-                }
-            ndarray:
-                ndarray,PIL image
         
         """
         SupportMission=[
@@ -225,21 +203,24 @@ class GeneralTransform():
         assert Mission in SupportMission,"Invalid Transform Dictionary"
         self.Mission=Mission
 
-
-        if self.Mission=="Detection" or self.Mission=="InstanceSegmentation"::
-            """
-            {
-                boxes:      list of box tensor[n,4]                 (float32)
-                masks:      list of segmentation mask points [n,n]  (float32)
-                keypoints： list of key pointss[n,n]                (float32)
-                labels:     list of index of label[n]               (int64)
-            }
-            """
-            self.supprtlist=Detection_Overall
-            self.supprtlist["ToPILImage"]=T.ToPILImage
-            self.supprtlist["ToTensor"]=T.ToTensor
+        """
+        {
+            boxes:      list of box tensor[n,4]                 (float32)
+            masks:      list of segmentation mask points [n,n]  (float32)
+            keypoints： list of key pointss[n,n]                (float32)
+            labels:     list of index of label[n]               (int64)
+        }
+        """
         
-        if self.Mission==""
+        if self.Mission=="Detection" or self.Mission=="InstanceSegmentation":
+            self.Target_Supprtlist=Detection_Overall
+            self.Target_Supprtlist["ToPILImage"]=T.ToPILImage
+            self.Target_Supprtlist["ToTensor"]=T.ToTensor
+        
+        if self.Mission=="Segmentation":
+            self.Target_Supprtlist=
+
+
         
         
         
@@ -284,6 +265,24 @@ class GeneralTransform():
 
 
     def __call__(self,images,targets):
+        """
+        image  :
+            ndarray or PIL image
+        target :
+            dict={
+                "boxes":
+                    [[ 53.         68.0000175 405.        478.9998225   0.       ]
+                    [202.         20.99992   496.        486.99978     0.       ]
+                    [589.         77.0001275 737.        335.9999825   0.       ]
+                    [723.        327.000125  793.        396.000295    1.       ]],
+                "class index":
+                    [1,3,14,4],
+                "segmantation":
+                    [[poinset1],[pointset2],[pointset3],[pointset4]]        
+                }
+            ndarray:
+                ndarray,PIL image
+        """
         if isinstance(targets,dict):
             images=self.Imagery_transform(images)
             targets=self.Target_dictTransform(targets)

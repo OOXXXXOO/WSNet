@@ -37,7 +37,7 @@
             "DistributedDataParallel":false,
             "Resume":false,
             "multiscale_training": true,
-            "logdir": "./root/log",
+            "logdir": "~/run/log",
             "devices":"GPU",
             "gpu_id": "0",
             "epochs": 200,

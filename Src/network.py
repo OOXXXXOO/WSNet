@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/03/11 20:06:11 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/18 16:16:21 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ class NETWORK(CFG):
             "Detection":self.DefaultDetection,
             "Segmentation":self.DefaultSegmentation,
             "BackBone":self.DefaultBackBone,
-            "Instence Segmentation":self.DefaultInstenceSegmentation,
+            "InstenceSegmentation":self.DefaultInstenceSegmentation,
             "KeyPoint":self.DefaultKeyPoint,
         }
         self.custom_modeldict={

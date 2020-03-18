@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/03/12 13:30:21 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/18 14:59:36 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ from tqdm import tqdm
 from Src.Utils.Evaluator.metrics import Evaluator
 from dataset import DATASET
 import matplotlib.pyplot as plt
+import thread
 
 # ------------------------------ local reference ----------------------------- #
 
@@ -58,6 +59,7 @@ class INSTANCE(DATASET):
     def __init__(self,cfg):
         self.configfile=cfg
         DATASET.__init__(self)
+
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
@@ -95,8 +97,10 @@ class INSTANCE(DATASET):
         train_loss=0
         
         self.writer = SummaryWriter(log_dir=self.logdir,comment="Instance "+str(self.InstanceID)+self.MissionType)
-        # boardcommand="tensorboard --logdir="+self.logdir
-        # os.system(boardcommand)
+        boardcommand="tensorboard --logdir="+self.logdir
+        thread.start_new_thread(os.system(),boardcommand)
+
+
 
         for epoch in range(self.epochs):
             print('-----Epoch :',epoch)
@@ -155,6 +159,11 @@ class INSTANCE(DATASET):
 
 
     def visualize_image(self, image, target, output, global_step):
+        """
+        Image from Dataloader 
+        Target from Dataloader
+        output from Model Inferenced
+        """
         grid_image = make_grid(image[:3].clone().cpu().data, 3, normalize=True)
         self.writer.add_image('Image', grid_image, global_step)
         grid_image = make_grid(torch.max(output[:3], 1)[1].detach().cpu().numpy()

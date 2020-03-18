@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/03/11 20:08:54 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/18 17:44:25 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,7 +99,7 @@ class CFG():
             "Caption":{
                 "CocoCaptions":dataset.CocoCaptions
             },
-            "Instance":{
+            "InstanceSegmentation":{
                 "CocoDetection":dataset.CocoDetection
             }
         }
