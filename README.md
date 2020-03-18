@@ -56,28 +56,22 @@ The main purpose of this project :
 
 ### Document / 文档:
 
-#### EN_US:
+#### EN:
 
 ****
->||||-[Installation]()-||
--[Guide to Start](./Resources/Document/Guide2start.md)-||
---[DataSet Toolkit](./Src/Utils/DataToolkit/README.md)--||--[NetWork](./Src/Nets/README.md)--||
--[DataSet](./Data/README.md)-||
--[Transform](./Src/Utils/Transform/README.md)-||
--[Config](./Config/README.md)-||||
+
+
+
+| [Installation]() | [Guide to Start](./Resources/Document/Guide2start.md) | [DataSet Toolkit](./Src/Utils/DataToolkit/README.md) | [NetWork](./Src/Nets/README.md) | [DataSet](./Data/README.md)| [Transform](./Src/Utils/Transform/README.md) | [Config](./Config/README.md) |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | 
 ****
 
 
 #### 中文:
+****
 
-
->||||———[安装]()——||
---[快速开始](./Resources/Document/Guide2start.md)--||
---[数据集工具](./Src/Utils/DataToolkit/README.md)--||
---[神经网络](./Src/Nets/README.md)--||
---[数据集](./Data/README.md)--||
---[数据变换](./Src/Utils/Transform/README.md)--||
-——[配置](./Config/README.md)———||||
+| [安装]() | [快速开始](./Resources/Document/Guide2start.md)| [数据集工具](./Src/Utils/DataToolkit/README.md) | [神经网络](./Src/Nets/README.md) | [数据集](./Data/README.md) | [数据变换](./Src/Utils/Transform/README.md) | [配置](./Config/README.md) |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 
 ****
 

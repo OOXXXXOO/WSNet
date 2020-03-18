@@ -9,10 +9,10 @@ As we all know the official COCO is a json-base annotation format standard that 
 
 * **file_name**: the full path to the image file. 
   
-*    **sem_seg_file_name**: the full path to the ground truth semantic segmentation file.
+* **sem_seg_file_name**: the full path to the ground truth semantic segmentation file.
 
 
-*   **sem_seg**: semantic segmentation ground truth in a `2D torch.Tensor`. Values in the array represent `category labels starting from 0`.
+* **sem_seg**: semantic segmentation ground truth in a `2D torch.Tensor`. Values in the array represent `category labels starting from 0`.
 
 * **height, width**: `integer`. The shape of image.
 
@@ -40,42 +40,95 @@ As we all know the official COCO is a json-base annotation format standard that 
 * **iscrowd**: `0 or 1`. Whether this instance is labeled as COCO’s “crowd region”. **Don’t include this field if you don’t know what it means.**
   
 we could demonstrate a demo json:
+
 ```json
 {
-{
-    "info": info,
-    "licenses": [license],
-    "images": [image],
-    "annotations":
-        [
-            {
-            "id": int,    
-            "image_id": int,
-            "category_id": int,
-            "segmentation": RLE or [polygon],
-            "area": float,
-            "bbox": [x,y,width,height],
-            "iscrowd": 0 or 1
-            }
-        ],
-    "categories": [category]
+    "images": [
+        {
+            "height": 768,
+            "width": 1024,
+            "id": 1,
+            "file_name": "hourse.jpg"
+        }
+    ],
+    "categories": [
+        {
+            "supercategory": "h",
+            "id": 2,
+            "name": "o"
+        },
+       
+    ],
+    "annotations": [
+        {
+            "segmentation": [
+                [
+                    92.0392156862745,
+                    708.2352941176471,
+                    91.6470588235294,
+                    689.4117647058824,
+                    93.6078431372549,
+                    667.8431372549019,
+                    94.3921568627451,
+                    646.6666666666667,
+                    99.49019607843137,
+                    625.4901960784314,
+                    109.29411764705883,
+                    592.5490196078431,
+                    114.0,
+                    560.7843137254902,
+                    113.21568627450979,
+                    532.1568627450981,
+                ]
+            ],
+            "iscrowd": 0,
+            "image_id": 1,
+            "bbox": [
+                91.0,
+                26.0,
+                770.0,
+                741.0
+            ],
+            "category_id": 2,
+            "id": 1
+        },
+        ......
+    ]
 }
-
 ```
-annotation demo:
-```json
-{
-	"segmentation": [[510.66,423.01,511.72,420.03,510.45......]],
-	"area": 702.1057499999998,
-	"iscrowd": 0,
-	"image_id": 289343,
-	"bbox": [473.07,395.93,38.65,28.67],
-	"category_id": 18,
-	"id": 1768
-},
 
+Support Pytorch Official Dataset Function :
 
+```python
+        self.datasets_function_dict={
+            "Classification":{
+                "MINST":dataset.MNIST,
+                "FashionMINST":dataset.FashionMNIST,
+                "KMINST":dataset.KMNIST,
+                "EMINST":dataset.EMNIST,
+                "CIFAR10":dataset.CIFAR10,
+                "CIFAR100":dataset.CIFAR100,
+                "ImageNet":dataset.ImageNet
+            },
+            "Detection":{
+                "CocoDetection":dataset.CocoDetection,
+                "VOC_Detection":dataset.VOCDetection
+            },
+            "Segmentation":{
+                "VOC_Segmentation":dataset.VOCSegmentation,
+                "Cityscapes":dataset.Cityscapes,
+                "CocoDetection":dataset.CocoDetection,
+                "Costum_NPY_DataSet":Costum_NPY_DataSet
+            },
+            "Caption":{
+                "CocoCaptions":dataset.CocoCaptions
+            },
+            "InstanceSegmentation":{
+                "CocoDetection":dataset.CocoDetection # Need Modified to get mask
+            }
+        }
 ```
+
 
 ## Custom DataSet
 
@@ -93,37 +146,17 @@ annotation demo:
 
 ## Pascal VOC
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+中文说明:
 
 **文件名**：图像文件的完整路径。
 
-**sem_seg_file_name **：地面事实语义分割文件的完整路径。
+* **sem_seg_file_name**：语义分割标签文件的完整路径。
 
 
 
-* **sem_seg**：2D火炬.tensor中的语义分割基础事实。数组中的值代表“从0开始的类别标签”。
+* **sem_seg**：2D `torch.tensor`中的语义分割标签mask。数组中的值代表“从0开始的类别标签”。
 
-* ***height，width**：`integer`。图像的形状。
+* ***height，width**：`integer`。图像的长宽。
 
 * **image_id**`（str或int）`：标识此图像的唯一ID。在评估期间用于识别图像，但数据集可将其用于不同目的。
 
@@ -143,6 +176,6 @@ annotation demo:
 
 * **keypoints**`（list [float]）`：格式为[[x1，y1，v1，…，xn，yn，vn]`。 v[i]表示此关键点的可见性。n必须等于关键点类别的数量。 Xs和Ys是[0，1]中的相对坐标，还是绝对坐标，取决于“ bbox_mode”是否是相对的。
 
-    注意，COCO格式的坐标注释是范围[[0，H-1或W-1]`的整数。默认情况下，detectron2向绝对关键点坐标添加0.5，以将其从离散像素索引转换为浮点坐标。
+    注意，COCO格式的坐标注释是范围`[[0，H-1或W-1]`的整数。默认情况下，detectron2向绝对关键点坐标添加0.5，以将其从离散像素索引转换为浮点坐标。
 
-***拥挤**：`0或1`。此实例是否被标记为COCO的“人群区域”。如果您不知道这是什么意思，请不要包含此字段。 
+* **iscrowd**：`0或1`。此实例是否被标记为COCO的“人群区域”。如果您不知道这是什么意思，请不要包含此字段。 
