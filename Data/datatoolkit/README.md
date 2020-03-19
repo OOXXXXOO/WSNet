@@ -44,16 +44,19 @@
 
 ### usage:
     
-    labelme2coco.py [-h] [--a A] [--o O] [--v V]
+    labelme2coco.py [-h] [--a A] [--o O] [--v V] [--m M]
 
 #### optional arguments:
 
 
     optional arguments:
+    
     -h, --help  show this help message and exit
     --a A       dir of anno file like ./annotation/
     --o O       dir of output annotation file like annotation.json
     --v V       bool type about output label visualization or not
+    --m M       box format mode like support : XYWH_ABS(Default for COCO), XYXY_ABS
+
 
 
 #### example:

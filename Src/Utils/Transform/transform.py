@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
-#    Updated: 2020/03/18 18:13:17 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/19 17:08:26 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ import torch
 import torchvision.transforms as T
 import torchvision.transforms.functional as F
 import torchvision.datasets as dataset
+import pycocotools.mask as mask
 # ---------------------------- official reference ---------------------------- #
 
 import matplotlib.pyplot as plt
@@ -46,7 +47,7 @@ import matplotlib.pyplot as plt
 
 
 import Src.Utils.Transform.data_aug.data_aug as A
-
+import Src.Utils.Transform.data_aug.target_transform as NT
 
 # ------------------------ Pytorch Official Functional Transform  ------------------------ #
 
@@ -76,7 +77,7 @@ Functional={
 
 # ------------------------- Official Transform Class ------------------------- #
 
-ClassFunction={
+OfficialClassFunction={
 "Grayscale":T.Grayscale,
 "Lambda":T.Lambda,
 "Normalize":T.Normalize,
@@ -101,12 +102,38 @@ ClassFunction={
 "ToTensor":T.ToTensor,
 }
 
+
+# ----------- ReBuild The Transform for Segmentation mask transform ---------- #
+
+RebuildClassFunction={
+"Grayscale":NT.Grayscale,
+"Lambda":NT.Lambda,
+"Normalize":NT.Normalize,
+"Pad":NT.Pad,
+"RandomAffine":NT.RandomAffine,
+"RandomApply":NT.RandomApply,
+"RandomChoice":NT.RandomChoice,
+"RandomCrop":NT.RandomCrop,
+"RandomErasing":NT.RandomErasing,
+"RandomGrayscale":NT.RandomGrayscale,
+"RandomHorizontalFlip":NT.RandomHorizontalFlip,
+"RandomOrder":NT.RandomOrder,
+"RandomPerspective":NT.RandomPerspective,
+"RandomResizedCrop":NT.RandomResizedCrop,
+"RandomRotation":NT.RandomRotation,
+"RandomSizedCrop":NT.RandomSizedCrop,
+"RandomVerticalFlip":NT.RandomVerticalFlip,
+"Resize":NT.Resize,
+"Scale":NT.Scale,
+"TenCrop":NT.TenCrop,
+"ToPILImage":NT.ToPILImage
+}
+
 # ------------------------ Transform With Pixel Value ------------------------ #
 WithValue={
 "Normalize":T.Normalize,
 "ToPILImage":T.ToPILImage,
 "ToTensor":T.ToTensor,
-"RandomGrayscale":T.RandomGrayscale
 }
 # ------------------ NeedPara Transform Without Pixel Value ------------------ #
 NeedsPara={
@@ -120,17 +147,13 @@ Random={
 "RandomAffine":T.RandomAffine,#随机仿射变换
 "RandomCrop":T.RandomCrop,#随机自由裁切
 "RandomErasing":T.RandomErasing,#随机擦除
-"RandomGrayscale":T.RandomGrayscale,#随机灰度
 "RandomHorizontalFlip":T.RandomHorizontalFlip,#随机水平翻转
 "RandomPerspective":T.RandomPerspective,#随机透视变换
 "RandomResizedCrop":T.RandomResizedCrop,#随机重采样并裁切
 "RandomRotation":T.RandomRotation,#随机旋转
 "RandomVerticalFlip":T.RandomVerticalFlip,#随机垂直翻转
 }
-
-
 # ----------------------------- Custom Transform For Detection ----------------------------- #
-
 Detection_Overall={
 "RandomHorizontalFlip":A.RandomHorizontalFlip,
 "HorizontalFlip":A.HorizontalFlip,
@@ -211,25 +234,35 @@ class GeneralTransform():
             labels:     list of index of label[n]               (int64)
         }
         """
-        
+
+        # -------------- Filte The Transform String list is valid or not ------------- #
+
         if self.Mission=="Detection" or self.Mission=="InstanceSegmentation":
-            self.Target_Supprtlist=Detection_Overall
-            self.Target_Supprtlist["ToPILImage"]=T.ToPILImage
-            self.Target_Supprtlist["ToTensor"]=T.ToTensor
+            """
+            Dict Data Only
+            """
+            self.Target_SupprtDict=Detection_Overall
+            self.Target_SupprtDict["ToPILImage"]=T.ToPILImage
+            self.Target_SupprtDict["ToTensor"]=T.ToTensor
         
         if self.Mission=="Segmentation":
-            self.Target_Supprtlist=
-
-
+            """
+            Ndarray Mask Only 
+            """
+            self.Target_SupprtDict=RebuildClassFunction
+        print("\n\n-----Transform Init with Mode",self.Mission,"-----")
         
-        
-        
-        
-        
-        
+        for process in self.Target_SupprtDict.keys():
+            print('-----support :',process)
+            
+        print("-----Transform Init with Mode",self.Mission,"-----\n\n")
         
         for transform in transformlist:
-            # print(transform)
+            name=list(transform.keys())[0]
+            print(name)
+            assert not str(name) in self.Target_SupprtDict.keys(),"Invalid Transform for Target"
+            print('Valid Transform ',transform)        
+
             for transform_key,transform_para in transform.items():
                 if transform_key in ClassFunction or transform_key in Detection_Overall:
                     print("-----Valid Transform : |",transform_key," | with Para: |",transform_para,"|")
@@ -238,29 +271,24 @@ class GeneralTransform():
     
 
     def Target_dictTransform(self,target):
+        Mask=mask.decode(target)
+        if "segmentation" in target.keys():
+            pass
+
+
+        if "bbox" in target.keys():
+            pass
+
 
 
     def Target_ndarraytransform(self,target):
+        pass
+
+
 
     def Imagery_transform(self,image):
+        pass
         
-
-    def filter(self,transfrom_name):
-        """
-        devide transform into 
-            if dict training data:
-                image transform
-                dict detection transform
-                    |-draw mask on background from dict
-                        |-do the transform to mask
-                    |-do the boxes transform 
-            if ndarray (mask) data:
-                
-
-        """
-        if self.Mission=="Detection":
-            self.
-
 
 
 
@@ -312,8 +340,9 @@ def main():
     # ---------------------------------- Usage: ---------------------------------- #
     
     DemoTransformDict=[
-        {"RandomResizedCrop":512},
-        {"RandomRotation":90},
+        # {"RandomResizedCrop":512},  
+        # {"RandomRotation":90},
+        {"RandomCrop":"None"},
         {"ToTensor":"None"},
         {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]},
     ]
@@ -321,9 +350,10 @@ def main():
     
 
     # Detection:
-    datasets=dataset.CocoDetection("/workspace/WSNets/Data/labelme/demo/train2014","Src/Utils/DataToolkit/annotation.json")
-    for i in range(len(datasets)):
-        data=datasets[i]
+    datasets=dataset.CocoDetection("/workspace/WSNets/Data/datasets/labelme/demo/train2014/","./Data/datatoolkit/dataset/annotation.json")
+    # for i in range(len(datasets)):
+    data=datasets[0]
+    print(data)
     A=GeneralTransform(DemoTransformDict,"Detection")
 
 

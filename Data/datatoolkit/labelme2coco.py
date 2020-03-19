@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:47:12 by winshare          #+#    #+#              #
-#    Updated: 2020/03/18 12:03:46 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/19 11:49:33 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,11 +39,12 @@ from tqdm import tqdm
 import imgviz
 import os
 class labelme2coco(object):
-    def __init__(self,labelme_json=[],outputpath='./',visualization=False):
+    def __init__(self,labelme_json=[],outputpath='./',visualization=False,mode="XYWH_ABS"):
         '''
         :param labelme_json: 所有labelme的json文件路径组成的列表
         :param save_json_path: json保存位置
         '''
+        self.mode=mode
         self.labelme_json=labelme_json
         self.save_json_path=outputpath
         self.images=[]
@@ -182,8 +183,10 @@ class labelme2coco(object):
 
         # return [(left_top_r,left_top_c),(right_bottom_r,right_bottom_c)]
         # return [(left_top_c, left_top_r), (right_bottom_c, right_bottom_r)]
-        # return [left_top_c, left_top_r, right_bottom_c, right_bottom_r]  # [x1,y1,x2,y2]
-        return [left_top_c, left_top_r, right_bottom_c-left_top_c, right_bottom_r-left_top_r]  # [x1,y1,w,h] 对应COCO的bbox格式
+        if self.mode=="XYXY_ABS":
+            return [left_top_c, left_top_r, right_bottom_c, right_bottom_r]  # [x1,y1,x2,y2]
+        if self.mode=="XYWH_ABS":
+            return [left_top_c, left_top_r, right_bottom_c-left_top_c, right_bottom_r-left_top_r]  # [x1,y1,w,h] 对应COCO的bbox格式
 
     def polygons_to_mask(self,img_shape, polygons):
         mask = np.zeros(img_shape, dtype=np.uint8)
@@ -214,6 +217,7 @@ def parser():
     parsers.add_argument("--a",default="./annotation/", type=str,help="dir of anno file like ./annotation/")
     parsers.add_argument("--o",default="annotation.json",type=str, help="dir of output annotation file like annotation.json")
     parsers.add_argument("--v",default=False,type=bool, help="bool type about output label visualization or not")
+    parsers.add_argument("--m",default="XYWH_ABS",type=str, help="box format mode like support : XYWH_ABS(Default for COCO) , XYXY_ABS")
     args = parsers.parse_args()
     return args
 
@@ -224,8 +228,9 @@ def main():
     args=parser()
     anno=args.a
     output=args.o
+    mode=args.m
     labelme_json=glob.glob(anno+'*.json')
-    labelme2coco(labelme_json=labelme_json,outputpath=output,visualization=args.v)
+    labelme2coco(labelme_json=labelme_json,outputpath=output,visualization=args.v,mode=mode)
 
 if __name__ == '__main__':
     main()
