@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/03/18 17:17:46 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/20 14:36:20 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,12 +38,7 @@ from torch.utils.data import DataLoader
 
 # ------------------------------ Local Reference ----------------------------- #
 
-from Data.coco.group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
-import Data.coco.transforms as T
-from Data.coco.coco_utils import ConvertCocoPolysToMask,_coco_remove_images_without_annotations
-from Data.coco.coco_utils import get_coco_api_from_dataset
-from Data.coco.coco_eval import CocoEvaluator
-import Data.coco.utils
+
 from network import NETWORK
 from Utils.Transform.transform import Compose
 from Utils.Transform.transform import GeneralTransform
@@ -78,19 +73,7 @@ class DATASET(NETWORK,COCO,Dataset):
             print("\nval dataset process done !\n")
             print('\n\n-------------------------- COCO Dataset Init Done --------------------------\n\n')
                  # ---------------------------------- Sampler --------------------------------- #
-        
-            if self.aspect_ratio_factor >= 0:
-                self.group_ids = create_aspect_ratio_groups(self.trainset, k=self.aspect_ratio_factor)
-                self.train_batch_sampler = GroupedBatchSampler(self.train_sampler,
-                self.group_ids,
-                self.BatchSize
-                )
-            else:
-                self.train_batch_sampler = torch.utils.data.BatchSampler(
-                self.train_sampler,
-                self.BatchSize,
-                drop_last=True
-                )
+
         # ----------------------------- COCO Dataset Init ---------------------------- #
         
         # ------------------------------- Support list ------------------------------- #

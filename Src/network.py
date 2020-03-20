@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/03/18 16:16:21 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/19 18:24:39 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -222,18 +222,13 @@ class NETWORK(CFG):
         Constructs a Mask R-CNN model with a ResNet-50-FPN backbone.
 
 
-        During inference, the model requires only the input tensors, and returns the post-processed predictions as a List[Dict[Tensor]], 
-        one for each input image. The fields of the Dict are as follows:
-
-            boxes (FloatTensor[N, 4]): the predicted boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
-
-            labels (Int64Tensor[N]): the predicted labels for each image
-
-            scores (Tensor[N]): the scores or each prediction
-
-            masks (UInt8Tensor[N, 1, H, W]): the predicted masks for each instance, in 0-1 range.
-       
-         In order to obtain the final segmentation masks, the soft masks can be thresholded, generally with a value of 0.5 (mask >= 0.5)
+        During training, the model expects both the input tensors, as well as a targets (list of dictionary),
+        containing:
+        - boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values
+          between 0 and H and 0 and W
+        - labels (Int64Tensor[N]): the class label for each ground-truth box
+        - masks (UInt8Tensor[N, H, W]): the segmentation binary masks for each instance
+        
         """
         self.model=models.detection.maskrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=num_classes, pretrained_backbone=pretrained_backbone, **kwargs)
         if self.debug:

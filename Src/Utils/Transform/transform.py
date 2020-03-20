@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
-#    Updated: 2020/03/19 17:08:26 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/20 17:40:35 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,115 +46,27 @@ import matplotlib.pyplot as plt
 # ------------------------------ local reference ----------------------------- #
 
 
-import Src.Utils.Transform.data_aug.data_aug as A
-import Src.Utils.Transform.data_aug.target_transform as NT
+import Src.Utils.Transform.box.data_aug as BT
+import Src.Utils.Transform.mask.segmentation_transforms as MT
 
 # ------------------------ Pytorch Official Functional Transform  ------------------------ #
 
-Functional={
-"adjust_brightness":T.functional.adjust_brightness,
-"adjust_contrast":T.functional.adjust_contrast,
-"adjust_gamma":T.functional.adjust_gamma,
-"adjust_hue":T.functional.adjust_hue,
-"adjust_saturation":T.functional.adjust_saturation,
-"affine":T.functional.affine,
-"crop":T.functional.crop,
-"erase":T.functional.erase,
-"five_crop":T.functional.five_crop,
-"hflip":T.functional.hflip,
-"normalize":T.functional.normalize,
-"pad":T.functional.pad,
-"perspective":T.functional.perspective,
-"resize":T.functional.resize,
-"resized_crop":T.functional.resized_crop,
-"rotate":T.functional.rotate,
-"ten_crop":T.functional.ten_crop,
-"to_grayscale":T.functional.to_grayscale,
-"to_pil_image":T.functional.to_pil_image,
-"to_tensor":T.functional.to_tensor,
-"vflip":T.functional.vflip
-}
-
-# ------------------------- Official Transform Class ------------------------- #
-
-OfficialClassFunction={
-"Grayscale":T.Grayscale,
-"Lambda":T.Lambda,
-"Normalize":T.Normalize,
-"Pad":T.Pad,
-"RandomAffine":T.RandomAffine,
-"RandomApply":T.RandomApply,
-"RandomChoice":T.RandomChoice,
-"RandomCrop":T.RandomCrop,
-"RandomErasing":T.RandomErasing,
-"RandomGrayscale":T.RandomGrayscale,
-"RandomHorizontalFlip":T.RandomHorizontalFlip,
-"RandomOrder":T.RandomOrder,
-"RandomPerspective":T.RandomPerspective,
-"RandomResizedCrop":T.RandomResizedCrop,
-"RandomRotation":T.RandomRotation,
-"RandomSizedCrop":T.RandomSizedCrop,
-"RandomVerticalFlip":T.RandomVerticalFlip,
-"Resize":T.Resize,
-"Scale":T.Scale,
-"TenCrop":T.TenCrop,
-"ToPILImage":T.ToPILImage,
-"ToTensor":T.ToTensor,
-}
 
 
-# ----------- ReBuild The Transform for Segmentation mask transform ---------- #
 
-RebuildClassFunction={
-"Grayscale":NT.Grayscale,
-"Lambda":NT.Lambda,
-"Normalize":NT.Normalize,
-"Pad":NT.Pad,
-"RandomAffine":NT.RandomAffine,
-"RandomApply":NT.RandomApply,
-"RandomChoice":NT.RandomChoice,
-"RandomCrop":NT.RandomCrop,
-"RandomErasing":NT.RandomErasing,
-"RandomGrayscale":NT.RandomGrayscale,
-"RandomHorizontalFlip":NT.RandomHorizontalFlip,
-"RandomOrder":NT.RandomOrder,
-"RandomPerspective":NT.RandomPerspective,
-"RandomResizedCrop":NT.RandomResizedCrop,
-"RandomRotation":NT.RandomRotation,
-"RandomSizedCrop":NT.RandomSizedCrop,
-"RandomVerticalFlip":NT.RandomVerticalFlip,
-"Resize":NT.Resize,
-"Scale":NT.Scale,
-"TenCrop":NT.TenCrop,
-"ToPILImage":NT.ToPILImage
+
+segmentation_transform={
+"Normalize":MT.Normalize
+"ToTensor":MT.ToTensor
+"RandomHorizontalFlip":MT.RandomHorizontalFlip
+"RandomRotate":MT.RandomRotate
+"RandomGaussianBlur":MT.RandomGaussianBlur
+"RandomScaleCrop":MT.RandomScaleCrop
+"FixScaleCrop":MT.FixScaleCrop
+"FixedResize":MT.FixedResize
 }
 
-# ------------------------ Transform With Pixel Value ------------------------ #
-WithValue={
-"Normalize":T.Normalize,
-"ToPILImage":T.ToPILImage,
-"ToTensor":T.ToTensor,
-}
-# ------------------ NeedPara Transform Without Pixel Value ------------------ #
-NeedsPara={
-"Pad":T.Pad,#填充
-"Resize":T.Resize,
-"Scale":T.Scale,
-"TenCrop":T.TenCrop
-}
-# -------------------------- Random Transform Without Pixel Value ------------------------- #
-Random={
-"RandomAffine":T.RandomAffine,#随机仿射变换
-"RandomCrop":T.RandomCrop,#随机自由裁切
-"RandomErasing":T.RandomErasing,#随机擦除
-"RandomHorizontalFlip":T.RandomHorizontalFlip,#随机水平翻转
-"RandomPerspective":T.RandomPerspective,#随机透视变换
-"RandomResizedCrop":T.RandomResizedCrop,#随机重采样并裁切
-"RandomRotation":T.RandomRotation,#随机旋转
-"RandomVerticalFlip":T.RandomVerticalFlip,#随机垂直翻转
-}
-# ----------------------------- Custom Transform For Detection ----------------------------- #
-Detection_Overall={
+detection_transform={
 "RandomHorizontalFlip":A.RandomHorizontalFlip,
 "HorizontalFlip":A.HorizontalFlip,
 "RandomScale":A.RandomScale,
@@ -192,26 +104,6 @@ class GeneralTransform():
         So the General Transform class is a resolution :
         
         Init General Transform 
-        Args:
-            
-            transform: list of transform dict like:
-            
-            ```json
-            [
-                {"Normalize":[[0.485,0.456,0.406],[0.229, 0.224, 0.225]]},
-                {"RandomSizedCrop":512},
-                {"RandomRotation":90},
-                {"ToTensor":"None"}
-            ]
-            ```
-            Mission: String SupportMission=[
-                "Detection",
-                "Segmentation",
-                "InstanceSegmentation",
-                "KeyPoint",
-                "Caption"
-            ]
-
         
         """
         SupportMission=[
@@ -226,14 +118,7 @@ class GeneralTransform():
         assert Mission in SupportMission,"Invalid Transform Dictionary"
         self.Mission=Mission
 
-        """
-        {
-            boxes:      list of box tensor[n,4]                 (float32)
-            masks:      list of segmentation mask points [n,n]  (float32)
-            keypoints： list of key pointss[n,n]                (float32)
-            labels:     list of index of label[n]               (int64)
-        }
-        """
+
 
         # -------------- Filte The Transform String list is valid or not ------------- #
 
@@ -241,15 +126,13 @@ class GeneralTransform():
             """
             Dict Data Only
             """
-            self.Target_SupprtDict=Detection_Overall
-            self.Target_SupprtDict["ToPILImage"]=T.ToPILImage
-            self.Target_SupprtDict["ToTensor"]=T.ToTensor
-        
+            pass
         if self.Mission=="Segmentation":
             """
             Ndarray Mask Only 
             """
-            self.Target_SupprtDict=RebuildClassFunction
+            pass
+        
         print("\n\n-----Transform Init with Mode",self.Mission,"-----")
         
         for process in self.Target_SupprtDict.keys():
@@ -257,67 +140,47 @@ class GeneralTransform():
             
         print("-----Transform Init with Mode",self.Mission,"-----\n\n")
         
-        for transform in transformlist:
-            name=list(transform.keys())[0]
-            print(name)
-            assert not str(name) in self.Target_SupprtDict.keys(),"Invalid Transform for Target"
-            print('Valid Transform ',transform)        
-
-            for transform_key,transform_para in transform.items():
-                if transform_key in ClassFunction or transform_key in Detection_Overall:
-                    print("-----Valid Transform : |",transform_key," | with Para: |",transform_para,"|")
-                else:
-                    print("-----Invalid Transform :",transform)
     
 
-    def Target_dictTransform(self,target):
-        Mask=mask.decode(target)
-        if "segmentation" in target.keys():
-            pass
-
-
-        if "bbox" in target.keys():
-            pass
-
-
-
-    def Target_ndarraytransform(self,target):
+    def maskTransform(self,target):
         pass
 
 
 
-    def Imagery_transform(self,image):
+    def box_ndarraytransform(self,target):
+        pass
+
+
+
+    def imagery_transform(self,image):
         pass
         
 
 
 
-    def __call__(self,images,targets):
+    def __call__(self,data):
         """
-        image  :
+        data must be dict
+        "image":
             ndarray or PIL image
-        target :
+        "target":
             dict={
-                "boxes":
-                    [[ 53.         68.0000175 405.        478.9998225   0.       ]
-                    [202.         20.99992   496.        486.99978     0.       ]
-                    [589.         77.0001275 737.        335.9999825   0.       ]
-                    [723.        327.000125  793.        396.000295    1.       ]],
-                "class index":
-                    [1,3,14,4],
-                "segmantation":
-                    [[poinset1],[pointset2],[pointset3],[pointset4]]        
-                }
-            ndarray:
-                ndarray,PIL image
+                - boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values
+                        between 0 and H and 0 and W
+                - labels (Int64Tensor[N]): the class label for each ground-truth box
+                - masks (UInt8Tensor[N, H, W]): the segmentation binary masks for each instance
+            }
         """
-        if isinstance(targets,dict):
-            images=self.Imagery_transform(images)
-            targets=self.Target_dictTransform(targets)
-        else:
-            images=self.Imagery_transform(images)
-            targets=self.Target_ndarraytransform(targets)
-        return images,targets
+        IM=data['image']
+        GT=data['target']
+        if "boxes" in GT.keys():
+        
+        if "labels" in GT.keys():
+
+        if "mask" in GT.keys():
+
+
+
 
 
 
@@ -350,11 +213,12 @@ def main():
     
 
     # Detection:
-    datasets=dataset.CocoDetection("/workspace/WSNets/Data/datasets/labelme/demo/train2014/","./Data/datatoolkit/dataset/annotation.json")
-    # for i in range(len(datasets)):
+    datasets=dataset.CocoDetection("/workspace/WSNets/Data/datasets/labelme/demo/train2014/",
+    "./Data/datatoolkit/dataset/annotation.json")
     data=datasets[0]
     print(data)
-    A=GeneralTransform(DemoTransformDict,"Detection")
+    
+    A=GeneralTransform(DemoTransformDict,"InstanceSegmentation")
 
 
 

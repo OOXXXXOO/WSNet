@@ -57,6 +57,22 @@ def sample(imagery,label):
             }
         )
         
+def sample_instance(imagery,label):
+    print("\n\n-----Patch Size: ",len(patch),"-----\n\n")
+    H=imagery.shape[0]-Size
+    W=imagery.shape[1]-Size
+    num=int((H*W)/(Size**2*sample_ratio))
+    print('Data Length is ,',num)
+    for i in tqdm(range(num)):
+        x=np.random.randint(0, H)
+        y=np.random.randint(0, W)
+        image_=imagery[x:x+patch_size,y:y+patch_size,:]
+        label_=label[x:x+patch_size,y:y+patch_size]
+        label_[label_==4]=1
+        label_[label_>1]=0
+
+    
+
 
 def multi_class_patch():
     print("-----start generate multi-class patch")

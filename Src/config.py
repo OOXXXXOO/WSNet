@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/03/18 17:44:25 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/20 17:19:20 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,9 @@ import torchvision.datasets as dataset
 
 from Utils.Transform.transform import GeneralTransform
 from Data.custom.segmentation_loader import Costum_NPY_DataSet
-
+from Data.datasets.cityscapes import CityscapesSegmentation
+from Data.datasets.coco import COCOSegmentation
+from Data.datasets.pascal import VOCSegmentation
 
 # ------------------------------ Local Reference ----------------------------- #
 
@@ -93,8 +95,8 @@ class CFG():
             "Segmentation":{
                 "VOC_Segmentation":dataset.VOCSegmentation,
                 "Cityscapes":dataset.Cityscapes,
-                "CocoDetection":dataset.CocoDetection,
-                "Costum_NPY_DataSet":Costum_NPY_DataSet
+                "Costum_NPY_DataSet":Costum_NPY_DataSet,
+                "CocoSegmentation":COCOSegmentation
             },
             "Caption":{
                 "CocoCaptions":dataset.CocoCaptions
@@ -253,7 +255,7 @@ class CFG():
         self.NPY=self.DataSetConfig["NPY"]
         self.NPY_Data=np.load(self.NPY,allow_pickle=True)
 
-        # --------------------------------- Transform -------------------------------- #
+        # --------------------------------- Transform (Aborted)------------------------#
         # ---------------------------------------------------------------------------- #
 
 
@@ -284,15 +286,15 @@ class CFG():
         It returns a ImageList for the inputs, and a List[Dict[Tensor]] for the targets
         
         """
-        print('\n\n--------------------------------- Transform --------------------------------')
-        self.TransformDict=self.DataSetConfig['Transform']
-        functionlist=[list(i.keys())[0] for i in self.TransformDict]
-        paralist=[list(i.values())[0] for i in self.TransformDict]
+        # print('\n\n--------------------------------- Transform --------------------------------')
+        # self.TransformDict=self.DataSetConfig['Transform']
+        # functionlist=[list(i.keys())[0] for i in self.TransformDict]
+        # paralist=[list(i.values())[0] for i in self.TransformDict]
         
         
         
         
-        self.transforms=GeneralTransform(self.TransformDict)
+        # self.transforms=GeneralTransform(self.TransformDict)
   
 
 
