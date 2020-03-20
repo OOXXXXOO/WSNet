@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
-#    Updated: 2020/03/20 17:40:35 by winshare         ###   ########.fr        #
+#    Updated: 2020/03/20 19:01:59 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,14 +56,14 @@ import Src.Utils.Transform.mask.segmentation_transforms as MT
 
 
 segmentation_transform={
-"Normalize":MT.Normalize
-"ToTensor":MT.ToTensor
-"RandomHorizontalFlip":MT.RandomHorizontalFlip
-"RandomRotate":MT.RandomRotate
-"RandomGaussianBlur":MT.RandomGaussianBlur
-"RandomScaleCrop":MT.RandomScaleCrop
-"FixScaleCrop":MT.FixScaleCrop
-"FixedResize":MT.FixedResize
+"Normalize":MT.Normalize,
+"ToTensor":MT.ToTensor,
+"RandomHorizontalFlip":MT.RandomHorizontalFlip,
+"RandomRotate":MT.RandomRotate,
+"RandomGaussianBlur":MT.RandomGaussianBlur,
+"RandomScaleCrop":MT.RandomScaleCrop,
+"FixScaleCrop":MT.FixScaleCrop,
+"FixedResize":MT.FixedResize,
 }
 
 detection_transform={
@@ -80,6 +80,8 @@ detection_transform={
 "Resize":A.Resize,
 "RandomHSV":A.RandomHSV 
 }
+
+
 
 
 

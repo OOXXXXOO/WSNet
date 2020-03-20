@@ -63,9 +63,10 @@ class CocoDataset():
 
         img = Image.open(os.path.join(self.root, path)).convert('RGB')
         if self.mode=="InstanceSegmentation":
-            sem_seg=
-            boxes=
-            labels=[T["label"]  for T in target]
+            pass
+            # sem_seg=
+            # boxes=
+            # labels=[T["label"]  for T in target]
 
         if self.mode=="Detection":
             pass
@@ -73,8 +74,8 @@ class CocoDataset():
         if self.mode=="Segmentation":
             pass
 
-        if self.transforms is not None:
-            img, target = self.transforms(img, target)
+        # if self.transforms is not None:
+        #     img, target = self.transforms(img, target)
 
         return img, target
 
@@ -84,8 +85,8 @@ class CocoDataset():
 
 
 def main():
-    AnnaFile="Data/DataSets/Labelme2COCO_Demo/instances_train2014.json"
-    DataSetRoot="Data/DataSets/Labelme2COCO_Demo/train2014"
+    AnnaFile="Data/Toolkit/dataset/annotation.json"
+    DataSetRoot="Data/Toolkit/dataset/train2014"
     DataSets=CocoDataset(DataSetRoot,AnnaFile)
     print(DataSets[0])
 
