@@ -29,7 +29,7 @@ def binary_patch(dataset):
         print('-----process data : ',Index)
         imagery=data["data"]
         label=data["label"]
-        sample(imagery,label)
+        sample_instance(imagery,label)
         Index+=1
 
 def sample(imagery,label):
@@ -70,6 +70,22 @@ def sample_instance(imagery,label):
         label_=label[x:x+patch_size,y:y+patch_size]
         label_[label_==4]=1
         label_[label_>1]=0
+        label_=label_*255
+        label1=label_.copy()
+
+        image, contours, hierarchy= cv2.findContours(label1,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+        # print(contours[0])
+        for points in contours:
+            # print(points)
+            # area = cv2.contourArea(points)
+            x,y,w,h=cv2.boundingRect(points)
+            draw_1=cv2.rectangle(label1, (x,y), (x+w,y+h), 127, 2)
+        #     for (x,y) in points:
+        #         label1[y,x]=127 
+        # exit(0)
+        # cv2.fil
+        plt.imshow(draw_1),plt.show()
+
 
     
 
@@ -132,7 +148,7 @@ def main():
     # plt.imshow(dataset_raw[3]["label"]),plt.show()
     binary_patch(dataset_raw)
 
-    np.save("/workspace/SampledDatasetHTSJ",patch)
+    # np.save("/workspace/SampledDatasetHTSJ",patch)
     # print("/workspace/SampledDatasetMini.npy is already save")
     
 
