@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:45 by winshare          #+#    #+#              #
-#    Updated: 2020/03/31 19:10:34 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/02 15:01:49 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ import Src.Utils.Transform.mask.segmentation_transforms as MT
 
 
 
-segmentation_transform={
+mask_transform={
 "Normalize":MT.Normalize,
 "ToTensor":MT.ToTensor,
 "RandomHorizontalFlip":MT.RandomHorizontalFlip,
@@ -66,19 +66,19 @@ segmentation_transform={
 "FixedResize":MT.FixedResize,
 }
 
-detection_transform={
-"RandomHorizontalFlip":A.RandomHorizontalFlip,
-"HorizontalFlip":A.HorizontalFlip,
-"RandomScale":A.RandomScale,
-"Scale":A.Scale,
-"RandomTranslate":A.RandomTranslate,
-"Translate":A.Translate,
-"RandomRotate":A.RandomRotate,
-"Rotate":A.Rotate,
-"RandomShear":A.RandomShear,
-"Shear":A.Shear,
-"Resize":A.Resize,
-"RandomHSV":A.RandomHSV 
+boxes_transform={
+"RandomHorizontalFlip":BT.RandomHorizontalFlip,
+"HorizontalFlip":BT.HorizontalFlip,
+"RandomScale":BT.RandomScale,
+"Scale":BT.Scale,
+"RandomTranslate":BT.RandomTranslate,
+"Translate":BT.Translate,
+"RandomRotate":BT.RandomRotate,
+"Rotate":BT.Rotate,
+"RandomShear":BT.RandomShear,
+"Shear":BT.Shear,
+"Resize":BT.Resize,
+"RandomHSV":BT.RandomHSV 
 }
 
 
@@ -195,8 +195,7 @@ class Smart_transform():
         Design For process smart random transform for different mission
         Sopport for :
 
-        - Detection
-        - MOT
+        - Object Detection
         - Instance Segmentation
         - Semantic Segmentation
         - Classification

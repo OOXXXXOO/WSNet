@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 16:14:09 by winshare          #+#    #+#              #
-#    Updated: 2020/03/12 16:14:15 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/02 15:02:08 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ import cv2
 import matplotlib.pyplot as plt
 import sys
 import os
-from data_aug.bbox_util import *
+from .bbox_util import *
 
 lib_path = os.path.join(os.path.realpath("."), "data_aug")
 sys.path.append(lib_path)

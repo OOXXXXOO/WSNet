@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/03/20 17:19:20 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/02 19:54:19 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,17 +36,17 @@ import torch.optim as optim
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-import torchvision.transforms as T
+
 import torchvision.datasets as dataset
 
 # ---------------------------- Official Reference ---------------------------- #
 
 
 
-from Utils.Transform.transform import GeneralTransform
+
 from Data.custom.segmentation_loader import Costum_NPY_DataSet
 from Data.datasets.cityscapes import CityscapesSegmentation
-from Data.datasets.coco import COCOSegmentation
+from Data.DataSets.COCO.coco import CocoDataset
 from Data.datasets.pascal import VOCSegmentation
 
 # ------------------------------ Local Reference ----------------------------- #
@@ -89,20 +89,20 @@ class CFG():
                 "ImageNet":dataset.ImageNet
             },
             "Detection":{
-                "CocoDetection":dataset.CocoDetection,
+                "CocoDetection":CocoDataset,
                 "VOC_Detection":dataset.VOCDetection
             },
             "Segmentation":{
                 "VOC_Segmentation":dataset.VOCSegmentation,
                 "Cityscapes":dataset.Cityscapes,
                 "Costum_NPY_DataSet":Costum_NPY_DataSet,
-                "CocoSegmentation":COCOSegmentation
+                "CocoSegmentation":CocoDataset
             },
             "Caption":{
                 "CocoCaptions":dataset.CocoCaptions
             },
             "InstanceSegmentation":{
-                "CocoDetection":dataset.CocoDetection
+                "CocoDetection":CocoDataset
             }
         }
         self.dataset_support_list=self.datasets_function_dict.keys()
@@ -321,7 +321,7 @@ class CFG():
             self.gpu_id=self.Config['gpu_id']
             os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
             self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
-            print('--------------------------------- Transform --------------------------------\n\n-----Device:\n\n',self.device)
+            print('----------------------- Device:\n\n',self.device)
         
         if self.devices=='CPU':
             self.device=torch.device("cpu")

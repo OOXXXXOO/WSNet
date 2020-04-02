@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/03/20 14:36:20 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/02 20:01:37 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,9 +40,8 @@ from torch.utils.data import DataLoader
 
 
 from network import NETWORK
-from Utils.Transform.transform import Compose
-from Utils.Transform.transform import GeneralTransform
-
+from Utils.Transform.STF import Compose
+from Utils.Transform.STF import STF
 
 
 
@@ -56,23 +55,33 @@ class DATASET(NETWORK,COCO,Dataset):
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
 
+
+        # --------------------------------- SFT Init --------------------------------- #
+        self.transforms=SFT(Mode=self.MissionType)
+        # ---------------------------------------------------------------------------- #
+        #                         Smart Transform build Module                         #
+        # ---------------------------------------------------------------------------- #
+
         # ----------------------------- COCO Dataset Init ---------------------------- #
         self.dataset_function=self.datasets_function_dict[self.MissionType][self.DataSetType]
+        # --------------------------- DatasetFunction Index -------------------------- #
         if self.DataSetType == "CocoDetection":
             self.trainset=self.dataset_function(
                 os.path.join(self.DataSet_Root,'/train2014'),
                 self.Dataset_Train_file,
                 transforms=self.transforms
+                Mode=self.MissionType
             )
             print("\ntrain dataset process done !\n")
             self.valset=self.dataset_function(
                 os.path.join(self.DataSet_Root,'/val2014'),
                 self.Dataset_Val_file,
                 transforms=self.transforms
+                Mode=self.MissionType
             )
             print("\nval dataset process done !\n")
             print('\n\n-------------------------- COCO Dataset Init Done --------------------------\n\n')
-                 # ---------------------------------- Sampler --------------------------------- #
+        # ---------------------------------- Sampler --------------------------------- #
 
         # ----------------------------- COCO Dataset Init ---------------------------- #
         
@@ -95,7 +104,6 @@ class DATASET(NETWORK,COCO,Dataset):
         if self.DataSetType == "ImageNet":
             print("Not Support Now")
         if self.DataSetType == "Costum_NPY_DataSet":
-            
             print('\n\n-----Start Costum_NPY_DataSet Buidling...')
             self.trainset=self.dataset_function(
                 npy=self.NPY_Data,
@@ -138,12 +146,6 @@ class DATASET(NETWORK,COCO,Dataset):
                 drop_last=True
                 )
 
-
-   
-
-
-
-
         # ---------------------------------- loader ---------------------------------- #
 
 
@@ -159,6 +161,7 @@ class DATASET(NETWORK,COCO,Dataset):
             batch_size=1,
             sampler=self.test_sampler,
             num_workers=self.worker_num)
+        
         # BUG INFO :
         """
         For Deeplab V3:
@@ -176,7 +179,6 @@ class DATASET(NETWORK,COCO,Dataset):
 
         print("---------------------- Validation DataLoader Init Finish ---------------------")
 
-        
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
@@ -187,7 +189,7 @@ class DATASET(NETWORK,COCO,Dataset):
         #                               DATASET Function                               #
         # ---------------------------------------------------------------------------- #
 
-
+    
 
 
 

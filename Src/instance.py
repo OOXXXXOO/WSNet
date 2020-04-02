@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/03/18 14:59:36 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/02 20:27:33 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ from tqdm import tqdm
 # ---------------------------- official reference ---------------------------- #
 
 from Src.Utils.Evaluator.metrics import Evaluator
+from Data.DataSets.COCO.coco import CocoEvaluation
 from dataset import DATASET
 import matplotlib.pyplot as plt
 import thread
@@ -64,7 +65,24 @@ class INSTANCE(DATASET):
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
 
-        self.evaluator = Evaluator(self.class_num)
+        # -------------------------------- train init -------------------------------- #
+        
+        
+
+
+        # -------------------------------- train init -------------------------------- #
+        
+        # --------------------------------- eval init -------------------------------- #
+
+        # self.evaluator =CocoEvaluation()
+        self.eva_std_list={
+            "Coco":CocoEvaluation
+            # "Cityscapes":
+            # "PascalVOC":
+            # "SpaceNet":
+        }
+
+        # --------------------------------- eval init -------------------------------- #
 
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
@@ -72,9 +90,10 @@ class INSTANCE(DATASET):
         print("\n\n---------------------- INSTANCE Class Init Successful ----------------------\n\n")
 
 
-        
-
     def train(self):
+        # ---------------------------------------------------------------------------- #
+        #                              Train Init Process                              #
+        # ---------------------------------------------------------------------------- #
         torch.cuda.empty_cache()
         for i in range(5):
             print("#####------------------------------------------------------------------#####")
@@ -83,76 +102,130 @@ class INSTANCE(DATASET):
 
         for i in range(5):
             print("#####------------------------------------------------------------------#####")
-        """
-        resume
-        part
-        """
-        
-        
-        lossavg=[]
+
+        if self.resume:
+            print("------------------------------- load model : -------------------------------")
+            print("-----",self.checkpoint)
+
         self.model.to(self.device)
         self.model.train()
-        step=0
-        self.ACC=0
-        train_loss=0
+
+        # ---------------------------------------------------------------------------- #
+        #                              Train Init Process                              #
+        # ---------------------------------------------------------------------------- #
+
+        # ------------------------------- Train Process ------------------------------ #
+        for epoch in self.epochs:
+            print("----------------------------------- ",epoch," ----------------------------------") 
+            """
+            tqdm format =======>> 
+            Para Table:
+            """
+            self.val()
+    
+    
+    def inference(self):
+        pass
+
+    def unpack_detection_std(self,DetectionTarget):
+        """
+        Transform The Detection Target object Data from dataloader to Network
+        """
+        pass
+
+    def unpack_instance_std(self,InstanceTarget):
+        """
+        Transform The Instance Target object Data from dataloader to Network
+        """
+        pass
+
+    def unpack_segmentation_std(self,SegmentationTarget):
+        """
+        Transform The Instance Target object Data from dataloader to Network
+        """
+        pass
+
+
+
+    # def train(self,model,trainloader,valloader):
+        # torch.cuda.empty_cache()
+        # for i in range(5):
+        #     print("#####------------------------------------------------------------------#####")
+
+        # print("------------- All Preprocess flow has been done Start Training ------------")
+
+        # for i in range(5):
+        #     print("#####------------------------------------------------------------------#####")
+        # """
+    #     resume
+    #     part
+    #     """
         
-        self.writer = SummaryWriter(log_dir=self.logdir,comment="Instance "+str(self.InstanceID)+self.MissionType)
-        boardcommand="tensorboard --logdir="+self.logdir
-        thread.start_new_thread(os.system(),boardcommand)
+        
+    #     lossavg=[]
+    #     self.model.to(self.device)
+    #     self.model.train()
+    #     step=0
+    #     self.ACC=0
+    #     train_loss=0
+        
+    #     self.writer = SummaryWriter(log_dir=self.logdir,comment="Instance "+str(self.InstanceID)+self.MissionType)
+    #     boardcommand="tensorboard --logdir="+self.logdir
+    #     thread.start_new_thread(os.system(),boardcommand)
 
 
 
-        for epoch in range(self.epochs):
-            print('-----Epoch :',epoch)
-            for images,targets in self.trainloader:
+    #     for epoch in range(self.epochs):
+    #         print('-----Epoch :',epoch)
+    #         for images,targets in self.trainloader:
   
       
-                # print("target:",targets.type(),targets.size())
-                # ----------------------------------- Epoch ---------------------------------- #
+    #             # print("target:",targets.type(),targets.size())
+    #             # ----------------------------------- Epoch ---------------------------------- #
 
-                if self.usegpu:
-                    images,targets=images.to(self.device),targets.to(self.device) 
-                # self.lr_scheduler(self.optimizer,step)
-                self.optimizer.zero_grad()
+    #             if self.usegpu:
+    #                 images,targets=images.to(self.device),targets.to(self.device) 
+    #             # self.lr_scheduler(self.optimizer,step)
+    #             self.optimizer.zero_grad()
 
-                if self.DefaultNetwork:
-                    logits=self.model(images)['out']
-                else:
-                    logits=self.model(images)
-                """
-                Default Network Output the OrderedDict:
-                {
-                    'out':output_tensor
-                }
-                Custom Network will output tensor directly
-                """
-                logits=logits.argmax(1).unsqueeze(1).float().requires_grad_()
+    #             if self.DefaultNetwork:
+    #                 logits=self.model(images)['out']
+    #             else:
+    #                 logits=self.model(images)
+    #             """
+    #             Default Network Output the OrderedDict:
+    #             {
+    #                 'out':output_tensor
+    #             }
+    #             Custom Network will output tensor directly
+    #             """
+    #             logits=logits.argmax(1).unsqueeze(1).float().requires_grad_()
                 
-                # print("logits:",logits.type(),logits.size())
-                # print("target:",targets.type(),targets.size())
+    #             # print("logits:",logits.type(),logits.size())
+    #             # print("target:",targets.type(),targets.size())
 
 
-                loss=self.Loss_Function(logits,targets)
-                loss.backward()
-                self.optimizer.step()
-                train_loss += loss.item()
-                lossavg.append(loss.item())
-                print('---loss:',loss.item(),'---step :',step)
-                self.writer.add_scalar('train/total_loss_iter', loss.item(), i + len(self.trainloader) * epoch)
-                step+=1
-                # ----------------------------------- Epoch ---------------------------------- #
+    #             loss=self.Loss_Function(logits,targets)
+    #             loss.backward()
+    #             self.optimizer.step()
+    #             train_loss += loss.item()
+    #             lossavg.append(loss.item())
+    #             print('---loss:',loss.item(),'---step :',step)
+    #             self.writer.add_scalar('train/total_loss_iter', loss.item(), i + len(self.trainloader) * epoch)
+    #             step+=1
+    #             # ----------------------------------- Epoch ---------------------------------- #
             
             
-            self.writer.add_scalar('train/total_loss_epoch', train_loss, epoch)
+    #         self.writer.add_scalar('train/total_loss_epoch', train_loss, epoch)
 
-            if step%100==0:
-                self.visualize_image(images,targets,logits,step)
+    #         if step%100==0:
+    #             self.visualize_image(images,targets,logits,step)
 
-            ACC=self.val(epoch)    
-            if self.ACC<ACC:
-                self.save(epoch)
-            else:
-                self.ACC=ACC
+    #         ACC=self.val(epoch)    
+    #         if self.ACC<ACC:
+    #             self.save(epoch)
+    #         else:
+    #             self.ACC=ACC
                 
             
 

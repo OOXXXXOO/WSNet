@@ -36,21 +36,40 @@ import numpy as np
 
 
 
-class CocoDataset():
-    """`MS Coco Support <http://mscoco.org/dataset/#detections-challenge2016>`_ Dataset.
-        Rebuild DataSet Class For: 
-            * Detection
-            * InstanceSegmentation
-            * Segmentation
-        Use Mode Key to Init
+class CocoDataset(COCO):
+    """
+    MS Coco Support <http://mscoco.org/dataset/#detections-challenge2016>_ Dataset.
+    ----------------------------------- Notes ----------------------------------
+    Dataset class read Coco 201x like annotation json
+
+    return image (PIL image object) , target (dict)
+
+    The Target object is dict of annotation for one imagery
+    * Detection
+        target dict:             
+        - boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
+        - labels (Int64Tensor[N]): the class label for each ground-truth box
+    * InstanceSegmentation
+        target dict :
+        - boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values
+        between 0 and H and 0 and W
+        - labels (Int64Tensor[N]): the class label for each ground-truth box
+        - masks (UInt8Tensor[N, H, W]): the segmentation binary masks for each instance
+    * Segmentation
+        target dict :
+        Output [(Batch_Size),W,H,CLASS_NUM] argmax(Axis=1) with w*h*c => [(Batch_Size),W,H]
+        Target [(Batch_Size),W,H]
+    Use Mode Key to Init DataSet return content
     """
 
-    def __init__(self, root, annFile, transform=None, target_transform=None, transforms=None,Mode='InstanceSegmentation'):
-        # super(CocoDataset, self).__init__(root, transforms, transform, target_transform)
+    def __init__(self, root, annFile, transforms=None,Mode='InstanceSegmentation',debug=False):
+        super(CocoDataset, self).__init__()
+        self.debug=debug
         self.root=root
         self.coco = COCO(annFile)
         self.ids = list(sorted(self.coco.imgs.keys()))
         self.mode=Mode
+        self.transforms=transforms
 
     def __getitem__(self, index):
         """
@@ -65,48 +84,38 @@ class CocoDataset():
         ann_ids = coco.getAnnIds(imgIds=img_id)
         Ann = coco.loadAnns(ann_ids)
         path = coco.loadImgs(img_id)[0]['file_name']
-
         img = Image.open(os.path.join(self.root, path)).convert('RGB')
         (w,h)=img.size
         boxes=np.array([t["bbox"] for t in Ann])
         labels=np.array([t["category_id"] for t in Ann])
-        masks=np.array([self.annToMask(t,h,w) for t in Ann])
+        instancemasks=np.array([self.annToMask(t,h,w) for t in Ann])
+        segmask=np.zeros((h,w),dtype=np.int64)
+        for index,t in enumerate(instancemasks):
+            max_=max(segmask.max(),(t*labels[index]).max())
+            segmask=segmask+t*labels[index]
+            segmask[segmask>max_]=max_
+        if self.debug:
+            plt.imshow(segmask),plt.show()
         
         if self.mode=="InstanceSegmentation":
-            """
-            - boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values
-            between 0 and H and 0 and W
-            - labels (Int64Tensor[N]): the class label for each ground-truth box
-            - masks (UInt8Tensor[N, H, W]): the segmentation binary masks for each instance
-            """
             target={
                 "boxes":boxes,
                 "labels":labels,
-                "masks":masks
+                "masks":instancemasks
             }
             
         if self.mode=="Detection":
-            """
-            - boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
-            - labels (Int64Tensor[N]): the class label for each ground-truth box
-            """
             target={
                 "boxes":boxes,
                 "labels":labels
             }
-
         if self.mode=="Segmentation":
-            """
-            Output [(Batch_Size),W,H,CLASS_NUM] argmax(Axis=1) with w*h*c => [(Batch_Size),W,H]
-            Target [(Batch_Size),W,H]
-            """
             target={
                 "labels":labels,
-                "masks":np.argmax(np.transpose(masks,(1,2,0)),1)
+                "masks":segmask
             }
-
-        # if self.transforms is not None:
-        #     img, target = self.transforms(img, target)
+        if self.transforms is not None:
+            img, target = self.transforms(img, target)
 
         return img, target
 
@@ -114,55 +123,6 @@ class CocoDataset():
         return len(self.ids)
 
     # ------------------------------ DataSetFunction ----------------------------- #
-    def load_mask(self, image_id):
-        """Load instance masks for the given image.
-        Different datasets use different ways to store masks. This
-        function converts the different mask format to one format
-        in the form of a bitmap [height, width, instances].
-        Returns:
-        masks: A bool array of shape [height, width, instance count] with
-            one mask per instance.
-        class_ids: a 1D array of class IDs of the instance masks.
-        """
-        # If not a COCO image, delegate to parent class.
-        image_info = self.image_info[image_id]
-        if image_info["source"] != "coco":
-            return super(CocoDataset, self).load_mask(image_id)
-
-        instance_masks = []
-        class_ids = []
-        annotations = self.image_info[image_id]["annotations"]
-        # Build mask of shape [height, width, instance_count] and list
-        # of class IDs that correspond to each channel of the mask.
-        for annotation in annotations:
-            class_id = self.map_source_class_id(
-                "coco.{}".format(annotation['category_id']))
-            if class_id:
-                m = self.annToMask(annotation, image_info["height"],
-                                   image_info["width"])
-                # Some objects are so small that they're less than 1 pixel area
-                # and end up rounded out. Skip those objects.
-                if m.max() < 1:
-                    continue
-                # Is it a crowd? If so, use a negative class ID.
-                if annotation['iscrowd']:
-                    # Use negative class ID for crowds
-                    class_id *= -1
-                    # For crowd masks, annToMask() sometimes returns a mask
-                    # smaller than the given dimensions. If so, resize it.
-                    if m.shape[0] != image_info["height"] or m.shape[1] != image_info["width"]:
-                        m = np.ones([image_info["height"], image_info["width"]], dtype=bool)
-                instance_masks.append(m)
-                class_ids.append(class_id)
-
-        # Pack instance masks into an array
-        if class_ids:
-            mask = np.stack(instance_masks, axis=2)
-            class_ids = np.array(class_ids, dtype=np.int32)
-            return mask, class_ids
-        else:
-            # Call super class to return an empty mask
-            return super(CocoDataset, self).load_mask(image_id)
 
         def annToRLE(self, ann, height, width):
             """
@@ -293,11 +253,14 @@ def CocoEvaluation(model, dataset, coco, eval_type="bbox", limit=0, image_ids=No
         t_prediction, t_prediction / len(image_ids)))
     print("Total time: ", time.time() - t_start)
 
+
+
 def main():
     AnnaFile="Data/Toolkit/dataset/annotation.json"
     DataSetRoot="Data/Toolkit/dataset/train2014"
     DataSets=CocoDataset(DataSetRoot,AnnaFile)
-    print(DataSets[0])
+    for da in DataSets:
+        print(da)
 
 
 

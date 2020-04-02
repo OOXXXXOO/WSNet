@@ -4,7 +4,7 @@
         "Net": {
             "DefaultNetwork":true,
             "NetType": "MaskRCNN",
-            "BatchSize": 2,
+            "BatchSize": 4,
             "BackBone": "None",
             "Optimizer":"SGD",
             "Loss_Function":"MSELoss",

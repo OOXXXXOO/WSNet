@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:47:12 by winshare          #+#    #+#              #
-#    Updated: 2020/03/19 11:49:33 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/02 17:25:13 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,8 @@ class labelme2coco(object):
         self.categories=[]
         self.annotations=[]
         self.label=['__background__']
-        self.annID=1
+
+        self.annID=0
         self.height=0
         self.width=0
         self.visualization=visualization
@@ -76,7 +77,7 @@ class labelme2coco(object):
                 
                 image['height']=height
                 image['width'] = width
-                image['id']=num+1
+                image['id']=num
                 image['file_name'] = data['imagePath'].split('/')[-1]
 
                 self.height=height
@@ -84,7 +85,7 @@ class labelme2coco(object):
 
 
                 self.images.append(image)
-                num=0
+  
                 for shape in tqdm(sorted(data['shapes'], key=lambda x: len(x['points']),reverse=True)):
                     
                     label_name = None
@@ -100,7 +101,7 @@ class labelme2coco(object):
                     points=shape['points']
                     self.annotations.append(self.annotation(points,label_name,num))
                     self.annID+=1
-                    num+=1
+                    
 
                 lbl, _ = utils.shapes_to_label(
                     img.shape, data['shapes'], label_name_to_value
@@ -136,15 +137,15 @@ class labelme2coco(object):
     def categorie(self,label):
         categorie={}
         categorie['supercategory'] = label[0]
-        categorie['id']=len(self.label)+1 # 0 默认为背景
-        categorie['name'] = label[1]
+        categorie['id']=len(self.label) # 0 默认为背景
+        categorie['name'] = label
         return categorie
 
     def annotation(self,points,label,num):
         annotation={}
         annotation['segmentation']=[list(np.asarray(points).flatten())]
         annotation['iscrowd'] = 0
-        annotation['image_id'] = num+1
+        annotation['image_id'] = num
         annotation['bbox'] = list(map(float,self.getbbox(points)))
         annotation['category_id'] = self.getcatid(label)
         annotation['id'] = self.annID
@@ -152,8 +153,11 @@ class labelme2coco(object):
 
     def getcatid(self,label):
         for categorie in self.categories:
-            if label[1]==categorie['name']:
+            
+            if label==categorie['name']:
+                print('====',label,categorie['name'],categorie['id'])
                 return categorie['id']
+
         return -1
 
     def getbbox(self,points):
@@ -215,8 +219,8 @@ class labelme2coco(object):
 def parser():
     parsers=argparse.ArgumentParser()
     parsers.add_argument("--a",default="./annotation/", type=str,help="dir of anno file like ./annotation/")
-    parsers.add_argument("--o",default="annotation.json",type=str, help="dir of output annotation file like annotation.json")
-    parsers.add_argument("--v",default=False,type=bool, help="bool type about output label visualization or not")
+    parsers.add_argument("--o",default="./",type=str, help="dir of output annotation file like annotation.json")
+    parsers.add_argument("--v",default=True,type=bool, help="bool type about output label visualization or not")
     parsers.add_argument("--m",default="XYWH_ABS",type=str, help="box format mode like support : XYWH_ABS(Default for COCO) , XYXY_ABS")
     args = parsers.parse_args()
     return args
@@ -230,6 +234,10 @@ def main():
     output=args.o
     mode=args.m
     labelme_json=glob.glob(anno+'*.json')
+    print("-----Para:","\nAnnotations:",labelme_json,
+    "\n\nOutput dir:",output,
+    "\n\nMode :",mode)
+    print("\n-----Process :")
     labelme2coco(labelme_json=labelme_json,outputpath=output,visualization=args.v,mode=mode)
 
 if __name__ == '__main__':
