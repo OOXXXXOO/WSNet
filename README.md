@@ -55,9 +55,7 @@ The main purpose of this project :
 
 ### Project Design
 
-
-
-
+[Description](Resources/Document/DesignDescription.md)
 
 
 ### Document / 文档:
