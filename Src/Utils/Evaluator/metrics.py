@@ -1,5 +1,5 @@
 import numpy as np
-
+from pycocotools.cocoeval import COCOeval
 
 class Evaluator(object):
     def __init__(self, num_class):

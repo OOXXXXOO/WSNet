@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    instance.py                                        :+:      :+:    :+:    #
+#    model.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/04/02 20:27:33 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/20 18:54:48 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ import thread
 
 
 
-class INSTANCE(DATASET):
+class MODEL(DATASET):
     def __init__(self,cfg):
         self.configfile=cfg
         DATASET.__init__(self)
@@ -319,7 +319,7 @@ def main():
     args=parser()
     configfile=args.config
     print(configfile)
-    instence=INSTANCE(cfg=configfile)
+    instence=MODEL(cfg=configfile)
     instence.train()
 
 

@@ -63,27 +63,30 @@ def sample_instance(imagery,label):
     W=imagery.shape[1]-Size
     num=int((H*W)/(Size**2*sample_ratio))
     print('Data Length is ,',num)
+    dataset=[]
+    
     for i in tqdm(range(num)):
         x=np.random.randint(0, H)
         y=np.random.randint(0, W)
         image_=imagery[x:x+patch_size,y:y+patch_size,:]
         label_=label[x:x+patch_size,y:y+patch_size]
-        label_[label_==4]=1
-        label_[label_>1]=0
-        label_=label_*255
-        label1=label_.copy()
-
-        image, contours, hierarchy= cv2.findContours(label1,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
-        # print(contours[0])
+        file_name
+        sem_seg_file_name
+        height, width
+        annotations
+        bbox
+        bbox_mode=BoxMode.XYXY_ABS
+        category_id
+        segmentation
+        image, contours, hierarchy= cv2.findContours(label1*255,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
         for points in contours:
-            # print(points)
-            # area = cv2.contourArea(points)
+            labeldict["segmentation"].append(points)
             x,y,w,h=cv2.boundingRect(points)
-            draw_1=cv2.rectangle(label1, (x,y), (x+w,y+h), 127, 2)
-        #     for (x,y) in points:
-        #         label1[y,x]=127 
-        # exit(0)
-        # cv2.fil
+            labeldict["boxes"].append((x,y,x+w,y+h))
+            labeldict["labels"].append(label_[x,y])
+            draw_1=cv2.rectangle(image_, (x,y), (x+w,y+h), 127, 2)
+        # print(labeldict)
+        dataset.append(data)
         plt.imshow(draw_1),plt.show()
 
 
@@ -145,7 +148,6 @@ def main():
     """
     dataset="/workspace/RawDataset.npy"
     dataset_raw=np.load(dataset,allow_pickle=True)[:2]
-    # plt.imshow(dataset_raw[3]["label"]),plt.show()
     binary_patch(dataset_raw)
 
     # np.save("/workspace/SampledDatasetHTSJ",patch)

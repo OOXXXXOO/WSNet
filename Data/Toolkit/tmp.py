@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    labelme2coco.py                                    :+:      :+:    :+:    #
+#    tmp.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:47:12 by winshare          #+#    #+#              #
-#    Updated: 2020/04/13 17:06:19 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/14 10:50:14 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,17 +39,7 @@ from tqdm import tqdm
 import imgviz
 import os
 import tifffile as TIF
-def show_memory(unit='KB', threshold=1):
-    '''查看变量占用内存情况
-    :param unit: 显示的单位，可为`B`,`KB`,`MB`,`GB`
-    :param threshold: 仅显示内存数值大于等于threshold的变量
-    '''
-    from sys import getsizeof
-    scale = {'B': 1, 'KB': 1024, 'MB': 1048576, 'GB': 1073741824}[unit]
-    for i in list(globals().keys()):
-        memory = eval("getsizeof({})".format(i)) // scale
-        if memory >= threshold:
-            print(i, memory)
+
 
 # t1=TIF.imread(tif[0])[:5093,:3337,:3]
 # t2=TIF.imread(tif[1])[10134:,:5090,:3]
@@ -69,7 +59,7 @@ class labelme2coco(object):
         self.images=[]
         self.categories=[]
         self.annotations=[]
-        self.label=['__background__']
+        self.label=['__background__',"Photovoltaic panels"]
 
         self.annID=0
         self.height=0
@@ -90,16 +80,40 @@ class labelme2coco(object):
             lbl=None
             with open(json_file,'r') as fp:
                 data = json.load(fp)  # 加载json文件
+    
                 fp.close()
 
                 image={}
-                img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
-                img=img[:,:,:3]
+                if num==0:
 
+                    img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
+                    (self.ox,self.oy,_)=img.shape
+                    img=img[:5093,:3337,:3]
+                    self.sx,self.sy=0,0
+
+                if num==1:
+                    
+                    img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
+                    # plt.imshow(img),plt.show()
+                    (self.ox,self.oy,_)=img.shape
+                    img=img[10134:,:5090,:3]
+                    self.sx,self.sy=0,10134
+                if num==2:
+                    img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
+                    (self.ox,self.oy,_)=img.shape
+                    img=img[4346:,:6149,:3]
+                    self.sx,self.sy=0,4346
+                if num==3:
+                    img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
+                    (self.ox,self.oy,_)=img.shape
+                    img=img[:2968,:7212,:3]
+                    self.sx,self.sy=0,0
 
                 print("image shape is ",img.shape)
+                # print(img.shape)
+                # plt.imshow(img),plt.show()
                 height, width = img.shape[:2]
- 
+        
                 
                 image['height']=height
                 image['width'] = width
@@ -108,32 +122,44 @@ class labelme2coco(object):
 
                 self.height=height
                 self.width=width
-
+                SHPS=[]
+    
                 if not self.only_mask:
                     self.images.append(image)
-                    show_memory()
+                    # self.show_memory()
                     print("----- Shapes Processing:")
+                    
                     for shape in tqdm(sorted(data['shapes'], key=lambda x: len(x['points']),reverse=True)):
                         label_name = None
                         label_name = shape['label'] 
-                        if label_name in label_name_to_value.keys():
-                            label_value = label_name_to_value[label_name]
-                        else:
-                            self.categories.append(self.categorie(label_name))
-                            self.label.append(label_name)
-                            label_value = len(label_name_to_value)
-                            label_name_to_value[label_name] = label_value
+                        # if label_name in label_name_to_value.keys():
+                        #     label_value = label_name_to_value[label_name]
+                        # else:
+                        #     self.categories.append(self.categorie(label_name))
+                        #     self.label.append(label_name)
+                        #     label_value = len(label_name_to_value)
+                        #     label_name_to_value[label_name] = label_value
                         
-                        points=shape['points']
+                        points=np.asarray(shape['points'])
+                        # points_=points.copy()
+                        # print(points)
+                        points[:,0]-=self.sx
+                        points[:,1]-=self.sy
+                        # print(points)
+                        shape["points"]=points
+                        SHPS.append(shape)
                         self.annotations.append(self.annotation(points,label_name,num))
                         self.annID+=1
-                    show_memory()
+                    # self.show_memory()
 
                 if self.visualization:
                     print("-----ImageLabel Processing:")
+                    # shps=data["shapes"]
+                    # shps[i[:,0]- for i in shps]
                     lbl, _ = utils.shapes_to_label(
-                        (height,width,3), data['shapes'], label_name_to_value
+                        (height,width,3),data["shapes"], label_name_to_value
                     )
+                    # plt.imshow(lbl),plt.show()
 
 
                     labelpath=os.path.join(self.save_json_path,"./label/")
@@ -143,25 +169,21 @@ class labelme2coco(object):
                 
                     filename=image['file_name'].split('.')[0]
                     labelfile=os.path.join(labelpath,filename+"_label.png")
-                    print("write in:",labelfile)
+                    print("-----write in:",labelfile)
                     print("-----lbl Saving....")
                     cv2.imwrite(labelfile,lbl)
-                    print("-----lbl save done")
+                    print("-----lbl Save Done")
                     
-                    img = utils.image.img_b64_to_arr(data['imageData'])  # 解析原图片数据
-                    img=img[:,:,:3]
+
                     vizpath=os.path.join(self.save_json_path,"./viz/")
                     if not os.path.exists(vizpath):
                         os.makedirs(vizpath)
                     lbl_viz = imgviz.label2rgb(
                         label=lbl,
-                        img=imgviz.rgb2gray(img),
-                        label_names=self.label,
-                        font_size=30,
-                        loc='rb',
+                        img=imgviz.rgb2gray(img)
                     )
                     img=None
-                    plt.imshow(lbl_viz),plt.show()
+                    # plt.imshow(lbl_viz),plt.show()
                     plt.imsave(vizpath+filename+"_viz_label.png",lbl_viz)
                 data=None
                     
@@ -200,6 +222,8 @@ class labelme2coco(object):
         # cv2.fillPoly(img, [np.asarray(points)], 1)  # 画多边形 内部像素值为1
         polygons = points
         mask = self.polygons_to_mask([self.height,self.width], polygons)
+        # plt.imshow(mask),plt.show() /
+        # print(mask.shape)/
         return self.mask2box(mask)
 
     def mask2box(self, mask):
@@ -211,6 +235,8 @@ class labelme2coco(object):
         index = np.argwhere(mask == 1)
         rows = index[:, 0]
         clos = index[:, 1]
+        # print(rows)
+        # print(clos)
         # 解析左上角行列号
         left_top_r = np.min(rows)  # y
         left_top_c = np.min(clos)  # x
