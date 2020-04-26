@@ -1,5 +1,6 @@
 # Project design 
-
+This project is work for different computer vision mission ,that could do neuro network training ,inference ,validation fast&smart.
+The main idea is user just custom json-based config file  
 ## Data port 
 
 * Image
