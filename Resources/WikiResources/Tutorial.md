@@ -1,3 +1,4 @@
+![](../Document/IMG_0932.PNG)
 # Pytorch Toturial ZH_CN
 
 这个系列主旨从基础出发，顺着复现文章的角度，学习优秀的复现Trick，了解这些神经网络背后的原理。
