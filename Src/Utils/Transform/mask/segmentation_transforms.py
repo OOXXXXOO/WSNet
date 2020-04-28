@@ -10,7 +10,7 @@ class Normalize(object):
         mean (tuple): means for each channel.
         std (tuple): standard deviations for each channel.
     """
-    def __init__(self, mean=(0., 0., 0.), std=(1., 1., 1.)):
+    def __init__(self, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
         self.mean = mean
         self.std = std
 
@@ -34,6 +34,7 @@ class ToTensor(object):
         # swap color axis because
         # numpy image: H x W x C
         # torch image: C X H X W
+
         img = sample['image']
         mask = sample['label']
         img = np.array(img).astype(np.float32).transpose((2, 0, 1))
@@ -156,10 +157,11 @@ class FixedResize(object):
         img = sample['image']
         mask = sample['label']
 
-        assert img.size == mask.size
+        assert img.size == mask.size,'the mask siize different Mask : '+str(mask.size)+"/ IMG :"+str(img.size)
 
         img = img.resize(self.size, Image.BILINEAR)
         mask = mask.resize(self.size, Image.NEAREST)
 
         return {'image': img,
                 'label': mask}
+

@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/04/02 18:32:53 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/28 18:39:41 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,17 +36,29 @@ import numpy as np
 import Src.Utils.Transform.box.data_aug as BT
 import Src.Utils.Transform.mask.segmentation_transforms as MT
 import PIL.Image as Image
+import random
+
+
+
+RandomRotateDegree=90
+BaseSize=512
+CropSize=512
+FixScaleCropSize=512
+FixedResize=512
+
 
 mask_transform={
-"Normalize":MT.Normalize,
-"ToTensor":MT.ToTensor,
-"RandomHorizontalFlip":MT.RandomHorizontalFlip,
-"RandomRotate":MT.RandomRotate,
-"RandomGaussianBlur":MT.RandomGaussianBlur,
-"RandomScaleCrop":MT.RandomScaleCrop,
-"FixScaleCrop":MT.FixScaleCrop,
-"FixedResize":MT.FixedResize,
+"Normalize":MT.Normalize(),
+"ToTensor":MT.ToTensor(),
+"RandomHorizontalFlip":MT.RandomHorizontalFlip(),
+"RandomRotate":MT.RandomRotate(RandomRotateDegree),
+"RandomGaussianBlur":MT.RandomGaussianBlur(),
+"RandomScaleCrop":MT.RandomScaleCrop(BaseSize,CropSize),
+"FixScaleCrop":MT.FixScaleCrop(FixScaleCropSize),
+"FixedResize":MT.FixedResize(FixedResize),
 }
+
+mask_transform_list=list(mask_transform.values())
 
 boxes_transform={
 "RandomHorizontalFlip":BT.RandomHorizontalFlip,
@@ -63,13 +75,14 @@ boxes_transform={
 "RandomHSV":BT.RandomHSV 
 }
 
-
+boxes_transform_list=list(boxes_transform.values())
 
 class Compose(object):
     def __init__(self, transforms):
         self.transforms = transforms
     def __call__(self,data):
         for t in self.transforms:
+            print("======>>>>",t)
             data = t(data)
         return data
 
@@ -79,7 +92,12 @@ class STF():
         """
         Smart Transform is 2nd-gen Auto-Transform Class
         """
-        print("------------------ Smart Automatic Transform Process Init ------------------ ")
+
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                    Smart Automatic Transform Process Init                    #")
+        print("# ---------------------------------------------------------------------------- #")
+
+
         self.SupportMission={
             "Detection":self.DetectionTransform,
             "Segmentation":self.SegmentationTransform,
@@ -118,27 +136,51 @@ class STF():
         boxes=target["boxes"]
         labels=target["labels"]
 
+
+
+        return image,target
+
     def DetectionTransform(self,image,target):
         boxes=target["boxes"]
         labels=target["labels"]
+        
+        
+        return image,target
 
     def SegmentationTransform(self,image,target):
+        #Pack Data
         segmasks=target["masks"]
+        sample={}
+        sample["image"]=image
+        sample["label"]=segmasks
         
+        INDEX=random.randint(2,len(mask_transform_list)-1)
+        Transformlist=[]
+        Transformlist.append(mask_transform_list[INDEX])
+        Transformlist.extend(mask_transform_list[:2])
+        transform=Compose(Transformlist)
+        result=transform(sample)
+        image=result["image"]
+        target=result["label"]
+        return image,target
 
 
 def main():
-    Transform=STF("Detection")
+    Transform=STF("Segmentation")
     
     anno=np.zeros((100,100,3),dtype=np.uint8)
     img=anno.copy()
     anno[20:70,20:70,1:]=127
     anno[anno<127]=233
-    # target=Image.fromarray(anno)
+    anno=Image.fromarray(anno)
+    img=Image.fromarray(img)
     # target.show()
     target={}
     target["masks"]=anno
-    Transform(img,target)
+    image,target=Transform(img,target)
+    print(image,target)
+    import matplotlib.pyplot as plt
+    plt.imshow(image.numpy().transpose(1,2,0)),plt.show()
 
 
 
