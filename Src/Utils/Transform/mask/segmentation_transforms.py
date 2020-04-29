@@ -4,6 +4,22 @@ import numpy as np
 
 from PIL import Image, ImageOps, ImageFilter
 
+
+def format(image,target):
+    img,gt=None,None
+    print("\n\nimage",type(image))
+    
+    if isinstance(image,Image.Image):
+        img=image
+    if isinstance(target,Image.Image):
+        gt=target
+    else:
+        img=Image.fromarray(image)
+        gt=Image.fromarray(target)
+    return img,gt
+
+
+
 class Normalize(object):
     """Normalize a tensor image with mean and standard deviation.
     Args:
@@ -51,6 +67,7 @@ class RandomHorizontalFlip(object):
     def __call__(self, sample):
         img = sample['image']
         mask = sample['label']
+        img,mask=format(img,mask)
         if random.random() < 0.5:
             img = img.transpose(Image.FLIP_LEFT_RIGHT)
             mask = mask.transpose(Image.FLIP_LEFT_RIGHT)
@@ -67,8 +84,10 @@ class RandomRotate(object):
         img = sample['image']
         mask = sample['label']
         rotate_degree = random.uniform(-1*self.degree, self.degree)
-        img = img.rotate(rotate_degree, Image.BILINEAR)
+        img,mask=format(img,mask)
+        img = img.rotate(rotate_degree, Image.BILINEAR)    
         mask = mask.rotate(rotate_degree, Image.NEAREST)
+        
 
         return {'image': img,
                 'label': mask}
@@ -78,12 +97,16 @@ class RandomGaussianBlur(object):
     def __call__(self, sample):
         img = sample['image']
         mask = sample['label']
+        img,mask=format(img,mask)
         if random.random() < 0.5:
             img = img.filter(ImageFilter.GaussianBlur(
                 radius=random.random()))
 
         return {'image': img,
                 'label': mask}
+
+
+
 
 
 class RandomScaleCrop(object):
@@ -97,6 +120,7 @@ class RandomScaleCrop(object):
         mask = sample['label']
         # random scale (short edge)
         short_size = random.randint(int(self.base_size * 0.5), int(self.base_size * 2.0))
+        img,mask=format(img,mask)
         w, h = img.size
         if h > w:
             ow = short_size
@@ -130,6 +154,7 @@ class FixScaleCrop(object):
     def __call__(self, sample):
         img = sample['image']
         mask = sample['label']
+        img,mask=format(img,mask)
         w, h = img.size
         if w > h:
             oh = self.crop_size
@@ -156,12 +181,10 @@ class FixedResize(object):
     def __call__(self, sample):
         img = sample['image']
         mask = sample['label']
-
-        assert img.size == mask.size,'the mask siize different Mask : '+str(mask.size)+"/ IMG :"+str(img.size)
-
+        img,mask=format(img,mask)
+        assert img.size == mask.size,'the mask siize different Mask : '+str(mask.size)+"/ IMG :"+str(img.size)      
         img = img.resize(self.size, Image.BILINEAR)
         mask = mask.resize(self.size, Image.NEAREST)
-
         return {'image': img,
                 'label': mask}
 

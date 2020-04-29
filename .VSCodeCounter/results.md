@@ -1,8 +1,3 @@
-![](./IMG_0932.PNG)
-
-# Project design 
-This project is work for different computer vision mission ,that could do neuro network training ,inference ,validation fast&smart.
-The main idea is user just custom json-based config file  
 # Summary
 
 Date : 2020-04-29 18:03:36
@@ -94,42 +89,3 @@ Total : 189 files,  21875 codes, 3764 comments, 4417 blanks, all 30056 lines
 | Src/Utils/temp | 1 | 272 | 28 | 51 | 351 |
 
 [details](details.md)
-## Data port 
-
-* Image
-
-
-|  Status | RawData | DataSet | Transform | Model | Inferenced Data | Visualization|
-|---|---|---|---|---|---|---|
-|  **type** | **ndarray** |   |   |  Tensor |   |   |
-
-
-* Annotaion
-
-
-|  Status | RawData | DataSet | Transform | Model | Inferenced Data | Visualization|
-|---|---|---|---|---|---|---|
-|  **type** |  **dict / ndarray / txt** |   | Tensor  |   |   |   |
-
-
-
-### Data -> Dataset
-
-### Dataset -> Transform
-
-### Transform -> Model
-
-### Model -> Inferenced Data
-
-### Inferenced Data Visualization
-
-## Model Zoo with config
-
-
-
-
-
-
-
-
-## 

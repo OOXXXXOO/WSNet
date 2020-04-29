@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/04/28 18:39:41 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/29 17:51:52 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,6 +109,7 @@ class STF():
         assert mode in self.SupportMission.keys(),"Invalid `Mode` in STF process : "+mode
     def __call__(self,image,target):
         """
+
         * Detection
             target dict:             
             - boxes (FloatTensor[N, 4]): the ground-truth boxes in [x1, y1, x2, y2] format, with values between 0 and H and 0 and W
@@ -148,7 +149,8 @@ class STF():
         return image,target
 
     def SegmentationTransform(self,image,target):
-        #Pack Data
+        
+
         segmasks=target["masks"]
         sample={}
         sample["image"]=image
@@ -168,19 +170,22 @@ class STF():
 def main():
     Transform=STF("Segmentation")
     
-    anno=np.zeros((100,100,3),dtype=np.uint8)
-    img=anno.copy()
-    anno[20:70,20:70,1:]=127
-    anno[anno<127]=233
-    anno=Image.fromarray(anno)
-    img=Image.fromarray(img)
-    # target.show()
+    anno=np.ones((100,100,3),dtype=np.uint8)
+    img=anno.copy()*255
+    anno[20:70,20:70,:]=127
+    boxes=[[20,20,70,70]]
+    # print(anno.shape)
+    # anno=Image.fromarray(anno)
+    # img=Image.fromarray(img)
+    # anno.show()
     target={}
     target["masks"]=anno
     image,target=Transform(img,target)
-    print(image,target)
+    # print(image,target)
     import matplotlib.pyplot as plt
-    plt.imshow(image.numpy().transpose(1,2,0)),plt.show()
+    print(image.size(),target.size())
+    
+    plt.imshow(np.uint8(target.numpy())),plt.show()
 
 
 
