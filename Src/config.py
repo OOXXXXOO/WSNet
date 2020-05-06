@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/04/02 19:54:19 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/06 11:41:10 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,10 @@ import torchvision.datasets as dataset
 
 
 
-from Data.custom.segmentation_loader import Costum_NPY_DataSet
-from Data.datasets.cityscapes import CityscapesSegmentation
+from Data.DataSets.NPY.segmentation_dataset import Costum_NPY_DataSet
+from Data.DataSets.CitysCapes.cityscapes import CityscapesSegmentation
 from Data.DataSets.COCO.coco import CocoDataset
-from Data.datasets.pascal import VOCSegmentation
+from Data.DataSets.PascalVoc.pascal import VOCSegmentation
 
 # ------------------------------ Local Reference ----------------------------- #
 
@@ -63,8 +63,10 @@ class CFG():
         for i in range(5):
             print("#####------------------------------------------------------------------#####")
 
-       
-        print("-----Read Config :\n\n",self.configfile)
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                               Decode Configfile                              #")
+        print("# ---------------------------------------------------------------------------- #")
+        print("# -----",self.configfile,"-----#")
 
 
 
@@ -106,7 +108,7 @@ class CFG():
             }
         }
         self.dataset_support_list=self.datasets_function_dict.keys()
-        print("\n-----Support Mission Mode:\n\n",self.dataset_support_list)
+
 
         # ---------------------------------------------------------------------------- #
         self.OptimDict={
@@ -194,14 +196,14 @@ class CFG():
         self.DataSetConfig=self.Content['Dataset']
         self.Config=self.Content['Config']
 
-        print('\n\n---------------------------------- config ----------------------------------')
-        print('----- Network Config : ')
+        print('\n\n#---------------------------------- config ----------------------------------#')
+        print('#----- Network Config : ')
         self.print_dict(self.Net)
-        print('\n\n----- Dataset Config : ')
+        print('\n\n#----- Dataset Config : ')
         self.print_dict(self.DataSetConfig)
-        print('\n\n----- General Config : ')
+        print('\n\n#----- General Config : ')
         self.print_dict(self.Config)
-        print('---------------------------------- config ----------------------------------')
+        print('#---------------------------------- config ----------------------------------#')
 
 
         # -------------------------------- Third Level ------------------------------- #
@@ -254,6 +256,7 @@ class CFG():
         self.DefaultDataset=self.DataSetConfig['DefaultDataset']
         self.NPY=self.DataSetConfig["NPY"]
         self.NPY_Data=np.load(self.NPY,allow_pickle=True)
+        self.SFT_Enable=self.DataSetConfig["SFT_Enable"]
 
         # --------------------------------- Transform (Aborted)------------------------#
         # ---------------------------------------------------------------------------- #
@@ -321,7 +324,7 @@ class CFG():
             self.gpu_id=self.Config['gpu_id']
             os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
             self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
-            print('----------------------- Device:\n\n',self.device)
+            print('#-----Device:\n',self.device)
         
         if self.devices=='CPU':
             self.device=torch.device("cpu")
@@ -333,22 +336,12 @@ class CFG():
         self.epochs=self.Config['epochs']
         self.aspect_ratio_factor=self.Config['group_factor']
 
-
         print("\n\n---------------------- Configure Class Init Successful ---------------------\n\n")
 
 
-
-
-
-
-
-
-
-
-
-    # ---------------------------------------------------------------------------- #
-    #                             Config Class Function                            #
-    # ---------------------------------------------------------------------------- #
+        # ---------------------------------------------------------------------------- #
+        #                             Config Class Function                            #
+        # ---------------------------------------------------------------------------- #
 
     def GenerateDefaultConfig(self,mode='detection'):
         print('Generate Default Config with mode :',mode)
@@ -368,12 +361,15 @@ class CFG():
 
     
     def print_dict(self,d,n=0):
+        length=74
         for k,v in d.items():
             # print ('\t'*n)
             if type(v)==type({}):
                 print("%s : {" % k)
                 self.print_dict(v,n+1)
             else:
-                print("%s : %s" % (k,v))
+                strl=len(str(k))+len(str(v))
+                space=length-strl
+                print("%s : %s" % (k,v)+" "*space+"#")
         if n!=0:
             print('\t'*(n-1)+ '}')

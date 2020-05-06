@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/04/20 18:54:48 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/30 13:49:48 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ from Src.Utils.Evaluator.metrics import Evaluator
 from Data.DataSets.COCO.coco import CocoEvaluation
 from dataset import DATASET
 import matplotlib.pyplot as plt
-import thread
+
 
 # ------------------------------ local reference ----------------------------- #
 
@@ -115,13 +115,14 @@ class MODEL(DATASET):
         # ---------------------------------------------------------------------------- #
 
         # ------------------------------- Train Process ------------------------------ #
-        for epoch in self.epochs:
+        for epoch in range(self.epochs):
             print("----------------------------------- ",epoch," ----------------------------------") 
             """
             tqdm format =======>> 
             Para Table:
             """
-            self.val()
+
+            self.val(epoch)
     
     
     def inference(self):
@@ -147,86 +148,6 @@ class MODEL(DATASET):
 
 
 
-    # def train(self,model,trainloader,valloader):
-        # torch.cuda.empty_cache()
-        # for i in range(5):
-        #     print("#####------------------------------------------------------------------#####")
-
-        # print("------------- All Preprocess flow has been done Start Training ------------")
-
-        # for i in range(5):
-        #     print("#####------------------------------------------------------------------#####")
-        # """
-    #     resume
-    #     part
-    #     """
-        
-        
-    #     lossavg=[]
-    #     self.model.to(self.device)
-    #     self.model.train()
-    #     step=0
-    #     self.ACC=0
-    #     train_loss=0
-        
-    #     self.writer = SummaryWriter(log_dir=self.logdir,comment="Instance "+str(self.InstanceID)+self.MissionType)
-    #     boardcommand="tensorboard --logdir="+self.logdir
-    #     thread.start_new_thread(os.system(),boardcommand)
-
-
-
-    #     for epoch in range(self.epochs):
-    #         print('-----Epoch :',epoch)
-    #         for images,targets in self.trainloader:
-  
-      
-    #             # print("target:",targets.type(),targets.size())
-    #             # ----------------------------------- Epoch ---------------------------------- #
-
-    #             if self.usegpu:
-    #                 images,targets=images.to(self.device),targets.to(self.device) 
-    #             # self.lr_scheduler(self.optimizer,step)
-    #             self.optimizer.zero_grad()
-
-    #             if self.DefaultNetwork:
-    #                 logits=self.model(images)['out']
-    #             else:
-    #                 logits=self.model(images)
-    #             """
-    #             Default Network Output the OrderedDict:
-    #             {
-    #                 'out':output_tensor
-    #             }
-    #             Custom Network will output tensor directly
-    #             """
-    #             logits=logits.argmax(1).unsqueeze(1).float().requires_grad_()
-                
-    #             # print("logits:",logits.type(),logits.size())
-    #             # print("target:",targets.type(),targets.size())
-
-
-    #             loss=self.Loss_Function(logits,targets)
-    #             loss.backward()
-    #             self.optimizer.step()
-    #             train_loss += loss.item()
-    #             lossavg.append(loss.item())
-    #             print('---loss:',loss.item(),'---step :',step)
-    #             self.writer.add_scalar('train/total_loss_iter', loss.item(), i + len(self.trainloader) * epoch)
-    #             step+=1
-    #             # ----------------------------------- Epoch ---------------------------------- #
-            
-            
-    #         self.writer.add_scalar('train/total_loss_epoch', train_loss, epoch)
-
-    #         if step%100==0:
-    #             self.visualize_image(images,targets,logits,step)
-
-    #         ACC=self.val(epoch)    
-    #         if self.ACC<ACC:
-    #             self.save(epoch)
-    #         else:
-    #             self.ACC=ACC
-                
             
 
 
@@ -318,9 +239,8 @@ def parser():
 def main():
     args=parser()
     configfile=args.config
-    print(configfile)
-    instence=MODEL(cfg=configfile)
-    instence.train()
+    model=MODEL(cfg=configfile)
+    model.train()
 
 
 

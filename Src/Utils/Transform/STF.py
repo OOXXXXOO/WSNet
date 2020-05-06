@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/04/29 17:51:52 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/30 12:23:12 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -144,13 +144,13 @@ class STF():
     def DetectionTransform(self,image,target):
         boxes=target["boxes"]
         labels=target["labels"]
+        sample={}
+        
         
         
         return image,target
 
     def SegmentationTransform(self,image,target):
-        
-
         segmasks=target["masks"]
         sample={}
         sample["image"]=image
@@ -168,25 +168,38 @@ class STF():
 
 
 def main():
-    Transform=STF("Segmentation")
+
+    # ---------------------------------------------------------------------------- #
+    #                               Segmentation Demo                              #
+    # ---------------------------------------------------------------------------- #
+
+    # Transform=STF("Segmentation")
+    # anno=np.ones((100,100,3),dtype=np.uint8)
+    # img=anno.copy()*255
+    # anno[20:70,20:70,:]=127
+    # boxes=[[20,20,70,70]]
+    # # print(anno.shape)
+    # # anno=Image.fromarray(anno)
+    # # img=Image.fromarray(img)
+    # # anno.show()
+    # target={}
+    # target["masks"]=anno
+    # image,target=Transform(img,target)
+    # # print(image,target)
+    # import matplotlib.pyplot as plt
+    # print(image.size(),target.size())
     
+    # plt.imshow(np.uint8(target.numpy())),plt.show()
+
+    # ---------------------------------------------------------------------------- #
+    #                                Detection Demo                                #
+    # ---------------------------------------------------------------------------- #
+    Transform=STF("Detection")
     anno=np.ones((100,100,3),dtype=np.uint8)
     img=anno.copy()*255
     anno[20:70,20:70,:]=127
-    boxes=[[20,20,70,70]]
-    # print(anno.shape)
-    # anno=Image.fromarray(anno)
-    # img=Image.fromarray(img)
-    # anno.show()
-    target={}
-    target["masks"]=anno
-    image,target=Transform(img,target)
-    # print(image,target)
-    import matplotlib.pyplot as plt
-    print(image.size(),target.size())
-    
-    plt.imshow(np.uint8(target.numpy())),plt.show()
-
+    anno[80:90,:80:90,:]=233
+    boxes=[[20,20,70,70],[80,80,90,90]]
 
 
 if __name__ == '__main__':

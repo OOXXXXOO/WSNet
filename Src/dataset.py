@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/04/02 20:01:37 by winshare         ###   ########.fr        #
+#    Updated: 2020/04/30 13:42:01 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ from network import NETWORK
 from Utils.Transform.STF import Compose
 from Utils.Transform.STF import STF
 
-
+import numpy as np
 
 
 
@@ -57,7 +57,13 @@ class DATASET(NETWORK,COCO,Dataset):
 
 
         # --------------------------------- SFT Init --------------------------------- #
-        self.transforms=SFT(Mode=self.MissionType)
+        if self.SFT_Enable:
+            self.transforms=SFT(Mode=self.MissionType)
+        else:
+            self.transforms=Compose([
+                T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                T.ToTensor()
+            ])
         # ---------------------------------------------------------------------------- #
         #                         Smart Transform build Module                         #
         # ---------------------------------------------------------------------------- #
@@ -69,14 +75,14 @@ class DATASET(NETWORK,COCO,Dataset):
             self.trainset=self.dataset_function(
                 os.path.join(self.DataSet_Root,'/train2014'),
                 self.Dataset_Train_file,
-                transforms=self.transforms
+                transforms=self.transforms,
                 Mode=self.MissionType
             )
             print("\ntrain dataset process done !\n")
             self.valset=self.dataset_function(
                 os.path.join(self.DataSet_Root,'/val2014'),
                 self.Dataset_Val_file,
-                transforms=self.transforms
+                transforms=self.transforms,
                 Mode=self.MissionType
             )
             print("\nval dataset process done !\n")
@@ -105,6 +111,17 @@ class DATASET(NETWORK,COCO,Dataset):
             print("Not Support Now")
         if self.DataSetType == "Costum_NPY_DataSet":
             print('\n\n-----Start Costum_NPY_DataSet Buidling...')
+
+            import glob
+            npys=glob.glob("/workspace/data/38cloud-cloud-segmentation-in-satellite-images/ProcessedDataset/*.npy")
+            npy=[]
+            for n in npys:
+                print('-----Read ',n)
+                npy.extend(np.load(n,allow_pickle=True))
+                print("Traing size:",len(npy))
+
+
+
             self.trainset=self.dataset_function(
                 npy=self.NPY_Data,
                 data_ratio=0.8,
@@ -117,6 +134,8 @@ class DATASET(NETWORK,COCO,Dataset):
                 transforms=self.transforms,
                 data_ratio=0.8
             )
+            
+            
             print("\nval dataset process done !\n")
             print('\n\n-------------------------- Costum_NPY_DataSet Dataset Init Done --------------------------\n\n')
 

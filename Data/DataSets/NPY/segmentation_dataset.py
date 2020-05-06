@@ -31,11 +31,11 @@ class Costum_NPY_DataSet(Dataset):
         
     def __getitem__(self,index):
         image,target=self.npy_[index]["data"],self.npy_[index]["label"]
-        image = cv2.resize(image,(512,512), interpolation = cv2.INTER_AREA)
-        target= cv2.resize(target,(512,512), interpolation = cv2.INTER_AREA)
+        target=np.uint8(target/255)
+        image=np.uint8(image*255)
         if self.T!=None:
-            image=self.T(image)
-            target=torch.from_numpy(target)
+            image=self.T(image).to(torch.float32)
+            target=torch.from_numpy(target).to(torch.float32)
 
 
         return image,target
