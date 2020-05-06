@@ -25,7 +25,7 @@
             "root": "/workspace/WSNets/Data/labelme/demo",
             "train_index_file":"annotation.json",
             "val_index_file":"annotation.json",
-            "SFT_Enable":false
+            "SFT_Enable":true
         
         },
         "Config": {

@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/03/19 18:24:39 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/06 16:10:29 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ class NETWORK(CFG):
 
 
 
-        self.debug=True
+        self.debug=False
         
 
 

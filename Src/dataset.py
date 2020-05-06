@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/04/30 13:42:01 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/06 16:09:04 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ class DATASET(NETWORK,COCO,Dataset):
 
         # --------------------------------- SFT Init --------------------------------- #
         if self.SFT_Enable:
-            self.transforms=SFT(Mode=self.MissionType)
+            self.transforms=STF(mode=self.MissionType)
         else:
             self.transforms=Compose([
                 T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),

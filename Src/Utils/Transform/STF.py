@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/04/30 12:23:12 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/06 16:08:58 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,6 @@ import PIL.Image as Image
 import random
 
 
-
 RandomRotateDegree=90
 BaseSize=512
 CropSize=512
@@ -60,29 +59,46 @@ mask_transform={
 
 mask_transform_list=list(mask_transform.values())
 
+BTResize=512
 boxes_transform={
-"RandomHorizontalFlip":BT.RandomHorizontalFlip,
-"HorizontalFlip":BT.HorizontalFlip,
-"RandomScale":BT.RandomScale,
-"Scale":BT.Scale,
-"RandomTranslate":BT.RandomTranslate,
-"Translate":BT.Translate,
-"RandomRotate":BT.RandomRotate,
-"Rotate":BT.Rotate,
-"RandomShear":BT.RandomShear,
-"Shear":BT.Shear,
-"Resize":BT.Resize,
-"RandomHSV":BT.RandomHSV 
+# "RandomHorizontalFlip":BT.RandomHorizontalFlip(),
+# "HorizontalFlip":BT.HorizontalFlip(),
+"RandomScale":BT.RandomScale(),
+"Scale":BT.Scale(),
+"RandomTranslate":BT.RandomTranslate(),
+"Translate":BT.Translate(),
+"RandomRotate":BT.RandomRotate(),
+# "Rotate":BT.Rotate(BTRotate),
+"RandomShear":BT.RandomShear(),
+# "Shear":BT.Shear(),
+"Resize":BT.Resize(BTResize),
+"RandomHSV":BT.RandomHSV() 
 }
 
 boxes_transform_list=list(boxes_transform.values())
+
+
+
+instance_transform={
+# "Rotate":[BT.Rotate]
+# "Resize":
+# "Scale":[BT.Scale,MT.Scale]
+}
+
+
+
+
+
+
+
+
+
 
 class Compose(object):
     def __init__(self, transforms):
         self.transforms = transforms
     def __call__(self,data):
         for t in self.transforms:
-            print("======>>>>",t)
             data = t(data)
         return data
 
@@ -143,11 +159,15 @@ class STF():
 
     def DetectionTransform(self,image,target):
         boxes=target["boxes"]
-        labels=target["labels"]
-        sample={}
-        
-        
-        
+        INDEX=random.randint(1,len(boxes_transform_list)-1)
+        Transformlist=[]
+        Transformlist.append(boxes_transform_list[INDEX])
+        Transformlist.append(boxes_transform_list[INDEX-1])
+        print(Transformlist)
+        transform=BT.Sequence(Transformlist)
+
+        image,boxes=transform(image,boxes)
+        target['boxes']=boxes
         return image,target
 
     def SegmentationTransform(self,image,target):
@@ -168,7 +188,7 @@ class STF():
 
 
 def main():
-
+    pass
     # ---------------------------------------------------------------------------- #
     #                               Segmentation Demo                              #
     # ---------------------------------------------------------------------------- #
@@ -194,12 +214,37 @@ def main():
     # ---------------------------------------------------------------------------- #
     #                                Detection Demo                                #
     # ---------------------------------------------------------------------------- #
-    Transform=STF("Detection")
-    anno=np.ones((100,100,3),dtype=np.uint8)
-    img=anno.copy()*255
-    anno[20:70,20:70,:]=127
-    anno[80:90,:80:90,:]=233
-    boxes=[[20,20,70,70],[80,80,90,90]]
+    # Transform=STF("Detection")
+    # anno=np.ones((100,100,3),dtype=np.uint8)
+    # img=anno.copy()*255
+    # anno[20:70,20:70,:]=127
+    # anno[80:90,:80:90,:]=233
+    # boxes=np.asarray([[20,20,70,70],[80,80,90,90]],dtype=np.float32)
+    # label=[1,2]
+    # target={}
+    # target["boxes"]=boxes
+    # target["labels"]=label
+
+    # image,target=Transform(anno,target)
+    # boxes=target["boxes"]
+    # print(boxes)
+    # x1,y1=boxes[0,0],boxes[0,1]
+    # x2,y2=boxes[0,2],boxes[0,3]
+
+
+    # import cv2
+    # import matplotlib.pyplot as plt
+    # print(x1,y1,x2,y2)
+    # print(type(x1),type(y1),type(x2),type(y2))
+    # print(type(image))
+    # cv2.rectangle(image,(x1,y1),(x2,y2),(255,255,0),2)
+    # plt.imshow(image),plt.show()
+
+    # ---------------------------------------------------------------------------- #
+    #                                 Instance Demo                                #
+    # ---------------------------------------------------------------------------- #
+
+
 
 
 if __name__ == '__main__':

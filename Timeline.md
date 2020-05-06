@@ -10,3 +10,21 @@ Build Bug of labelme2coco
 27/04/2020
 **Problem:**
 * STF Module
+
+ [x] 完成SegmentatgionTransform
+ [x] 完成DetectionTransform
+
+06/05/2020
+
+
+待完成:
+
+
+[] train
+
+
+
+[]val
+
+
+[]coco

@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 16:14:09 by winshare          #+#    #+#              #
-#    Updated: 2020/04/02 15:02:08 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/06 15:16:10 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -340,11 +340,8 @@ class RandomTranslate(object):
     
         mask = img[max(-corner_y, 0):min(img.shape[0], -corner_y + img_shape[0]), max(-corner_x, 0):min(img.shape[1], -corner_x + img_shape[1]),:]
         canvas[orig_box_cords[0]:orig_box_cords[2], orig_box_cords[1]:orig_box_cords[3],:] = mask
-        img = canvas
-        
+        img = canvas        
         bboxes[:,:4] += [corner_x, corner_y, corner_x, corner_y]
-        
-        
         bboxes = clip_box(bboxes, [0,0,img_shape[1], img_shape[0]], 0.25)
         
     
