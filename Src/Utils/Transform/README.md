@@ -15,7 +15,7 @@
 -->
 ![](../../../Resources/Document/IMG_0932.PNG)
 
-## STF-Smart Transform Tool
+## STF-Smart Transform Module
 The traditional transform process need different function ,class, parameter and random process. The smart transform will don't need set any parameter to make data augmentation with smart recognize type of mission and data.
 
 As first of all , we need rule the format of data that input to transform . 

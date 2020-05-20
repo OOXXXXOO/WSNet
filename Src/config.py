@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/05/06 16:19:44 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/20 18:42:08 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -341,8 +341,10 @@ class CFG():
         self.epochs=self.Config['epochs']
         self.aspect_ratio_factor=self.Config['group_factor']
 
-        print("\n\n---------------------- Configure Class Init Successful ---------------------\n\n")
-
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                        Configure Class Init Successful                       #")
+        print("# ---------------------------------------------------------------------------- #")
+        self.Enviroment_Info()
 
         # ---------------------------------------------------------------------------- #
         #                             Config Class Function                            #
@@ -357,13 +359,13 @@ class CFG():
         print('***** Mission Type : ',self.MissionType,'*****')
 
     def Enviroment_Info(self):
-        self.print_dict(self.__json)
-        print('\n-------------------------------------------NVCC info:\n')
+        print("\n\n# --------------------------------- NVCC INFO -------------------------------- #\n\n")
         os.system('nvcc -V')
-        print('\n-------------------------------------------GPU info:\n')
+        print("\n\n# --------------------------------- NVCC INFO -------------------------------- #\n\n")
+        
+        print("\n\n# --------------------------------- GPU INFO --------------------------------- #")
         os.system('nvidia-smi')
-        print('\n-------------------------------------------GPU info:\n')
-
+        print("# --------------------------------- GPU INFO --------------------------------- #\n\n")
     
     def print_dict(self,d,n=0):
         length=74

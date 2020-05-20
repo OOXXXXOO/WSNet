@@ -9,7 +9,7 @@ class Costum_NPY_DataSet(Dataset):
         dataset for npy fast - format
         """
 
-        print("-------------------------- Costum_NPY_DataSet Init -------------------------")
+        print("# -------------------------- Costum_NPY_DataSet Init ------------------------- #")
 
         self.npy=npy
         print("\n-----Read: ",len(npy))

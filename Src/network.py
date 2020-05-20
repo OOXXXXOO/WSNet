@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/05/06 16:10:29 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/20 18:37:09 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,17 +106,19 @@ class NETWORK(CFG):
         if self.DefaultNetwork:
             print('\n\n-----Use The Default Network')
             self.default_modeldict[self.MissionType](pretrained=self.download_pretrain_model)
-            # print(self.model)
+   
             
         # --------------------------------- optimizer -------------------------------- #
-            print('\n\n--------------------------- Network General Info: --------------------------  ')
+
+            print("# ---------------------------- Optimizer&Scheduler --------------------------- #")
+
             self.optimizer=self.optimizer(
             self.model.parameters(),
             lr=self.learning_rate,
             momentum=self.momentum,
             weight_decay=self.weight_decay
             )
-            print('Network optimizer:',self.optimizer)
+            print('-----Network optimizer:\n',self.optimizer)
 
         
         # ------------------------------- lr_scheduler ------------------------------- #
@@ -126,9 +128,11 @@ class NETWORK(CFG):
                 milestones=self.lr_steps,
                 gamma=self.lr_gamma
             )
-            print('Network lr_scheduler:',self.lr_scheduler)
-            print('--------------------------- Network General Info: --------------------------')
-        print("\n\n----------------------- NETWORK Class Init Successful ----------------------\n\n")
+            print('-----Network lr_scheduler:\n',self.lr_scheduler)
+                
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                         NETWORK Class Init Successful                        #")
+        print("# ---------------------------------------------------------------------------- #")
 
 
 
@@ -240,30 +244,7 @@ class NETWORK(CFG):
             print('\t\t|==========>GPU Count',torch.cuda.device_count(),'\n\n')
 
     
-    # ----------------------------- Collate Function for Temperory ----------------------------- #
 
-    # def collate_fn(self, batch):
-    #     paths, imgs, targets = list(zip(*batch))
-    #     # Remove empty placeholder targets
-    #     targets = [boxes for boxes in targets if boxes is not None]
-    #     # Add sample index to targets
-    #     for i, boxes in enumerate(targets):
-    #         boxes[:, 0] = i
-    #     targets = torch.cat(targets, 0)
-    #     # Selects new image size every tenth batch
-    #     if self.multiscale and self.batch_count % 10 == 0:
-    #         self.img_size = random.choice(range(self.min_size, self.max_size + 1, 32))
-    #     # Resize images to input shape
-    #     imgs = torch.stack([resize(img, self.img_size) for img in imgs])
-    #     self.batch_count += 1
-    #     return paths, imgs, targets
-
-    # def collate_fn(self,batch):
-    #     images,targets=list(zip(*batch))
-    #     print('target',targets.size())
-    #     images=torch.stack(images,dim=0)
-
-    #     return images,targets
 
 
 

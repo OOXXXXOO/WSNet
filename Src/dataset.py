@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/05/06 16:09:04 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/20 18:26:06 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,11 +59,15 @@ class DATASET(NETWORK,COCO,Dataset):
         # --------------------------------- SFT Init --------------------------------- #
         if self.SFT_Enable:
             self.transforms=STF(mode=self.MissionType)
+            print("# ----------------------------- SFT Module Enable ---------------------------- #")
+
         else:
             self.transforms=Compose([
                 T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
                 T.ToTensor()
             ])
+            print("# ---------------------------- SFT Module Disable ---------------------------- #")
+
         # ---------------------------------------------------------------------------- #
         #                         Smart Transform build Module                         #
         # ---------------------------------------------------------------------------- #
@@ -137,7 +141,8 @@ class DATASET(NETWORK,COCO,Dataset):
             
             
             print("\nval dataset process done !\n")
-            print('\n\n-------------------------- Costum_NPY_DataSet Dataset Init Done --------------------------\n\n')
+
+            print("# ------------------- Costum_NPY_DataSet Dataset Init Done ------------------- #")
 
 
 
@@ -156,7 +161,7 @@ class DATASET(NETWORK,COCO,Dataset):
 
             self.train_sampler = torch.utils.data.RandomSampler(self.trainset)
             self.test_sampler = torch.utils.data.SequentialSampler(self.valset)
-            print("-----DataSampler build done")
+
 
 
         self.train_batch_sampler = torch.utils.data.BatchSampler(
@@ -173,7 +178,7 @@ class DATASET(NETWORK,COCO,Dataset):
             batch_sampler=self.train_batch_sampler,
             num_workers=self.worker_num)
 
-        print("---------------------- Training DataLoader Init Finish ---------------------")
+        print("# ---------------------- Training DataLoader Init Finish --------------------- #")
 
         self.valloader = torch.utils.data.DataLoader(
             self.valset, 
@@ -195,13 +200,16 @@ class DATASET(NETWORK,COCO,Dataset):
         """
 
 
-
-        print("---------------------- Validation DataLoader Init Finish ---------------------")
+        print("# --------------------- Validation DataLoader Init Finish -------------------- #")
 
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
-        print("\n\n-------------------- DATASET Class Init Successful --------------------\n\n")
+
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                         DATASET Class Init Successful                        #")
+        print("# ---------------------------------------------------------------------------- #")
+
 
 
         # ---------------------------------------------------------------------------- #
