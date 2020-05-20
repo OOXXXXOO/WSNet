@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/05/20 18:28:19 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/20 19:25:53 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ from tqdm import tqdm
 from Src.Utils.Evaluator.metrics import Evaluator
 from Data.DataSets.COCO.coco import CocoEvaluation
 from dataset import DATASET
-
+from torch.utils.tensorboard import SummaryWriter
 
 # ------------------------------ local reference ----------------------------- #
 
@@ -116,18 +116,24 @@ class MODEL(DATASET):
 
     def train(self):
         """
-        Train Process :
-        
+        Train Flow :
 
-
-
+        1.Init DataSet(Transform)
+        2.Init Optimizer
 
 
         """
         print("# ---------------------------------------------------------------------------- #")
         print("#                                TRAIN START                                   #")
         print("# ---------------------------------------------------------------------------- #")
-        
+        if os.path.exists(self.logdir):
+            os.removedirs(self.logdir)
+            os.makedirs(self.logdir)
+        else:
+            os.makedirs(self.logdir)
+            self.writer = SummaryWriter(self.logdir)
+            
+            
 
 
 
@@ -176,6 +182,9 @@ class MODEL(DATASET):
 
 
     def val(self):
+        """
+        Validation Flow
+        """
 
         print("# ---------------------------------------------------------------------------- #")
         print("#                                  VALIDATION                                  #")
