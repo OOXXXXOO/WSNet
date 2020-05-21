@@ -13,7 +13,11 @@ import multiprocessing
 import time
 from tqdm import tqdm
 import os
+import sys
 #------------------Interchange between WGS-84 and Web Mercator-------------------------
+
+Tilesize=256
+
 # WGS-84 to Web Mercator
 def wgs_to_mercator(x, y):
     y = 85.0511287798 if y > 85.0511287798 else y
@@ -215,6 +219,7 @@ def saveTiff(r,g,b,gt,filePath):
         dset_output.SetSpatialRef(proj)
     except Exception as e:
         pass
+
     dset_output.GetRasterBand(1).WriteArray(r)
     dset_output.GetRasterBand(2).WriteArray(g)
     dset_output.GetRasterBand(3).WriteArray(b)
@@ -277,13 +282,28 @@ MAP_URLS = {
 
 
 
-
+def TileXYToQuadKey(tileX, tileY, level):
+	quadKey = ""
+	for i in range(-level,0):
+		digit = 0
+		mask = 1 << (-i - 1)
+		if (tileX & mask) != 0:
+			digit += 1
+		if (tileY & mask) != 0:
+			digit += 1
+			digit += 1
+		quadKey += str(digit)
+	return quadKey
 
 
 
 def get_url(source, x, y, z, style):#
     if source == 'Google China':
         url = MAP_URLS["Google China"].format(x=x, y=y, z=z, style=style)
+    elif source == "Bing VirtualEarth":
+        quadkey=TileXYToQuadKey(x,y,z)
+        url = MAP_URLS["Bing VirtualEarth"].format(q=quadkey)
+
     elif source == 'Google':
         url = MAP_URLS["Google"].format(x=x, y=y, z=z, style=style)
     else:
@@ -331,7 +351,7 @@ def merge_tiles(datas,x1, y1, x2, y2, z):
     print('Tiles merge completed')
     return outpic
 
-def download_tiles(urls,multi=10):
+def download_tiles(urls,multi=8):
     url_len=len(urls)
     datas=[None] * url_len
     if multi <1 or multi >20 or not isinstance(multi,int):
@@ -341,17 +361,16 @@ def download_tiles(urls,multi=10):
         i.start()
     for i in tasks:
         i.join()
+    print(multiprocessing.current_process())
+    print("Buffer DataSize:",sys.getsizeof(datas))
     return datas
 #---------------------------------------------------------
 
 #---------------------------------------------------------
 
 
-class Google():
-    def __init__(self):
-        print("# ---------------------------------------------------------------------------- #")
-        print("#                              GOOGLE MAP TOOLKIT                              #")
-        print("# ---------------------------------------------------------------------------- #")
+class DOWNLOADER():
+    def __init__(self,server=None):
         """
         Download images based on spatial extent.
         East longitude is positive and west longitude is negative.
@@ -374,16 +393,69 @@ class Google():
             h for label;
         
         source : Google China (default) or Google
+        Toolkit Support DataSources:
+
+        [
+            'Google'
+            'Google China',
+            'Google Maps',
+            'Google Satellite',
+            'Google Terrain',
+            'Google Terrain Hybrid',
+            'Google Satellite Hybrid'
+            'Stamen Terrain'
+            'Stamen Toner'
+            'Stamen Toner Light'
+            'Stamen Watercolor'
+            'Wikimedia Map'
+            'Wikimedia Hike Bike Map'
+            'Esri Boundaries Places'
+            'Esri Gray (dark)'
+            'Esri Gray (light)'
+            'Esri National Geographic'
+            'Esri Ocean',
+            'Esri Satellite',
+            'Esri Standard',
+            'Esri Terrain',
+            'Esri Transportation',
+            'Esri Topo World',
+            'OpenStreetMap Standard',
+            'OpenStreetMap H.O.T.',
+            'OpenStreetMap Monochrome',
+            'OpenTopoMap',
+            'Strava All',
+            'Strava Run',
+            'Open Weather Map Temperature',
+            'Open Weather Map Clouds',
+            'Open Weather Map Wind Speed',
+            'CartoDb Dark Matter',
+            'CartoDb Positron',
+            'Bing VirtualEarth'
+        ]
+
         """
-        #---------------------------------------------------------
-  
-    def url(self,left,top,right,bottom,zoom,style='s',server="Esri Satellite"):
-        
-        self.server=server
+
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                            MAP Production Toolkit                            #")
+        print("# ---------------------------------------------------------------------------- #")
+        # print("Support DataSources",MAP_URLS.keys())
+        if server!=None and server in MAP_URLS.keys():
+            
+            print("# ---------------------- MAP Serverv Init Successful by ---------------------- #")
+            lines=52
+            length=len(server)
+            space=lines-length
+            print("# ----------------------",server,space*"-","#")
+            self.server=server
+        else:
+            self.server="Google"
+
+
+    def addcord(self,left,top,right,bottom,zoom,style='s'):
         self.left,self.top,self.right,self.bottom,self.zoom=left,top,right,bottom,zoom
         self.extent=getExtent(self.left,self.top,self.right,self.bottom,self.zoom,self.server)
         # Get the urls of all tiles in the extent
-        urls=get_urls(left,top,right,bottom,zoom,server,style)    
+        urls=get_urls(left,top,right,bottom,zoom,self.server,style)    
         # Group URLs based on the number of CPU cores to achieve roughly equal amounts of tasks
         self.urls_group = [urls[i:i+math.ceil(len(urls)/multiprocessing.cpu_count())] for i in range(0,len(urls),math.ceil(len(urls)/multiprocessing.cpu_count()))]
        
@@ -430,6 +502,8 @@ class Google():
         saveTiff(r,g,b,self.gt,filePath)
 
     def savetiles(self,path='./',format='tif'):
+        if not os.path.exists(path):
+            os.makedirs(path)
         pos1x, pos1y = wgs_to_tile(self.left, self.top, self.zoom)    
         pos2x, pos2y = wgs_to_tile(self.right,self.bottom, self.zoom)
         lenx = pos2x - pos1x + 1
@@ -453,14 +527,18 @@ class Google():
         stepy=self.gt[5]
         rbx=self.gt[0]+width*stepx
         rby=self.gt[3]+height*stepy
+        filelist=[]
+        
         x=np.arange(ltx,rbx,step=stepx*256)
         y=np.arange(lty,rby,step=stepy*256)
+        
         print("Size:",len(x),"X",len(y))
 
         for h in y:
             for w in x:
                 sgt=(w,stepx,0,h,0,stepy)
                 self.gts.append(sgt)  
+        
         if format=='png':
             for i, data in enumerate(self.result):
                 picio = io.BytesIO(data)
@@ -468,8 +546,7 @@ class Google():
                 if format=='png':
                     file=str(i)+".png"
                     small_pic.save(file)
-        if not os.path.exists(path):
-            os.makedirs(path)
+
         if format=='tif':
             index=0
             for data in tqdm(self.result):
@@ -478,32 +555,25 @@ class Google():
                 small_pic.convert("RGB")
                 file=self.server+str(self.gts[index])+".tif"
                 file=os.path.join(path,file)
-                h,w,c=np.array(small_pic).shape
-                # print("h:",h," w:",w," c:",c)
-                if c==3:
-                    r,g,b=cv2.split(np.array(small_pic))
-                    saveTiff(r,g,b,self.gts[index],file)
-                if c==4:
-                    r,g,b,a=cv2.split(np.array(small_pic))
-                    saveTiff(r,g,b,self.gts[index],file)
-                if c==1:
-                    saveTiff(small_pic,small_pic,small_pic,self.gts[index],file)
+                filelist.append(file)
+                smallarray=np.array(small_pic)
+                # print("shape: ",smallarray.shape)
+                if len(smallarray.shape)==3:
+                    h,w,c=smallarray.shape
+                    if c==3:
+                        r,g,b=cv2.split(smallarray)
+                        saveTiff(r,g,b,self.gts[index],file)
+                    if c==4:
+                        r,g,b,a=cv2.split(smallarray)
+                        saveTiff(r,g,b,self.gts[index],file)
+                if len(smallarray.shape)==2:
+                    saveTiff(smallarray,smallarray,smallarray,self.gts[index],file)
+                
                 index+=1
+        
+        return filelist
 
        
-
-
-
-
-
-
-class Being():
-    def __init__(self):
-        print("# ---------------------------------------------------------------------------- #")
-        print("#                              BEGING MAP Toolkit                              #")
-        print("# ---------------------------------------------------------------------------- #")
-
-
 
 
 
@@ -528,12 +598,14 @@ class Being():
         
 
 def main():
-    
    
-    Downloader=Google()
-    Downloader.url(100.361,38.866,100.386,38.839,17,server="Open Weather Map Temperature")
-    Downloader.download()
-    Downloader.savetiles(path="./output",format="tif")
+    Google=DOWNLOADER("Google")
+    Google.addcord(100.361,38.866,100.386,38.839,17)
+    Google.download()
+    tiles=Google.savetiles(path="./Google",format="tif")
+    import tifffile as tif
+    image=tif.imread(tiles[0])
+    plt.imshow(image),plt.show()
 
 
 
