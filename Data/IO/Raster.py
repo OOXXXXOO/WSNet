@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    TIF.py                                             :+:      :+:    :+:    #
+#    Raster.py                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/20 17:05:30 by winshare          #+#    #+#              #
-#    Updated: 2020/05/15 15:01:18 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/19 18:30:43 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ import glob
 import matplotlib.pyplot as plt
 import numpy as np
 
-class TIF():
+class Raster():
     def __init__(self,filename=None,channel=[0,1,2],display=False,debug=False):
         """
         filename: could be filedir or path of single file
@@ -66,23 +66,18 @@ class TIF():
         self.geotransform = self.dataset.GetGeoTransform()  # 仿射矩阵
         self.projection = self.dataset.GetProjection()  # 地图投影信息
         self.image = self.dataset.ReadAsArray(0, 0, self.width, self.height)  
-        if self.debug:
-            print('-----Original Data Shape : ',self.image.shape)
+        # print('-----Original Data Shape : ',self.image.shape)
         if 'uint8' in self.image.dtype.name:
             self.datatype = gdal.GDT_Byte
-            if self.debug:
-                print('image type : uint8')
+            # print('image type : uint8')
         elif 'int8' in self.image.dtype.name:
-            if self.debug:
-                print('image type : int8')
+            # print('image type : int8')
             self.datatype = gdal.GDT_Byte
         elif 'int16' in self.image.dtype.name:
-            if self.debug:
-                print('image type : int16')
+            # print('image type : int16')
             self.datatype = gdal.GDT_UInt16            
         else:
-            if self.debug:
-                print('image type : float32')
+            # print('image type : float32')
             self.datatype = gdal.GDT_Float32
         if len(self.image.shape)==2:
             self.channel_count=1
