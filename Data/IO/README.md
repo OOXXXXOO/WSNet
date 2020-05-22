@@ -68,15 +68,58 @@ Google.merge('./data.tif')#Merge all the tiles and generate full version file
 #### Step 2:
 If the data use for model training, we should have label that could be generate by rasterize vector file. Normally, the data will label by artificial work.But human resources has limit in huge object label with high resolution imagery. The OSM Vector data has a worldwide version that save in sqlite based mbtiles file system that could be decode by GDAL library.
 
-The Class `Vector` and `Raster` is key part of Data IO.
+The Class `Vector` and `Raster` is important part of data I/O. Rasterisation (or rasterization) is the task of taking an image described in a vector graphics format (shapes) and converting it into a raster image (a series of pixels, dots or lines, which, when displayed together, create the image which was represented via shapes).[1][2] The rasterised image may then be displayed on a computer display, video display or printer, or stored in a bitmap file format. Rasterisation may refer to the technique of drawing 3D models, or the conversion of 2D rendering primitives such as polygons, line segments into a rasterized format.
 
-    
+
+The map data has better relative accuracy than temporary human label work that mean the vector map has potential to be ground truth. So, transform the exist vector to raster data that is indispensable method for generate training data in DL-based computer vision mission.
+
+Rasterize:
+
+![](./../../Resources/WikiResources/440px-Top-left_triangle_rasterization_rule.gif)
+
 ```python
+from Vector import Vector
+Beijing=Vector("/workspace/data/Water/Beijing.geojson")
+Beijing.getDefaultLayerbyName("Beijing")
+Beijing.readtif("/workspace/SQCV/Data/IO/Google(100.36079408135292, 1.3411045076338268e-06, 0, 38.86617680812866, 0, -1.0444025902796225e-06).tif")
+Beijing.Rasterize("./result.tif")
+
+for tile in tqdm(tiles):
+    Beijing.readtif(tile)
+    filename=tile.split('/')[-1]
+    path='./label/'+filename
+    print(path)
+    Beijing.Rasterize(path)
+```
+The normally output :
+```python
+# ---------------------------------------------------------------------------- #
+#                                Vector Toolkit                                #
+# ---------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                            TIFF process Toolkit                              #
+# ---------------------------------------------------------------------------- #
+-----Class TIF init without filename
+-----Valid vector format : geojson
+-----Meta :  {}
+-----Description :  /workspace/data/Water/Beijing.geojson
+-----LayerCount: 1
+-----Layer : 0  Define :  Beijing 
+-----LayerDictByName:
+ {'Beijing': <osgeo.ogr.Layer; proxy of <Swig Object of type 'OGRLayerShadow *' at 0x7f37129c3a80> >}
+-----Alread Load: /workspace/data/Water/Beijing.geojson
+# -------------------------------- DEFINE DONE ------------------------------- #
 
 ```
+
+After finish the process, script flow will generate the imagery & label(mask) data to specific folder. All the file will have index that is writed in csv or json file for training.
+
+
 ### Coordinate system info:
+
 TMS Global Mercator Profile
-	---------------------------
+
+---------------------------
 
 	Functions necessary for generation of tiles in Spherical Mercator projection,
 	EPSG:900913 (EPSG:gOOglE, Google Maps Global Mercator), EPSG:3785, OSGEO:41001.
