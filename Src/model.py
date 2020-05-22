@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/05/21 11:52:54 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/22 14:30:20 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -210,7 +210,7 @@ class MODEL(DATASET):
     
 def parser():
     parsers=argparse.ArgumentParser()
-    parsers.add_argument("--config",default="./Config/Demo.json", help="dir of config file")
+    parsers.add_argument("--config",default="./Config/segmantation.json", help="dir of config file")
     args = parsers.parse_args()
     return args
 

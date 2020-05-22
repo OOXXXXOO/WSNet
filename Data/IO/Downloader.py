@@ -582,12 +582,18 @@ class DOWNLOADER():
         rbx = self.gt[0] + width * stepx
         rby = self.gt[3] + height * stepy
         filelist = []
+        
+        tilex=np.arange(pos1x,pos2x+1,1)
+        tiley=np.arange(pos1y,pos2y+1,1)
+        tilelist=[(i,j)  for j in tilex for i in tiley]
+        print("TileSize:",len(tilelist))
+
 
         x = np.arange(ltx, rbx, step=stepx * Tilesize)
         y = np.arange(lty, rby, step=stepy * Tilesize)
 
         print("Size:", len(x), "X", len(y))
-
+        
         for h in y:
             for w in x:
                 sgt = (w, stepx, 0, h, 0, stepy)
@@ -607,7 +613,8 @@ class DOWNLOADER():
                 picio = io.BytesIO(data)
                 small_pic = pil.open(picio)
                 small_pic.convert("RGB")
-                file = self.server + str(self.gts[index]) + ".tif"
+                file = self.server+"-{x}-{y}-{z}" + ".tif"
+                file=file.format(x=tilelist[index][0],y=tilelist[index][1],z=self.zoom)
                 file = os.path.join(path, file)
                 filelist.append(file)
                 smallarray = np.array(small_pic)
@@ -643,14 +650,14 @@ class DOWNLOADER():
 
 def main():
 
-    Google = DOWNLOADER("Google Satellite")
+    Google = DOWNLOADER("Bing VirtualEarth")
     Google.addcord(116.3, 39.9, 116.6, 39.7, 13)
     Google.download()
-    tiles = Google.savetiles(path="./Google", format="tif")
+    tiles = Google.savetiles(path="./Image", format="tif")
     from Vector import Vector
     Beijing=Vector("/workspace/data/Water/Beijing.geojson")
     Beijing.getDefaultLayerbyName("Beijing")
-    Beijing.generate(tiles)
+    Beijing.generate(tiles,output_path='./Label')
 
 
 if __name__ == '__main__':

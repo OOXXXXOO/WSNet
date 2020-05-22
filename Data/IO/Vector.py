@@ -1,5 +1,6 @@
 import sys
-from Raster import Raster
+# from Raster import Raster
+from Data.IO.Raster import Raster
 import ogr
 import os
 import gdal
@@ -281,17 +282,20 @@ class Vector(Raster):
             [1],
             self.defaultlayer,
             )
-
         targetDataSet = None
         
     def generate(self,tiles,output_path="./label"):
+        print('-----Start Generate.....')
+        labellist=[]
         if not os.path.exists(output_path):
             os.makedirs(output_path)
         for tile in tqdm(tiles):
             self.readtif(tile)
             filename=tile.split('/')[-1]
-            path=os.path.join(output_path,filename+'.tif')
+            path=os.path.join(output_path,filename)
+            labellist.append(path)
             self.Rasterize(path)
+        return labellist
 
     
 
@@ -333,10 +337,10 @@ class Vector(Raster):
         if os.path.exists(out_dir):
             os.removedirs(out_dir)
         os.makedirs(out_dir)
-        os.makedirs(osp.join(out_dir, 'JPEGImages'))
-        os.makedirs(osp.join(out_dir, 'SegmentationClass'))
-        os.makedirs(osp.join(out_dir, 'SegmentationClassPNG'))
-        os.makedirs(osp.join(out_dir, 'SegmentationClassVisualization'))
+        os.makedirs(os.path.join(out_dir, 'JPEGImages'))
+        os.makedirs(os.path.join(out_dir, 'SegmentationClass'))
+        os.makedirs(os.path.join(out_dir, 'SegmentationClassPNG'))
+        os.makedirs(os.path.join(out_dir, 'SegmentationClassVisualization'))
 
         class_names = []
         class_name_to_id = {}
@@ -357,29 +361,29 @@ class Vector(Raster):
         self.outputdir = out_dir
         print('class_names:', class_names)
 
-        out_class_names_file = osp.join(out_dir, 'class_names.txt')
+        out_class_names_file = os.path.join(out_dir, 'class_names.txt')
         with open(out_class_names_file, 'w') as f:
             f.writelines('\n'.join(class_names))
         print('Saved class_names:', out_class_names_file)
 
         colormap = labelme.utils.label_colormap(255)
         in_dir = self.LabelmeJsonPath
-        for label_file in glob.glob(osp.join(in_dir, '*.json')):
+        for label_file in glob.glob(os.path.join(in_dir, '*.json')):
             print('Generating dataset from:', label_file)
             with open(label_file) as f:
-                base = osp.splitext(osp.basename(label_file))[0]
-                out_img_file = osp.join(
+                base = os.path.splitext(os.path.basename(label_file))[0]
+                out_img_file = os.path.join(
                     out_dir, 'JPEGImages', base + '.jpg')
-                out_lbl_file = osp.join(
+                out_lbl_file = os.path.join(
                     out_dir, 'SegmentationClass', base + '.npy')
-                out_png_file = osp.join(
+                out_png_file = os.path.join(
                     out_dir, 'SegmentationClassPNG', base + '.png')
-                out_viz_file = osp.join(
+                out_viz_file = os.path.join(
                     out_dir, 'SegmentationClassVisualization', base + '.jpg')
 
                 data = json.load(f)
 
-                img_file = osp.join(osp.dirname(label_file), data['imagePath'])
+                img_file = os.path.join(os.path.dirname(label_file), data['imagePath'])
                 img = np.asarray(PIL.Image.open(img_file))
                 PIL.Image.fromarray(img).save(out_img_file)
 
@@ -423,7 +427,7 @@ def main():
     print(len(tiflist))
     for file in tqdm(tiflist):
         Vector.readtif(file)
-        Vector.getDefaultLayerbyName("Beijing")
+        Vector.getDefaultLayerbyName("bui")
 
         filename = file.split('/')[-1]
         path = '/workspace/data/Water/label/' + filename
