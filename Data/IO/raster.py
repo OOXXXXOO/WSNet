@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/20 17:05:30 by winshare          #+#    #+#              #
-#    Updated: 2020/05/19 18:30:43 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/26 16:51:20 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -271,6 +271,7 @@ class Raster():
         prosrs, geosrs = self.getSRSPair()
         ct = osr.CoordinateTransformation(geosrs, prosrs)
         coords = ct.TransformPoint(lon, lat)
+        
         return coords[:2]
 
     def imagexy2geo(self, row, col):

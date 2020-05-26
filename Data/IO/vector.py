@@ -1,6 +1,6 @@
 import sys
 # from Raster import Raster
-from Data.IO.Raster import Raster
+from Data.IO.raster import Raster
 import ogr
 import os
 import gdal
@@ -61,6 +61,8 @@ class Vector(Raster):
                 self.LayerDict[self.Layer.GetName()] = self.Layer
             print("-----LayerDictByName:\n", self.LayerDict)
             self.Srs = self.Layer.GetSpatialRef()
+            self.Extent=self.Layer.GetExtent()
+            print("-----Extent:",self.Extent)
             print("-----Alread Load:", input_shp_path)
             print(
                 "# -------------------------------- DEFINE DONE ------------------------------- #")
@@ -73,6 +75,7 @@ class Vector(Raster):
         para:name string of layer name
         """
         self.defaultlayer = self.LayerDict[name]
+        print("----- Set Default Layer ",name," : ",self.defaultlayer)
         return self.LayerDict[name]
 
     def Info(self):
@@ -169,104 +172,111 @@ class Vector(Raster):
         inDataSource = None
         outDataSource = None
 
-    def CropLayerByPolygon(self, vector):
+    def crop_layer_by_polygon(self, vector):
         self.ExportLayer.SetSpatialFilter()
 
-    def CropLayerByRect(self, rect):
+    def crop_layer_by_rect(self, rect):
         assert self.ExportLayer is None, 'Invalid Export Layer'
         self.ExportLayer.SetSpatialFilterRect()
 
-    def Shp2LabelmeJson(self, output_GeoJson=True,
-                        Labelme_Json_path='./Segmentation/',
-                        invert2Voc=True, FieldClassName='TYPE'):
-        """
-        invert the Shapefile to labelme_Json
-        Flow I  : Read Tif & Shapefile -> Dataset & DataSource
-        Flow II : Init Null labelme_json dict
-        Flow III: Get Cords(x,y) & Feature and invert longtitude,latitude to image cols,rows
-        Flow IV : Append image Cords list to dict
-        Flow V  : Output Labelme Json
-        Flow VI : Use System Command labelme_json_to_dataset / labelme2voc.py
-                # It generates:
-                #   - data_dataset_voc/JPEGImages
-                #   - data_dataset_voc/SegmentationClass
-                #   - data_dataset_voc/SegmentationClassVisualization
-        :param shp_path:
-        :param tif_path:
-        :param Labelme_Json_path: Output Json&jpg path
-        :param invert2Dataset: invert labelme json to Dataset
-        :param  TYPE like (['Storge yard', 'Container', 'Oil Tank', 'Berth'])
-        :return:
-        """
+    
+    def crop_default_layer_by_rect(self, rect):
+        print("-----Set filter Rect:",rect)
+        self.defaultlayer.SetSpatialFilterRect(*rect)
+    
 
-        print('-----feature count :', self.Layer.GetFeatureCount())
-        print("-----SpatialFilter :", self.Layer.GetSpatialFilter())
+    
+    # def Shp2LabelmeJson(self, output_GeoJson=True,
+    #                     Labelme_Json_path='./Segmentation/',
+    #                     invert2Voc=True, FieldClassName='TYPE'):
+    #     """
+    #     invert the Shapefile to labelme_Json
+    #     Flow I  : Read Tif & Shapefile -> Dataset & DataSource
+    #     Flow II : Init Null labelme_json dict
+    #     Flow III: Get Cords(x,y) & Feature and invert longtitude,latitude to image cols,rows
+    #     Flow IV : Append image Cords list to dict
+    #     Flow V  : Output Labelme Json
+    #     Flow VI : Use System Command labelme_json_to_dataset / labelme2voc.py
+    #             # It generates:
+    #             #   - data_dataset_voc/JPEGImages
+    #             #   - data_dataset_voc/SegmentationClass
+    #             #   - data_dataset_voc/SegmentationClassVisualization
+    #     :param shp_path:
+    #     :param tif_path:
+    #     :param Labelme_Json_path: Output Json&jpg path
+    #     :param invert2Dataset: invert labelme json to Dataset
+    #     :param  TYPE like (['Storge yard', 'Container', 'Oil Tank', 'Berth'])
+    #     :return:
+    #     """
 
-        print("-----", self.Layer.GetLayerDefn())
+    #     print('-----feature count :', self.Layer.GetFeatureCount())
+    #     print("-----SpatialFilter :", self.Layer.GetSpatialFilter())
 
-        print("-----", self.Layer.GetFeatureCount())
+    #     print("-----", self.Layer.GetLayerDefn())
 
-        print("-----", self.Layer.GetExtent())
+    #     print("-----", self.Layer.GetFeatureCount())
 
-        x1, y1, x2, y2 = self.Layer.GetExtent()
-        x1, y1 = self.geo2imagexy(x1, y1)
-        x2, y2 = self.geo2imagexy(x2, y2)
-        print("-----Image:", x1, y1, x2, y2)
-        width = abs(x2 - x1)
-        height = abs(y2 - y1)
-        print("-----Whole Image shape:", height, width)
+    #     print("-----", self.Layer.GetExtent())
 
-        print('-----', self.Layer[0])
+    #     x1, y1, x2, y2 = self.Layer.GetExtent()
+    #     x1, y1 = self.geo2imagexy(x1, y1)
+    #     x2, y2 = self.geo2imagexy(x2, y2)
+    #     print("-----Image:", x1, y1, x2, y2)
+    #     width = abs(x2 - x1)
+    #     height = abs(y2 - y1)
+    #     print("-----Whole Image shape:", height, width)
 
-        print("-----", self.Layer.GetSpatialRef())
-        exit(0)
+    #     print('-----', self.Layer[0])
 
-        # for i in tqdm(range(self.Layer.GetFeatureCount())):
-        #     in_Feature = self.Layer.GetFeature(i)
-        #     geom = in_Feature.GetGeometryRef()
-        #     print(type(geom))
-        #     print(geom)
-        # FieldValue=in_Feature.GetField(FieldClassName)
-        # geodict=geom.ExportToJson()
-        # geodict=
+    #     print("-----", self.Layer.GetSpatialRef())
+    #     exit(0)
 
-        # geodict=json.loads(geodict)
+    #     # for i in tqdm(range(self.Layer.GetFeatureCount())):
+    #     #     in_Feature = self.Layer.GetFeature(i)
+    #     #     geom = in_Feature.GetGeometryRef()
+    #     #     print(type(geom))
+    #     #     print(geom)
+    #     # FieldValue=in_Feature.GetField(FieldClassName)
+    #     # geodict=geom.ExportToJson()
+    #     # geodict=
 
-        # feature=self.initcordarrary(self.TYPE[FieldValue],imagecord)
+    #     # geodict=json.loads(geodict)
 
-        # shapes.append(feature)
-        # print('\n\nshape is :',shapes,' process done \n\n')
-        # return 0
-        ####################################################################
-        # shapes process done
-        if(not os.path.exists(Labelme_Json_path)):
-            os.system('mkdir ' + Labelme_Json_path)
-        filename = filename.split('.')[-2]
-        self.LabelmeJsonPath = Labelme_Json_path
-        outputjsonname = Labelme_Json_path + filename + '.json'
-        self.save(outputjsonname, shapes, filename + '.jpg', imageData=None,
-                  lineColor=(255, 0, 0, 128), fillColor=(0, 255, 0, 128))
+    #     # feature=self.initcordarrary(self.TYPE[FieldValue],imagecord)
 
-        Newim = Image.fromarray(self.tif.image_nparray)
-        Newim.save(Labelme_Json_path + filename + '.jpg')
-        print('\n\n****json   &   image save done *****\n\n')
+    #     # shapes.append(feature)
+    #     # print('\n\nshape is :',shapes,' process done \n\n')
+    #     # return 0
+    #     ####################################################################
+    #     # shapes process done
+    #     if(not os.path.exists(Labelme_Json_path)):
+    #         os.system('mkdir ' + Labelme_Json_path)
+    #     filename = filename.split('.')[-2]
+    #     self.LabelmeJsonPath = Labelme_Json_path
+    #     outputjsonname = Labelme_Json_path + filename + '.json'
+    #     self.save(outputjsonname, shapes, filename + '.jpg', imageData=None,
+    #               lineColor=(255, 0, 0, 128), fillColor=(0, 255, 0, 128))
 
-        if output_GeoJson:
-            geojsonfilename = self.Input_path + '.geojson'
-            formattransfrom_command = 'ogr2ogr -f GeoJSON ' + \
-                geojsonfilename + ' ' + self.Input_path
-            print(formattransfrom_command)
-            os.system(formattransfrom_command)
-            print(' output geojson transfrom done ')
+    #     Newim = Image.fromarray(self.tif.image_nparray)
+    #     Newim.save(Labelme_Json_path + filename + '.jpg')
+    #     print('\n\n****json   &   image save done *****\n\n')
 
-        if invert2Voc:
-            self.Json2Voclike()
+    #     if output_GeoJson:
+    #         geojsonfilename = self.Input_path + '.geojson'
+    #         formattransfrom_command = 'ogr2ogr -f GeoJSON ' + \
+    #             geojsonfilename + ' ' + self.Input_path
+    #         print(formattransfrom_command)
+    #         os.system(formattransfrom_command)
+    #         print(' output geojson transfrom done ')
 
-            # command='labelme_json_to_dataset '+outputjsonname
-            # os.system(command)
-        #
-        # if invertPascalVoc:
-        #     imageDataPIL.save(Labelme_Json_path+filename+'.jpg')
+    #     if invert2Voc:
+    #         self.Json2Voclike()
+
+    #         # command='labelme_json_to_dataset '+outputjsonname
+    #         # os.system(command)
+    #     #
+    #     # if invertPascalVoc:
+    #     #     imageDataPIL.save(Labelme_Json_path+filename+'.jpg')
 
     def Rasterize(self, outputname, Nodata=0):
 
@@ -286,119 +296,113 @@ class Vector(Raster):
         
     def generate(self,tiles,output_path="./label"):
         print('-----Start Generate.....')
-        labellist=[]
+        self.labellist=[]
         if not os.path.exists(output_path):
             os.makedirs(output_path)
         for tile in tqdm(tiles):
             self.readtif(tile)
             filename=tile.split('/')[-1]
             path=os.path.join(output_path,filename)
-            labellist.append(path)
+            self.labellist.append(path)
             self.Rasterize(path)
-        return labellist
+        return self.labellist
 
     
+    def reset_layer(self):
+        self.Layer.ResetReading()
 
-    def SetFilter(Rect=None, WktPolygon=None):
-        """
-        Set Filter on VectorLayer Could spped up the process of Index
-        """
+    # def Json2Voclike(self, out_dir='./VocDataset'):
+    #     """
 
-        if Rect is None and WktPolygon is None:
-            pass
+    #     :param label_file:
+    #     label.txt & the content like:
+    #     __ignore__
+    #     _background_
+    #     Iron
+    #     Mine
+    #     None
+    #     land
 
-    def Json2Voclike(self, out_dir='./VocDataset'):
-        """
+    #     The Content '__ignore__' maybe should add in file by manual
+    #     :param in_dir:
+    #     Dir input Data like :
+    #     in_dir-
+    #         |
+    #         1.jpg
+    #         1.json
+    #         2.jpg
+    #         2.json
+    #         ....
+    #     :param out_dir:
+    #     output Voclike Dataset Path
+    #     :return:
+    #     """
+    #     print('**********************strart voc-like  process******************')
+    #     if os.path.exists(out_dir):
+    #         os.removedirs(out_dir)
+    #     os.makedirs(out_dir)
+    #     os.makedirs(os.path.join(out_dir, 'JPEGImages'))
+    #     os.makedirs(os.path.join(out_dir, 'SegmentationClass'))
+    #     os.makedirs(os.path.join(out_dir, 'SegmentationClassPNG'))
+    #     os.makedirs(os.path.join(out_dir, 'SegmentationClassVisualization'))
 
-        :param label_file:
-        label.txt & the content like:
-        __ignore__
-        _background_
-        Iron
-        Mine
-        None
-        land
+    #     class_names = []
+    #     class_name_to_id = {}
+    #     # for i, line in enumerate(open(labels_file).readlines()):
+    #     #     class_id = i - 1  # starts with -1
+    #     #     class_name = line.strip()
+    #     #     print('current class name :', class_name)
+    #     #     class_name_to_id[class_name] = class_id
+    #     #     if class_id == -1:
+    #     #         assert class_name == '__ignore__'
+    #     #         continue
+    #     #     elif class_id == 0:
+    #     #         assert class_name == '_background_'
+    #     #     class_names.append(class_name)
+    #     assert self.TYPE is not None, 'None type list Please Set First'
+    #     class_names = tuple(self.TYPE)
+    #     self.classlist = class_names
+    #     self.outputdir = out_dir
+    #     print('class_names:', class_names)
 
-        The Content '__ignore__' maybe should add in file by manual
-        :param in_dir:
-        Dir input Data like :
-        in_dir-
-            |
-            1.jpg
-            1.json
-            2.jpg
-            2.json
-            ....
-        :param out_dir:
-        output Voclike Dataset Path
-        :return:
-        """
-        print('**********************strart voc-like  process******************')
-        if os.path.exists(out_dir):
-            os.removedirs(out_dir)
-        os.makedirs(out_dir)
-        os.makedirs(os.path.join(out_dir, 'JPEGImages'))
-        os.makedirs(os.path.join(out_dir, 'SegmentationClass'))
-        os.makedirs(os.path.join(out_dir, 'SegmentationClassPNG'))
-        os.makedirs(os.path.join(out_dir, 'SegmentationClassVisualization'))
+    #     out_class_names_file = os.path.join(out_dir, 'class_names.txt')
+    #     with open(out_class_names_file, 'w') as f:
+    #         f.writelines('\n'.join(class_names))
+    #     print('Saved class_names:', out_class_names_file)
 
-        class_names = []
-        class_name_to_id = {}
-        # for i, line in enumerate(open(labels_file).readlines()):
-        #     class_id = i - 1  # starts with -1
-        #     class_name = line.strip()
-        #     print('current class name :', class_name)
-        #     class_name_to_id[class_name] = class_id
-        #     if class_id == -1:
-        #         assert class_name == '__ignore__'
-        #         continue
-        #     elif class_id == 0:
-        #         assert class_name == '_background_'
-        #     class_names.append(class_name)
-        assert self.TYPE is not None, 'None type list Please Set First'
-        class_names = tuple(self.TYPE)
-        self.classlist = class_names
-        self.outputdir = out_dir
-        print('class_names:', class_names)
+    #     colormap = labelme.utils.label_colormap(255)
+    #     in_dir = self.LabelmeJsonPath
+    #     for label_file in glob.glob(os.path.join(in_dir, '*.json')):
+    #         print('Generating dataset from:', label_file)
+    #         with open(label_file) as f:
+    #             base = os.path.splitext(os.path.basename(label_file))[0]
+    #             out_img_file = os.path.join(
+    #                 out_dir, 'JPEGImages', base + '.jpg')
+    #             out_lbl_file = os.path.join(
+    #                 out_dir, 'SegmentationClass', base + '.npy')
+    #             out_png_file = os.path.join(
+    #                 out_dir, 'SegmentationClassPNG', base + '.png')
+    #             out_viz_file = os.path.join(
+    #                 out_dir, 'SegmentationClassVisualization', base + '.jpg')
 
-        out_class_names_file = os.path.join(out_dir, 'class_names.txt')
-        with open(out_class_names_file, 'w') as f:
-            f.writelines('\n'.join(class_names))
-        print('Saved class_names:', out_class_names_file)
+    #             data = json.load(f)
 
-        colormap = labelme.utils.label_colormap(255)
-        in_dir = self.LabelmeJsonPath
-        for label_file in glob.glob(os.path.join(in_dir, '*.json')):
-            print('Generating dataset from:', label_file)
-            with open(label_file) as f:
-                base = os.path.splitext(os.path.basename(label_file))[0]
-                out_img_file = os.path.join(
-                    out_dir, 'JPEGImages', base + '.jpg')
-                out_lbl_file = os.path.join(
-                    out_dir, 'SegmentationClass', base + '.npy')
-                out_png_file = os.path.join(
-                    out_dir, 'SegmentationClassPNG', base + '.png')
-                out_viz_file = os.path.join(
-                    out_dir, 'SegmentationClassVisualization', base + '.jpg')
+    #             img_file = os.path.join(os.path.dirname(label_file), data['imagePath'])
+    #             img = np.asarray(PIL.Image.open(img_file))
+    #             PIL.Image.fromarray(img).save(out_img_file)
 
-                data = json.load(f)
+    #             lbl = labelme.utils.shapes_to_label(
+    #                 img_shape=img.shape,
+    #                 shapes=data['shapes'],
+    #                 label_name_to_value=class_name_to_id,
+    #             )
+    #             labelme.utils.lblsave(out_png_file, lbl)
 
-                img_file = os.path.join(os.path.dirname(label_file), data['imagePath'])
-                img = np.asarray(PIL.Image.open(img_file))
-                PIL.Image.fromarray(img).save(out_img_file)
+    #             np.save(out_lbl_file, lbl)
 
-                lbl = labelme.utils.shapes_to_label(
-                    img_shape=img.shape,
-                    shapes=data['shapes'],
-                    label_name_to_value=class_name_to_id,
-                )
-                labelme.utils.lblsave(out_png_file, lbl)
-
-                np.save(out_lbl_file, lbl)
-
-                viz = labelme.utils.draw_label(
-                    lbl, img, class_names, colormap=colormap)
-                PIL.Image.fromarray(viz).save(out_viz_file)
+    #             viz = labelme.utils.draw_label(
+    #                 lbl, img, class_names, colormap=colormap)
+    #             PIL.Image.fromarray(viz).save(out_viz_file)
 
 
 def main():
@@ -417,9 +421,10 @@ def main():
 
     # Experiment--Geojson
     # ----------------------------------- Speed ---------------------------------- #
-    #                       十万样本时间
-    # CHINA     34          94小时
-    # Beijing   1/13        120分钟
+    #                               十万样本时间
+    # CHINA             34          94  小时
+    # Beijing           1/13        120 分钟
+    # MBtilesFilter     3           8.3 小时
 
     # Experiment--Shapefile
     # ----------------------------------- Speed ---------------------------------- #
