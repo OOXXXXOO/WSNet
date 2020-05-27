@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 15:25:28 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 19:44:11 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,11 +76,11 @@ from dataset import DATASET
 
 
 class MODEL(DATASET):
-    def __init__(self,cfg,preestimation=False):
+    def __init__(self,cfg,pre_estimation=False):
         self.configfile=cfg
         DATASET.__init__(self)
         self.default_input_size=(3,512,512)
-        self.pre_estimation=preestimation
+        self.pre_estimation=pre_estimation
 
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
