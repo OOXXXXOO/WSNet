@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 19:44:40 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 19:59:46 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -248,48 +248,49 @@ class DATASET(NETWORK,COCO,Dataset):
 
     # @staticmethod
     def collate_fn(self,batch):
-        """
-        update 2020-05-27:
-        主要改动为添加拼接方法:
-        在需求Mask的任务中 为了在拼接过程中 防止坐标变换产生的图像坐标系变换
-        直接新建统一大小的Image 然后paste
-        在这个过程中区分任务类型:
-        1,目标检测:target不需要变换
+        return tuple(zip(*batch))
 
-        2,实例分割  按照要求产生了Multi Object Mask (BatchSize*C*W*H)
-        需要对每一层ndarray做扩充
-        3,语义分割   按照要求对单层target mask (BatchSize*1,W,H)做 paste
+# update 2020-05-27:
+# 主要改动为添加拼接方法:
+# 在需求Mask的任务中 为了在拼接过程中 防止坐标变换产生的图像坐标系变换
+# 直接新建统一大小的Image 然后paste
+# 在这个过程中区分任务类型:
+# 1,目标检测:target不需要变换
+
+# 2,实例分割  按照要求产生了Multi Object Mask (BatchSize*C*W*H)
+# 需要对每一层ndarray做扩充
+# 3,语义分割   按照要求对单层target mask (BatchSize*1,W,H)做 paste
+
+
         
+#         images = [item[0] for item in batch]
+#         targets = [item[1] for item in batch]
+#         max_size=max([item.size for item in images])
 
-        """
-        images = [item[0] for item in batch]
-        targets = [item[1] for item in batch]
-        max_size=max([item.size for item in images])
-
-        img=[]
-        gt=[]
-        for image in images:
-            print(type(image))
-            print(image.size[-2:],"-----images-----",max_size[-2:])
-            if not image.size[-2:]==max_size[-2:]:
-                img.append(self.paste(image,max_size[-2:]))
-        img=[self.basetransforms(i) for i in img]
-        if self.MissionType=="Segmentation":
-            for target in targets:
-                print(target.size[-2:],"----targets------",max_size[-2:])
-                if not target.size[-2:]==max_size[-2:]:
-                    gt.append(self.basetransforms(self.paste(target,max_size[-2:])))
+#         img=[]
+#         gt=[]
+#         for image in images:
+#             print(type(image))
+#             print(image.size[-2:],"-----images-----",max_size[-2:])
+#             if not image.size[-2:]==max_size[-2:]:
+#                 img.append(self.paste(image,max_size[-2:]))
+#         img=[self.basetransforms(i) for i in img]
+#         if self.MissionType=="Segmentation":
+#             for target in targets:
+#                 print(target.size[-2:],"----targets------",max_size[-2:])
+#                 if not target.size[-2:]==max_size[-2:]:
+#                     gt.append(self.basetransforms(self.paste(target,max_size[-2:])))
         
-        if self.MissionType=="InstenceSegmentation":
-###########################################################################
+#         if self.MissionType=="InstenceSegmentation":
+# ###########################################################################
 
 
-            for target in targets:
-                print(target["masks"].shape[-2:],"----targets------",max_size[-2:])
-                if not target["masks"].shape[-2:]==max_size[-2:]:
-                    masks=target["masks"]
-                    print('sad',type(masks))
-                    gt.append(self.basetransforms(self.paste(target["masks"],max_size[-2:])))
+#             for target in targets:
+#                 print(target["masks"].shape[-2:],"----targets------",max_size[-2:])
+#                 if not target["masks"].shape[-2:]==max_size[-2:]:
+#                     masks=target["masks"]
+#                     print('sad',type(masks))
+#                     gt.append(self.basetransforms(self.paste(target["masks"],max_size[-2:])))
 
 
 

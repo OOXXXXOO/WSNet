@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 18:16:55 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 20:10:54 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,8 @@ import Src.Utils.Transform.box.data_aug as BT
 import Src.Utils.Transform.mask.segmentation_transforms as MT
 import PIL.Image as Image
 import random
-
-
+import torch
+import torchvision.transforms as T
 RandomRotateDegree=90
 BaseSize=512
 CropSize=512
@@ -47,8 +47,8 @@ FixedResize=512
 
 
 mask_transform={
-# "Normalize":MT.Normalize(),
-# "ToTensor":MT.ToTensor(),
+"Normalize":MT.Normalize(),
+"ToTensor":MT.ToTensor(),
 "RandomHorizontalFlip":MT.RandomHorizontalFlip(),
 "RandomRotate":MT.RandomRotate(RandomRotateDegree),
 "RandomGaussianBlur":MT.RandomGaussianBlur(),
@@ -152,7 +152,12 @@ class STF():
         instancemasks=target["masks"]
         boxes=target["boxes"]
         labels=target["labels"]
-
+        basetransforms=Compose([
+            T.ToTensor(),
+            T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+        ])
+        image=basetransforms(image)
+        target["masks"]=torch.from_numpy(instancemasks)# Need Uint8)
         return image,target
 
     def DetectionTransform(self,image,target):

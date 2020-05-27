@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 19:44:11 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 19:59:10 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -175,6 +175,8 @@ class MODEL(DATASET):
         # ------------------------------ Train one epoch ----------------------------- #
         print("# =============================  epoch {index} ========================== #".format(index=index))
         for image,target in tqdm(self.trainloader):
+            print(image)
+            print(target)
             pass
             # print(image)
             # print(target)
