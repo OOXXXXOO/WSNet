@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/05/20 18:26:06 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 18:36:24 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@
 # ---------------------------- Official Reference ---------------------------- #
 
 import sys 
+import os
 print("---dataset.py workspace in :\n",sys.path)
 import torchvision.transforms as T
 from torch.utils.data import Dataset
@@ -42,7 +43,7 @@ from torch.utils.data import DataLoader
 from network import NETWORK
 from Utils.Transform.STF import Compose
 from Utils.Transform.STF import STF
-
+import PIL.Image as Image
 import numpy as np
 
 
@@ -50,6 +51,10 @@ import numpy as np
 class DATASET(NETWORK,COCO,Dataset):
     def __init__(self):
         NETWORK.__init__(self)
+        self.basetransforms=Compose([
+            T.ToTensor(),
+            T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+            ])
 
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
@@ -62,10 +67,7 @@ class DATASET(NETWORK,COCO,Dataset):
             print("# ----------------------------- SFT Module Enable ---------------------------- #")
 
         else:
-            self.transforms=Compose([
-                T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-                T.ToTensor()
-            ])
+            self.transforms=self.basetransforms
             print("# ---------------------------- SFT Module Disable ---------------------------- #")
 
         # ---------------------------------------------------------------------------- #
@@ -77,17 +79,19 @@ class DATASET(NETWORK,COCO,Dataset):
         # --------------------------- DatasetFunction Index -------------------------- #
         if self.DataSetType == "CocoDetection":
             self.trainset=self.dataset_function(
-                os.path.join(self.DataSet_Root,'/train2014'),
+                self.DataSet_Root,
                 self.Dataset_Train_file,
                 transforms=self.transforms,
-                Mode=self.MissionType
+                Mode=self.MissionType,
+                train=True
             )
             print("\ntrain dataset process done !\n")
             self.valset=self.dataset_function(
-                os.path.join(self.DataSet_Root,'/val2014'),
+                self.DataSet_Root,
                 self.Dataset_Val_file,
                 transforms=self.transforms,
-                Mode=self.MissionType
+                Mode=self.MissionType,
+                train=False
             )
             print("\nval dataset process done !\n")
             print('\n\n-------------------------- COCO Dataset Init Done --------------------------\n\n')
@@ -176,7 +180,8 @@ class DATASET(NETWORK,COCO,Dataset):
         self.trainloader = torch.utils.data.DataLoader(
             self.trainset, 
             batch_sampler=self.train_batch_sampler,
-            num_workers=self.worker_num)
+            num_workers=self.worker_num,
+            collate_fn=self.collate_fn)
 
         print("# ---------------------- Training DataLoader Init Finish --------------------- #")
 
@@ -184,7 +189,8 @@ class DATASET(NETWORK,COCO,Dataset):
             self.valset, 
             batch_size=1,
             sampler=self.test_sampler,
-            num_workers=self.worker_num)
+            num_workers=self.worker_num,
+            collate_fn=self.collate_fn)
         
         # BUG INFO :
         """
@@ -217,23 +223,48 @@ class DATASET(NETWORK,COCO,Dataset):
         # ---------------------------------------------------------------------------- #
 
     
+    def paste(self,array,size):
+        if isinstance(array,Image.Image):
+            result=Image.new("RGB",size)
+            result.paste(array)
+            return result
+        if isinstance(array,np.array):
+            result=np.zeros(size,dtype=np.float)
+            
+###############################################################
 
 
 
+    # @staticmethod
+    def collate_fn(self,batch):
+        images = [item[0] for item in batch]
+        targets = [item[1] for item in batch]
 
+        # print(targets)
 
+        max_size=max([item.size for item in images])
 
-
-
-
-
-
-
-
-
-
-
-
+        img=[]
+        gt=[]
+        for image in images:
+            print(type(image))
+            print(image.size[-2:],"-----images-----",max_size[-2:])
+            if not image.size[-2:]==max_size[-2:]:
+                img.append(self.paste(image,max_size[-2:]))
+        img=[self.basetransforms(i) for i in img]
+        if self.MissionType=="Segmentation":
+            for target in targets:
+                print(target.size[-2:],"----targets------",max_size[-2:])
+                if not target.size[-2:]==max_size[-2:]:
+                    gt.append(self.basetransforms(self.paste(target,max_size[-2:])))
+        
+        if self.MissionType=="InstenceSegmentation":
+###########################################################################
+            for target in targets:
+                print(target["masks"].shape,"----targets------",max_size[-2:])
+                if not target["masks"].shape[-2:]==max_size[-2:]:
+        
+                    gt.append(self.basetransforms(,max_size[-2:])))
 
 
 

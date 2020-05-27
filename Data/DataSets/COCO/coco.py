@@ -62,14 +62,24 @@ class CocoDataset(COCO):
     Use Mode Key to Init DataSet return content
     """
 
-    def __init__(self, root, annFile, transforms=None,Mode='InstanceSegmentation',debug=False):
+    def __init__(self, root, annFile,train=True, transforms=None,Mode='InstanceSegmentation',debug=False):
         super(CocoDataset, self).__init__()
+             
         self.debug=debug
         self.root=root
+        if train:
+            self.image_root=os.path.join(self.root,"train2014/")
+        else:
+            self.image_root=os.path.join(self.root,"val2014/")
         self.coco = COCO(annFile)
         self.ids = list(sorted(self.coco.imgs.keys()))
         self.mode=Mode
         self.transforms=transforms
+   
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                            COCO DataSet Init Done                            #")
+        print("# ---------------------------------------------------------------------------- #")
+        print("# ====Root ",self.root)
 
     def __getitem__(self, index):
         """
@@ -84,7 +94,7 @@ class CocoDataset(COCO):
         ann_ids = coco.getAnnIds(imgIds=img_id)
         Ann = coco.loadAnns(ann_ids)
         path = coco.loadImgs(img_id)[0]['file_name']
-        img = Image.open(os.path.join(self.root, path)).convert('RGB')
+        img = Image.open(os.path.join(self.image_root, path)).convert('RGB')
         (w,h)=img.size
         boxes=np.array([t["bbox"] for t in Ann])
         labels=np.array([t["category_id"] for t in Ann])
@@ -97,7 +107,7 @@ class CocoDataset(COCO):
         if self.debug:
             plt.imshow(segmask),plt.show()
         
-        if self.mode=="InstanceSegmentation":
+        if self.mode=="InstenceSegmentation":
             target={
                 "boxes":boxes,
                 "labels":labels,

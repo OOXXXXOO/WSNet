@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/05/06 16:08:58 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 18:16:55 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,8 +47,8 @@ FixedResize=512
 
 
 mask_transform={
-"Normalize":MT.Normalize(),
-"ToTensor":MT.ToTensor(),
+# "Normalize":MT.Normalize(),
+# "ToTensor":MT.ToTensor(),
 "RandomHorizontalFlip":MT.RandomHorizontalFlip(),
 "RandomRotate":MT.RandomRotate(RandomRotateDegree),
 "RandomGaussianBlur":MT.RandomGaussianBlur(),
@@ -117,7 +117,7 @@ class STF():
         self.SupportMission={
             "Detection":self.DetectionTransform,
             "Segmentation":self.SegmentationTransform,
-            "InstanceSegmentation":self.InstanceSegmentationTransform,
+            "InstenceSegmentation":self.InstanceSegmentationTransform,
             # "KeyPoint",# Not support now
             # "Caption"
         }
@@ -153,8 +153,6 @@ class STF():
         boxes=target["boxes"]
         labels=target["labels"]
 
-
-
         return image,target
 
     def DetectionTransform(self,image,target):
@@ -163,7 +161,7 @@ class STF():
         Transformlist=[]
         Transformlist.append(boxes_transform_list[INDEX])
         Transformlist.append(boxes_transform_list[INDEX-1])
-        print(Transformlist)
+        # print(Transformlist)
         transform=BT.Sequence(Transformlist)
 
         image,boxes=transform(image,boxes)

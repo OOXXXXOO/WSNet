@@ -32,13 +32,11 @@ class Costum_NPY_DataSet(Dataset):
     def __getitem__(self,index):
         image,target=self.npy_[index]["data"],self.npy_[index]["label"]
         target=np.uint8(target/255)
+        target_dict={"masks":target}
         image=np.uint8(image*255)
         if self.T!=None:
-            image=self.T(image).to(torch.float32)
-            target=torch.from_numpy(target).to(torch.float32)
-
-
-        return image,target
+            image,target_dict=self.T(image,target_dict)
+        return image,target_dict
 
     def __len__(self):
         return self.length-1

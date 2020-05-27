@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/05/20 18:37:09 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 12:19:39 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ from Src.Nets.BackBone.efficientnet.model import EfficientNet
 # ------------------------------ local reference ----------------------------- #
 
 import torch
-import torch.utils.model_zoo
+import torch.utils.model_zoo as zoo
 import torchvision.models as models
 import torch.nn as nn
 import random
@@ -251,8 +251,11 @@ class NETWORK(CFG):
 def main():
     input=torch.randn((2,3,768,768))
     model=models.segmentation.deeplabv3_resnet101(pretrained=False,num_classes=2)
-    output=model(input)
-    print(output.size())
+    model.to("cuda")
+    from Src.Utils.Summary.Analysis import summary
+    summary(model,(1,3,512,512))
+    # output=model(input)
+    # print(output.size())
 
 if __name__ == '__main__':
     main()

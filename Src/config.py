@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/05/20 18:42:08 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 17:58:14 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,7 @@ class CFG():
             "Caption":{
                 "CocoCaptions":dataset.CocoCaptions
             },
-            "InstanceSegmentation":{
+            "InstenceSegmentation":{
                 "CocoDetection":CocoDataset
             }
         }
@@ -256,6 +256,8 @@ class CFG():
         
         self.DataSetType=self.DataSetConfig['Type']
         self.DataSet_Root=self.DataSetConfig['root']
+    
+
         self.Dataset_Train_file=os.path.join(self.DataSet_Root,self.DataSetConfig['train_index_file'])
         self.Dataset_Val_file=os.path.join(self.DataSet_Root,self.DataSetConfig['val_index_file'])
         self.DefaultDataset=self.DataSetConfig['DefaultDataset']
@@ -327,7 +329,7 @@ class CFG():
         if self.devices=='GPU':
             self.usegpu=True
             self.gpu_id=self.Config['gpu_id']
-            os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
+            # os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
             self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
             print('#-----Device:\n',self.device)
         

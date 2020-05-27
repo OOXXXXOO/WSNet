@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/05/22 14:30:20 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/27 15:25:28 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@
 
 import sys
 sys.path.append(sys.path[0][:-3])
+for path in sys.path:
+    print("-----root :",path)
 import os
 
 # ------------------------------- sys reference ------------------------------ #
@@ -45,15 +47,15 @@ from tqdm import tqdm
 
 # ---------------------------- official reference ---------------------------- #
 
-from Src.Utils.Evaluator.metrics import Evaluator
-from Data.DataSets.COCO.coco import CocoEvaluation
-from dataset import DATASET
+
 from torch.utils.tensorboard import SummaryWriter
 
 # ------------------------------ local reference ----------------------------- #
 
-
-
+from Src.Utils.Summary.Analysis import summary
+from Src.Utils.Evaluator.metrics import Evaluator
+from Data.DataSets.COCO.coco import CocoEvaluation
+from dataset import DATASET
 
 
 
@@ -74,9 +76,11 @@ from torch.utils.tensorboard import SummaryWriter
 
 
 class MODEL(DATASET):
-    def __init__(self,cfg):
+    def __init__(self,cfg,preestimation=False):
         self.configfile=cfg
         DATASET.__init__(self)
+        self.default_input_size=(3,512,512)
+        self.pre_estimation=preestimation
 
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
@@ -114,24 +118,49 @@ class MODEL(DATASET):
         print("# ---------------------------------------------------------------------------- #")
 
 
+
     def train(self):
-        """
-        Train Flow :
-
-        1.Init DataSet(Transform)
-        2.Init Optimizer
-
-
-        """
         print("# ---------------------------------------------------------------------------- #")
         print("#                                TRAIN START                                   #")
         print("# ---------------------------------------------------------------------------- #")
-        if os.path.exists(self.logdir):
-            os.removedirs(self.logdir)
-            os.makedirs(self.logdir)
-        else:
+        # input_test=torch.randn(3,512,512
+        self.model.to(self.device)
+                
+        # ---------------------------------------------------------------------------- #
+        #                                Pre_estimation                                #
+        # ---------------------------------------------------------------------------- #
+        if self.pre_estimation:
+            import pynvml
+            pynvml.nvmlInit()
+            handle = pynvml.nvmlDeviceGetHandleByIndex(int(self.gpu_id))
+            meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+            str_="\n\n# ===== Used GRAM:,{used} GB/ {total} GB ===== #\n# ===== Free GRAM:,{free} GB/ {total} GB ===== #\n\n".format(
+                used=float(meminfo.used)/1024**3,
+                total=float(meminfo.total)/1024**3,
+                free=float(meminfo.free)/1024**3
+            )
+            print(str_)
+            # for i in range(deviceCount):
+            #     handle = nvmlDeviceGetHandleByIndex(i)
+            #     print("#-----Device", i, ":", nvmlDeviceGetName(handle)
+            
+            print("# ===== Compute Network Summary of Input:",self.default_input_size)
+            _,total_size=summary(self.model,(3,512,512),batch_size=self.BatchSize,device=self.device)
+            
+            assert total_size<float(meminfo.free)/1024**3,"Estimation Network Size :"+\
+                str(total_size.item())+\
+                    "(GB) bigger than free GRAM : "+\
+                        str(float(meminfo.free)/1024**3)+"(GB)"
+        # ---------------------------------------------------------------------------- #
+        #                                Pre_estimation                                #
+        # ---------------------------------------------------------------------------- #
+        if not os.path.exists(self.logdir):
             os.makedirs(self.logdir)
             self.writer = SummaryWriter(self.logdir)
+        
+        for epoch in range(self.epochs):
+            self.one_epoch(epoch)
+            self.val(epoch)
             
             
 
@@ -141,6 +170,14 @@ class MODEL(DATASET):
 
 
 
+
+    def one_epoch(self,index):
+        # ------------------------------ Train one epoch ----------------------------- #
+        print("# =============================  epoch {index} ========================== #".format(index=index))
+        for image,target in tqdm(self.trainloader):
+            pass
+            # print(image)
+            # print(target)
 
 
 
@@ -181,7 +218,7 @@ class MODEL(DATASET):
 
 
 
-    def val(self):
+    def val(self,index):
         """
         Validation Flow
         """
