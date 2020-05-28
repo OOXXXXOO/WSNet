@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:40 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 17:58:14 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/28 15:01:24 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -320,6 +320,7 @@ class CFG():
         self.MultiScale_Training=self.Config['multiscale_training']
         self.logdir=self.Config['logdir']
         self.devices=self.Config['devices']
+        self.pre_estimation=self.Config['pre_estimation']
 
         if not os.path.exists(self.checkpoint):
             os.makedirs(self.checkpoint)

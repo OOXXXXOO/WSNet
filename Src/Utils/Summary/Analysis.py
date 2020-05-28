@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
-
+import torchvision
 from collections import OrderedDict
 import numpy as np
 
@@ -30,9 +30,21 @@ def summary_string(model, input_size, batch_size=-1, device=torch.device('cuda:0
             summary[m_key]["input_shape"] = list(input[0].size())
             summary[m_key]["input_shape"][0] = batch_size
             if isinstance(output, (list, tuple)):
-                summary[m_key]["output_shape"] = [
-                    [-1] + list(o.size())[1:] for o in output
-                ]
+                if isinstance(list(output)[0],torchvision.models.detection.image_list.ImageList):
+                    summary[m_key]["output_shape"]=[]
+                    for o in output:
+                        if not o==None:
+                            summary[m_key]["output_shape"].append([-1] + list(o.image_sizes[1:]))            
+                            """
+                            Structure that holds a list of images (of possibly
+                            varying sizes) as a single tensor.
+                            This works by padding the images to the same size,
+                            and storing in a field the original sizes of each image
+                            """
+                else:
+                    summary[m_key]["output_shape"] = [
+                        [-1] + list(o.size())[1:] for o in output
+                    ]
             else:
                 if isinstance(output,torch.Tensor):
                     summary[m_key]["output_shape"] = list(output.size())
@@ -70,7 +82,7 @@ def summary_string(model, input_size, batch_size=-1, device=torch.device('cuda:0
     model.apply(register_hook)
 
     # make a forward pass
-    # print(x.shape)
+    
     model(*x)
 
     # remove these hooks

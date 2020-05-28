@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 20:10:54 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/28 11:48:49 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -157,11 +157,14 @@ class STF():
             T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
         ])
         image=basetransforms(image)
-        target["masks"]=torch.from_numpy(instancemasks)# Need Uint8)
+        target["masks"]=torch.from_numpy(instancemasks).to(torch.uint8)# Need Uint8)
+        target['boxes']=torch.from_numpy(boxes).to(torch.float32)
+        target['labels']=torch.from_numpy(labels).to(torch.int64)
         return image,target
 
     def DetectionTransform(self,image,target):
         boxes=target["boxes"]
+        labels=target['labels']
         INDEX=random.randint(1,len(boxes_transform_list)-1)
         Transformlist=[]
         Transformlist.append(boxes_transform_list[INDEX])
@@ -170,7 +173,8 @@ class STF():
         transform=BT.Sequence(Transformlist)
 
         image,boxes=transform(image,boxes)
-        target['boxes']=boxes
+        target['boxes']=torch.from_numpy(boxes).to(torch.float32)
+        target['labels']=torch.from_numpy(labels).to(torch.int64)
         return image,target
 
     def SegmentationTransform(self,image,target):

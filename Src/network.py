@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 12:19:39 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/28 14:04:31 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,7 @@ class NETWORK(CFG):
             "KeyPoint":self.DefaultKeyPoint,
         }
         self.custom_modeldict={
-            "BackBone":EfficientNet
+            "EfficientNet":EfficientNet
             
 
             # ----------------------------------- Yolo3 ---------------------------------- #

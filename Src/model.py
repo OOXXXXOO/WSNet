@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 19:59:10 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/28 16:39:46 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@
 
 
 import sys
+
 sys.path.append(sys.path[0][:-3])
 for path in sys.path:
     print("-----root :",path)
@@ -76,11 +77,11 @@ from dataset import DATASET
 
 
 class MODEL(DATASET):
-    def __init__(self,cfg,pre_estimation=False):
+    def __init__(self,cfg):
         self.configfile=cfg
         DATASET.__init__(self)
         self.default_input_size=(3,512,512)
-        self.pre_estimation=pre_estimation
+  
 
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
@@ -112,24 +113,9 @@ class MODEL(DATASET):
         # ---------------------------------------------------------------------------- #
         #                                 init process                                 #
         # ---------------------------------------------------------------------------- #
-
-        print("# ---------------------------------------------------------------------------- #")
-        print("#                          Model Class Init Successful                         #")
-        print("# ---------------------------------------------------------------------------- #")
-
-
-
-    def train(self):
-        print("# ---------------------------------------------------------------------------- #")
-        print("#                                TRAIN START                                   #")
-        print("# ---------------------------------------------------------------------------- #")
-        # input_test=torch.randn(3,512,512
-        self.model.to(self.device)
-                
-        # ---------------------------------------------------------------------------- #
-        #                                Pre_estimation                                #
-        # ---------------------------------------------------------------------------- #
         if self.pre_estimation:
+            self.model.eval()
+            self.model.cuda()
             import pynvml
             pynvml.nvmlInit()
             handle = pynvml.nvmlDeviceGetHandleByIndex(int(self.gpu_id))
@@ -151,6 +137,24 @@ class MODEL(DATASET):
                 str(total_size.item())+\
                     "(GB) bigger than free GRAM : "+\
                         str(float(meminfo.free)/1024**3)+"(GB)"
+
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                          Model Class Init Successful                         #")
+        print("# ---------------------------------------------------------------------------- #")
+
+
+
+    def train(self):
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                                TRAIN START                                   #")
+        print("# ---------------------------------------------------------------------------- #")
+        
+        
+        # ---------------------------------------------------------------------------- #
+        #                                Pre_estimation                                #
+        # ---------------------------------------------------------------------------- #
+        self.model.cuda()
+
         # ---------------------------------------------------------------------------- #
         #                                Pre_estimation                                #
         # ---------------------------------------------------------------------------- #
@@ -168,19 +172,52 @@ class MODEL(DATASET):
 
 
 
-
-
-
+    def copy_to_gpu(self,images,targets):
+        images = list(image.to(self.device) for image in images)
+        targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
+        return images,targets
     def one_epoch(self,index):
         # ------------------------------ Train one epoch ----------------------------- #
         print("# =============================  epoch {index} ========================== #".format(index=index))
+        self.model.train()
+        
         for image,target in tqdm(self.trainloader):
-            print(image)
-            print(target)
-            pass
-            # print(image)
-            # print(target)
 
+            if self.devices=="GPU":
+                image,target=self.copy_to_gpu(image,target)
+
+            print(target)
+            lossdict=self.model(image,target)
+            losses = sum(loss for loss in lossdict.values())
+
+            self.optimizer.zero_grad()
+            losses.backward()
+            self.optimizer.step()
+            """
+            Instance Segmentation Output
+            Train:
+
+                The model returns a Dict[Tensor] during training, 
+                containing :
+
+                    the classification regression losses for both the RPN and the R-CNN, 
+                    the mask loss.
+
+            Validation:
+
+                returns the post-processed predictions as a List[Dict[Tensor]] containing:
+                    
+                    boxes (FloatTensor[N, 4]): the predicted boxes in [x1, y1, x2, y2] format, with values of x between 0 and W and values of y between 0 and H
+
+                    labels (Int64Tensor[N]): the predicted labels for each image
+
+                    scores (Tensor[N]): the scores or each prediction
+
+                    keypoints (FloatTensor[N, K, 3]): the locations of the predicted keypoints, in [x, y, v] format.
+
+            Segmentation Output:
+            
+            """
 
 
 

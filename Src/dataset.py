@@ -6,7 +6,7 @@
 #    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:45:57 by winshare          #+#    #+#              #
-#    Updated: 2020/05/27 19:59:46 by winshare         ###   ########.fr        #
+#    Updated: 2020/05/28 14:54:44 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -248,7 +248,7 @@ class DATASET(NETWORK,COCO,Dataset):
 
     # @staticmethod
     def collate_fn(self,batch):
-        return tuple(zip(*batch))
+        return list(zip(*batch))
 
 # update 2020-05-27:
 # 主要改动为添加拼接方法:
