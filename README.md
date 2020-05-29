@@ -79,13 +79,24 @@ The main purpose of this project :
 
 ****
 
+Mission DashBoard:
+
+|   | Segmentation  | Detection  | Instance Segmentation |
+|---|---|---|---|
+| COCO2014  |   |   |   |
+|  NPY |   |   |   |
+|  CitysCapes |   |   |   |
+| Pascal VOC  |   |   |   |
+| CustomDataSet  |   |   |   |
+| Pascal VOC  |   |   |   |
+| Pascal VOC  |   |   |   |
+| Pascal VOC  |   |   |   |
+| Pascal VOC  |   |   |   |
+| Pascal VOC  |   |   |   |
 
 
 
-
-
-
-## Copyright 2020 winshare
+### Copyright 2020 winshare
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
