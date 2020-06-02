@@ -30,8 +30,8 @@ from threading import Thread
 import cv2
 # -------------------------------- Custom Lib -------------------------------- #
 import urllib.request as ur
-from Data.IO.subscription import MAP_URLS,Tilesize
-from Data.IO.transform import getExtent,wgs_to_tile,TileXYToQuadKey,saveTiff
+from subscription import MAP_URLS,Tilesize
+from transform import getExtent,wgs_to_tile,TileXYToQuadKey,saveTiff,wgs_to_mercator
 import multiprocessing
 import time
 import os
@@ -39,6 +39,11 @@ import io
 import PIL.Image as Image
 import numpy as np
 from tqdm import tqdm
+
+
+
+
+
 class downloader(Thread):
     def __init__(self, server=None,thread_count=4,format='tif'):
         print("# ---------------------------------------------------------------------------- #")
@@ -94,12 +99,12 @@ class downloader(Thread):
         right_bottom_x=left_top_x+width*self.resolution_x
         right_bottom_y=left_top_y+height*self.resolution_y
         self.wsg_cord=(left_top_x,left_top_y,right_bottom_x,right_bottom_y)
-        from Data.IO.transform import wgs_to_mercator
+      
         self.mercator_cord=(*wgs_to_mercator(left_top_x,left_top_y),*wgs_to_mercator(right_bottom_x,right_bottom_y))
 
 
-        print('-----WGS BoundingBox:',self.wsg_cord)
-        print("-----Mercator BoudingBox:",self.mercator_cord)
+        print('# -----WGS BoundingBox:',self.wsg_cord)
+        print("# -----Mercator BoudingBox:",self.mercator_cord)
         # ------------------------------------ III ----------------------------------- #
 
         self.x_step_point=np.arange(left_top_x,right_bottom_x,self.resolution_x*Tilesize)
@@ -112,7 +117,7 @@ class downloader(Thread):
         for data in self.urls:
             self.urls_queue.put(data)
 
-        print("-----Url Queue size:",self.urls_queue.qsize())
+        print("# -----Url Queue size:",self.urls_queue.qsize())
 
 
     def downloadurl(self,urls_queue):
@@ -185,23 +190,33 @@ class downloader(Thread):
       
 
     def download(self,output_path="./images"):   
-        print('-----Queue Downloading with ',self.thread_count,' threads')
+        print('# -----Queue Downloading with ',self.thread_count,' Process')
         self.output_path=output_path
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
-        pool=multiprocessing.Pool(self.thread_count)
-        
         result_vector=[]
-        for url in self.urls:
+
+
+        # -------------------------------- Thread Pool ------------------------------- #
+
+        pool=multiprocessing.Pool(self.thread_count)
+        for index,url in enumerate(self.urls):
             result=pool.apply_async(self.downloadurl,args=(self.urls_queue,))
             result_vector.append(result) 
+            # if index%100==0:
+            #     print("# ===== download (",index ,") to :",result)
+
+        print("# ------------------------------- Download Done ------------------------------ #")
+
         pool.close()
         pool.join()
 
-        self.result=[i.get() for i in result_vector]
-        
+        # ------------------------------ process result ------------------------------ #
+
+        self.result=[i.get() for i in result_vector]        
         name=self.server+str(self.left)+str(self.top)+str(self.right)+str(self.bottom)+str(self.zoom)+".json"
         json_path=os.path.join(output_path,name)
+        self.json_path=json_path
         tileinfo={
             "time":str(time.asctime(time.localtime(time.time()))),
             "left":self.left,
@@ -212,16 +227,20 @@ class downloader(Thread):
             "server":self.server,
             "data":self.result
             }
+
+        # ------------------- save the meta information for result ------------------- #
+
         import json
         with open(json_path,"w") as jfp:
             json.dump(tileinfo,jfp)
+            print("# ===== Save description done",json_path)
 
      
     def get_urls(self,x1, y1, x2, y2, z, style):
 
         # ------------------------------- Get url list ------------------------------- #
 
-        print("-----Total tiles number：{x} X {y}".format(x=self.lenx, y=self.leny))
+        print("# -----Total tiles number：{x} X {y}".format(x=self.lenx, y=self.leny))
         self.urls = [self.get_url(
                 i,
                 j,

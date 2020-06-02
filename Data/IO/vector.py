@@ -1,6 +1,6 @@
 import sys
 # from Raster import Raster
-from Data.IO.raster import Raster
+from raster import Raster
 import ogr
 import os
 import gdal
@@ -36,46 +36,57 @@ class Vector(Raster):
                 'mbtiles': ogr.GetDriverByName('MBTiles')
             }
             if filetype in self.DriveDict.keys():
-                print("-----Valid vector format :", filetype)
+                print("# -----Valid vector format :", filetype)
                 self.Driver = self.DriveDict[filetype]
 
             self.Input_path = input_shp_path
             self.DataSource = self.Driver.Open(self.Input_path)
             self.meta = self.DataSource.GetMetadata()
-            print('-----Meta : ', self.meta)
+            
+            print("\n# ----------------------------- Meta Information ----------------------------- #")
+            self.print_dict(self.meta)
+
+            print("# ----------------------------- Meta Information ----------------------------- #\n")
             self.Description = self.DataSource.GetDescription()
-            print('-----Description : ', self.Description)
+            print('# -----Description : ', self.Description)
             assert self.DataSource is not None, '\n\n\nERROR-----' + \
                 str(input_shp_path) + '  --- Invalid Input Shepefile\n\n\n'
             self.LayerCount = self.DataSource.GetLayerCount()
-            print("-----LayerCount:", self.LayerCount)
+            print("# -----LayerCount:", self.LayerCount)
             self.LayerDict = {}
             for i in range(self.LayerCount):
                 self.Layer = self.DataSource.GetLayer(i)
                 print(
-                    "-----Layer :",
+                    "# -----Layer :",
                     i,
-                    " Define : ",
+                    " LayerName : ",
                     self.Layer.GetName(),
                     self.Layer.GetGeometryColumn())
                 self.LayerDict[self.Layer.GetName()] = self.Layer
-            print("-----LayerDictByName:\n", self.LayerDict)
+            
+            
+            # print("# ---------------------------- Layer dict by name ---------------------------- #")
+
+            # self.print_dict(self.LayerDict)
+
+            # print("# ---------------------------- Layer dict by name ---------------------------- #")
+            
             self.Srs = self.Layer.GetSpatialRef()
             self.Extent=self.Layer.GetExtent()
-            print("-----Extent:",self.Extent)
-            print("-----Alread Load:", input_shp_path)
+            print("# -----Extent:",self.Extent)
+            print("# -----Alread Load:", input_shp_path)
             print(
                 "# -------------------------------- DEFINE DONE ------------------------------- #")
 
         else:
-            print("-----Class SHP Init without shapefile")
+            print("# -----Class SHP Init without shapefile")
 
     def getDefaultLayerbyName(self, name):
         """
         para:name string of layer name
         """
         self.defaultlayer = self.LayerDict[name]
-        print("----- Set Default Layer ",name," : ",self.defaultlayer)
+        print("# -----Set Default Layer |",name,"| : ",self.defaultlayer)
         return self.LayerDict[name]
 
     def Info(self):
@@ -99,7 +110,7 @@ class Vector(Raster):
     def getdataset(self, tif_path):
         self.tif_path = tif_path
         self.dataset = gdal.Open(tif_path)
-        print('\n-----Dataset:', self.dataset)
+        print('\n# -----Dataset:', self.dataset)
         return self.dataset
 
     def SaveTo(self, name):
@@ -160,11 +171,11 @@ class Vector(Raster):
             ExportLayerTemp.CreateFeature(outFeature)
             outFeature = None
 
-        print("-----LayerCopyDone,", LayerName)
+        print("# -----LayerCopyDone,", LayerName)
         ExportResources.SetMetadata(self.meta)
-        print("-----Set Meta Done")
+        print("# -----Set Meta Done")
         ExportResources.SetDescription(self.Description)
-        print("-----Set Description Done")
+        print("# -----Set Description Done")
         ExportResources.Destroy()
         print("# --------------------------------- Save Done -------------------------------- #")
 
@@ -181,10 +192,25 @@ class Vector(Raster):
 
     
     def crop_default_layer_by_rect(self, rect):
-        print("-----Set filter Rect:",rect)
+        print("# -----Set filter Rect:",rect)
         self.defaultlayer.SetSpatialFilterRect(*rect)
     
-
+    def print_dict(self,d,n=0):
+        length=69
+        for k,v in d.items():
+            # print ('\t'*n)
+            if type(v)==type({}):
+                print("%s : {" % k)
+                self.print_dict(v,n+1)
+            else:
+                
+                strl=len(str(k))+len(str(v))
+                space=length-strl
+                if strl>length:                    
+                    v=str(v)[:space]
+                print("# -----%s : %s" % (k,v)+" "*space+"#")
+        if n!=0:
+            print('\t'*(n-1)+ '}')
     
     # def Shp2LabelmeJson(self, output_GeoJson=True,
     #                     Labelme_Json_path='./Segmentation/',
@@ -295,7 +321,7 @@ class Vector(Raster):
         targetDataSet = None
         
     def generate(self,tiles,output_path="./label"):
-        print('-----Start Generate.....')
+        print('# -----Start Generate.....')
         self.labellist=[]
         if not os.path.exists(output_path):
             os.makedirs(output_path)

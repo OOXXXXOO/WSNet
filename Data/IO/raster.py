@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Raster.py                                          :+:      :+:    :+:    #
+#    raster.py                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#    By: tanwenxuan <tanwenxuan@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/20 17:05:30 by winshare          #+#    #+#              #
-#    Updated: 2020/05/26 16:51:20 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/02 12:45:00 by tanwenxuan       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,11 +50,11 @@ class Raster():
         self.channel = channel
         if not filename is None:
             if os.path.isfile(filename):
-                print("-----TIFF Class Init with :", filename)
+                print("# -----TIFF Class Init with :", filename)
                 self.filename = filename
                 self.readtif(self.filename)
         else:
-            print("-----Class TIF init without filename")
+            print("# -----Class TIF init without filename")
 
     # ---------------------------------------------------------------------------- #
     #                                     Init                                     #
@@ -114,9 +114,9 @@ class Raster():
 
         assert not percentage > 100 or percentage < 0, "Invalde Percentage Value"
         print(
-            "-------------------------- percentager_strentching -------------------------")
+            "# -------------------------- percentager_strentching -------------------------")
         print(
-            "------------------- process with percentage : ",
+            "# ------------------- process with percentage : ",
             percentage,
             "% ------------------")
         percentage = percentage / 100
@@ -139,7 +139,7 @@ class Raster():
         image[image > max] = max
         image[image < min] = min
         image = (image - min) / (max - min)
-        print("----- Max : ", max, " Min :    ", min, "-----")
+        print("# ----- Max : ", max, " Min :    ", min, "-----")
         self.image = image
         return image
 
@@ -315,7 +315,7 @@ class Raster():
         return the filename list of tiff file from dir
         """
         assert not os.path.isdir(dir), "Invalid dir format" + str(dir)
-        print("-----Read Dir :", dir)
+        print("# -----Read Dir :", dir)
         self.files = glob.glob(os.path.join(dir, "./*.tif"))
 
 
