@@ -28,10 +28,6 @@
 
 from threading import Thread
 import cv2
-# -------------------------------- Custom Lib -------------------------------- #
-import urllib.request as ur
-from subscription import MAP_URLS,Tilesize
-from transform import getExtent,wgs_to_tile,TileXYToQuadKey,saveTiff,wgs_to_mercator
 import multiprocessing
 import time
 import os
@@ -39,6 +35,12 @@ import io
 import PIL.Image as Image
 import numpy as np
 from tqdm import tqdm
+
+# -------------------------------- Custom Lib -------------------------------- #
+import urllib.request as ur
+from subscription import MAP_URLS,Tilesize
+from transform import getExtent,wgs_to_tile,TileXYToQuadKey,saveTiff,wgs_to_mercator
+
 
 
 
@@ -181,7 +183,7 @@ class downloader(Thread):
                         smallarray,
                         Proj,
                         path)
-                print(path,' || save done ')
+                # print(path,' || save done ')
                 instance["path"]=path
                 t_stop = time.time() 
                 return instance
@@ -190,7 +192,7 @@ class downloader(Thread):
       
 
     def download(self,output_path="./images"):   
-        print('# -----Queue Downloading with ',self.thread_count,' Process')
+        # print('# -----Queue Downloading with ',self.thread_count,' Process')
         self.output_path=output_path
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
@@ -203,8 +205,8 @@ class downloader(Thread):
         for index,url in enumerate(self.urls):
             result=pool.apply_async(self.downloadurl,args=(self.urls_queue,))
             result_vector.append(result) 
-            # if index%100==0:
-            #     print("# ===== download (",index ,") to :",result)
+            if index%100==0:
+                print("# ===== download (",index ,") to :",result)
 
         print("# ------------------------------- Download Done ------------------------------ #")
 
@@ -214,7 +216,12 @@ class downloader(Thread):
         # ------------------------------ process result ------------------------------ #
 
         self.result=[i.get() for i in result_vector]        
-        name=self.server+str(self.left)+str(self.top)+str(self.right)+str(self.bottom)+str(self.zoom)+".json"
+        name="{server}-{time_}-{rect}-{zoom}.json".format(
+            server=self.server,
+            time_=str(time.asctime(time.localtime(time.time()))),
+            rect=str((self.left,self.top,self.right,self.bottom)),
+            zoom=self.zoom
+        )
         json_path=os.path.join(output_path,name)
         self.json_path=json_path
         tileinfo={

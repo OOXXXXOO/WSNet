@@ -321,7 +321,7 @@ class Vector(Raster):
         targetDataSet = None
         
     def generate(self,tiles,output_path="./label"):
-        print('# -----Start Generate.....')
+        print('# ===== Start Generate.....')
         self.labellist=[]
         if not os.path.exists(output_path):
             os.makedirs(output_path)

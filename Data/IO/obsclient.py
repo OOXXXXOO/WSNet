@@ -44,7 +44,9 @@ class bucket():
         print("# ----secret key (SK): ",self.secret_access_key)
         print("# ----server : ",self.server)
         print("# ----bucket name : ",self.bucketName)
-        print("# ====root : ",self.base_folder)
+        print("# ----root : ",self.base_folder)
+        print("# ---------------------------------------------------------------------------- #")       
+        
 
 
     def getBucketMetadata(self):
@@ -60,14 +62,15 @@ class bucket():
         print('Deleting bucket CORS\n')
         resp = self.bucketClient.deleteBucketCors()
         print('status'  + str(resp.status))
+        return resp
 
     def upload(self,remote_path,local_path):
         self.obsClient.putFile(self.bucketName,remote_path, local_path)
-        print("# ===== Uploading ",local_path," ===to : ",remote_path)
+        # print("# ===== Uploading ",local_path," ===to : ",remote_path)
 
     
     def download(self,key,download):
-        print("# ===== Downloading ",key," ===to :",download)
+        # print("# ===== Downloading ",key," === to :",download)
         self.obsClient.getObject(self.bucketName, key, downloadPath=download)
 
 
@@ -80,13 +83,19 @@ class bucket():
         print('# ===== Deleting object ' +key + '\n')
         self.obsClient.deleteObject(self.bucketName, key)
 
-        
+    def check(self,key):
+        """
+        The Sync will overwrite by default. We need check
+        """
+        assert not self.obsClient.getObject(self.bucketName,key)["status"]<300,"\n# ===== ERROR : \n# ===== bucket : ({bucketname})\n# ===== key : ({key}) & local upload flow try to overwrite same key".format(bucketname=self.bucketName,key=key)
+
+
     def mkdir(self,dir):
         pass
 
 
-    def ls(self):
-        print("# ================================================== list ({path}): ".format(path=self.base_folder))
+    def ls(self,show_item_count=10):
+        print("# ===== list ({path}): ".format(path=self.base_folder))
         # resp = self.obsClient.listObjects(self.bucketName)
 
         if self.base_folder=="/":
@@ -95,7 +104,8 @@ class bucket():
         else:
             resp = self.obsClient.listObjects(self.bucketName,self.base_folder)
         keylist=[]
-        for content in resp.body.contents:
+        print("# ===== object count : ",len(resp.body.contents))
+        for content in resp.body.contents[:show_item_count]:
             keylist.append(content.key)
             print('   |--- : ' + content.key + ' etag[' + content.etag + ']')
         return keylist
