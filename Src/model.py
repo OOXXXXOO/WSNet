@@ -178,47 +178,52 @@ class MODEL(DATASET):
         return images,targets
     def one_epoch(self,index):
         # ------------------------------ Train one epoch ----------------------------- #
-        print("# =============================  epoch {index} ========================== #".format(index=index))
-        self.model.train()
         
-        for image,target in tqdm(self.trainloader):
 
+        """
+        Instance Segmentation Output
+        Train:
+
+            The model returns a Dict[Tensor] during training, 
+            containing :
+
+                the classification regression losses for both the RPN and the R-CNN, 
+                the mask loss.
+
+        Validation:
+
+            returns the post-processed predictions as a List[Dict[Tensor]] containing:
+                
+                boxes (FloatTensor[N, 4]): the predicted boxes in [x1, y1, x2, y2] format, with values of x between 0 and W and values of y between 0 and H
+
+                labels (Int64Tensor[N]): the predicted labels for each image
+
+                scores (Tensor[N]): the scores or each prediction
+
+                keypoints (FloatTensor[N, K, 3]): the locations of the predicted keypoints, in [x, y, v] format.
+
+        Segmentation Output:
+        
+        """
+
+        print("# ============================= train epoch {index} ========================== #".format(index=index))
+        self.model.train()
+        bar=tqdm(self.trainloader)
+        for image,target in bar:
             if self.devices=="GPU":
                 image,target=self.copy_to_gpu(image,target)
-
             lossdict=self.model(image,target)
             losses = sum(loss for loss in lossdict.values())
-
+            
+            information="# === Epoch : {epoch} |====|loss : {loss} |".format(epoch=index,loss=losses.item())
+            bar.set_description(information)
             self.optimizer.zero_grad()
             losses.backward()
             self.optimizer.step()
+            self.lr_scheduler.step()
+
+
             
-            """
-            Instance Segmentation Output
-            Train:
-
-                The model returns a Dict[Tensor] during training, 
-                containing :
-
-                    the classification regression losses for both the RPN and the R-CNN, 
-                    the mask loss.
-
-            Validation:
-
-                returns the post-processed predictions as a List[Dict[Tensor]] containing:
-                    
-                    boxes (FloatTensor[N, 4]): the predicted boxes in [x1, y1, x2, y2] format, with values of x between 0 and W and values of y between 0 and H
-
-                    labels (Int64Tensor[N]): the predicted labels for each image
-
-                    scores (Tensor[N]): the scores or each prediction
-
-                    keypoints (FloatTensor[N, K, 3]): the locations of the predicted keypoints, in [x, y, v] format.
-
-            Segmentation Output:
-            
-            """
-
 
 
 
@@ -261,10 +266,11 @@ class MODEL(DATASET):
         """
         Validation Flow
         """
-
         print("# ---------------------------------------------------------------------------- #")
         print("#                                  VALIDATION                                  #")
         print("# ---------------------------------------------------------------------------- #")
+        print("# ============================= validation epoch {index} ========================== #".format(index=index))
+        self.model.val()
 
 
 

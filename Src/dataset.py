@@ -30,7 +30,6 @@
 
 import sys 
 import os
-print("---dataset.py workspace in :\n",sys.path)
 import torchvision.transforms as T
 from torch.utils.data import Dataset
 import torch

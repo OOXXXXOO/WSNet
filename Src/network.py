@@ -174,7 +174,7 @@ class NETWORK(CFG):
         self.model=models.detection.keypointrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=2, num_keypoints=17, pretrained_backbone=True)
 
 
-    def DefaultBackBone(self,pretrained=False, progress=True):
+    def DefaultBackBone(self,BackBoneName="None",pretrained=False, progress=True):
         """
         MNASNet with depth multiplier of 1.3 from “MnasNet: Platform-Aware Neural Architecture Search for Mobile”. 
         :param 
@@ -184,6 +184,7 @@ class NETWORK(CFG):
         progress: If True, displays a progress bar of the download to stderr 
         :type progress: bool
         """
+        
         self.model=models.mnasnet1_3(pretrained=pretrained, progress=progress)
 
     def DefaultDetection(self,pretrained=True, progress=True, num_classes=91, pretrained_backbone=True):
@@ -200,7 +201,12 @@ class NETWORK(CFG):
             labels (Int64Tensor[N]): the class label for each ground-truth box
         
         """
-        self.model=models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=num_classes, pretrained_backbone=pretrained_backbone)
+        if self.BackBone=="None":
+            self.model=models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained, progress=progress, num_classes=num_classes, pretrained_backbone=pretrained_backbone)
+        
+        else:
+            self.BackBone
+        
         if self.debug:
             print('\n\n----------------',self.model,'---------------\n\n')
 

@@ -21,7 +21,7 @@
             "Type": "CocoDetection",
             "DataRatio":0.8,
             "NPY":"/workspace/SampledDatasetMini.npy",
-            "root": "/workspace/COCO/",
+            "root": "/workspace/data/COCO",
             "train_index_file":"annotations/instances_train2014.json",
             "val_index_file":"annotations/instances_val2014.json",
             "SFT_Enable":true
