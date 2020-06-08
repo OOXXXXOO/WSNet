@@ -20,11 +20,3 @@ Build Bug of labelme2coco
 待完成:
 
 
-[] train
-
-
-
-[]val
-
-
-[]coco

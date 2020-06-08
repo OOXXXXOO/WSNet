@@ -206,9 +206,9 @@ class downloader(Thread):
             result=pool.apply_async(self.downloadurl,args=(self.urls_queue,))
             result_vector.append(result) 
             if index%100==0:
+                time.sleep(5)
                 print("# ===== download (",index ,") to :",result)
 
-        print("# ------------------------------- Download Done ------------------------------ #")
 
         pool.close()
         pool.join()
@@ -216,6 +216,8 @@ class downloader(Thread):
         # ------------------------------ process result ------------------------------ #
 
         self.result=[i.get() for i in result_vector]        
+        print("# ------------------------------- Download Done ------------------------------ #")
+
         name="{server}-{time_}-{rect}-{zoom}.json".format(
             server=self.server,
             time_=str(time.asctime(time.localtime(time.time()))),

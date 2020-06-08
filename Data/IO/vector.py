@@ -7,6 +7,7 @@ import gdal
 import numpy as np
 from tqdm import tqdm
 import json
+import multiprocessing
 __version__ = '3.5.0'
 PY2 = sys.version_info[0] == 2
 
@@ -322,6 +323,10 @@ class Vector(Raster):
         
     def generate(self,tiles,output_path="./label"):
         print('# ===== Start Generate.....')
+        """
+        修订  把Rasterize同样使用线程分解的可能性
+        """
+
         self.labellist=[]
         if not os.path.exists(output_path):
             os.makedirs(output_path)
@@ -332,6 +337,15 @@ class Vector(Raster):
             self.labellist.append(path)
             self.Rasterize(path)
         return self.labellist
+
+
+
+
+
+
+
+
+
 
     
     def reset_layer(self):
