@@ -22,7 +22,7 @@
 This project work for train, validation, test, with general dataset by different model or use the custom dataset that generate by specified data structure.
 
 
-The main purpose of this project :
+The major purpose of this project :
 
 * Start a fast training instance on the standard datasets with default pre-trained model.
 *  Automatic build the dataset from original images & labels with **the specified data structure rule**.
@@ -35,7 +35,7 @@ The main purpose of this project :
 
 ##### 1.DataSet Generator
 
-*  Automatic build the dataset from original images & labels with **the specified data structure rule**.
+*  Automatic build the dataset from original images & labels with **the specified data structure rule**. In addition, it use the strict data format to help people fix the format error.
 
 
 ##### 2.Fast traing from template config file
@@ -52,6 +52,27 @@ The main purpose of this project :
 ##### 4.Great automatic process & visulization 
 
 
+* Config decode will show up on terminal & process info will add to tensorboard where you could see the perference of training processing. 
+
+
+#### The important toolkit work
+
+
+##### Utils
+* [STF (Smart transform module)](Src/Utils/Transform/README.md)
+* [Neural Network Analysis module](Src/Utils/Transform/README.md)
+* [Evaluator](Src/Utils/Evaluator/README.md)
+
+##### Neural Network Module
+* [PointRend](Src/Nets/Module/PointRend/README.md)
+* [DensePose](Src/Nets/Module/DensePose/README.md)
+* [CSRC { BN,DC,mask,nms,roi_align,rotated_box,wrappers }](Src/Nets/Layers/csrc/README.md)
+
+##### DataSet
+
+* [temdet](Data/Toolkit/temdet/README.md)
+* [labelme2coco](Data/README.md)
+* [patch generate](Data/README.md)
 
 ### Project Design
 
@@ -65,8 +86,7 @@ The main purpose of this project :
 ****
 
 
-
-| [Installation]() | [Guide to Start](./Resources/Document/Guide2start.md) | [DataSet Toolkit](./Src/Utils/DataToolkit/README.md) | [NetWork](./Src/Nets/README.md) | [DataSet](./Data/README.md)| [Transform](./Src/Utils/Transform/README.md) | [Config](./Config/README.md) |
+| [Installation](Resources/Document/Installation.md)| [Guide to Start](./Resources/Document/Guide2start.md) | [DataSet Toolkit](./Src/Utils/DataToolkit/README.md) | [NetWork](./Src/Nets/README.md) | [DataSet](./Data/README.md)| [Transform](./Src/Utils/Transform/README.md) | [Config](./Config/README.md) |
 |---|---|---|---|---|---|---|
 
 ****
@@ -74,25 +94,22 @@ The main purpose of this project :
 
 #### 中文:
 ****
-| [安装]() | [快速开始](./Resources/Document/Guide2start.md)| [数据集工具](./Src/Utils/DataToolkit/README.md) | [神经网络](./Src/Nets/README.md) | [数据集](./Data/README.md) | [数据变换](./Src/Utils/Transform/README.md) | [配置](./Config/README.md) |
+| [安装](Resources/Document/Installation.md) | [快速开始](./Resources/Document/Guide2start.md)| [数据集工具](./Src/Utils/DataToolkit/README.md) | [神经网络](./Src/Nets/README.md) | [数据集](./Data/README.md) | [数据变换](./Src/Utils/Transform/README.md) | [配置](./Config/README.md) |
 |---|---|---|---|---|---|---|
 
 ****
 
-Mission DashBoard:
+**Support Mission Table:**
 
 |   | Segmentation  | Detection  | Instance Segmentation |
 |---|---|---|---|
-| COCO2014  |   |   |   |
-|  NPY |   |   |   |
-|  CitysCapes |   |   |   |
-| Pascal VOC  |   |   |   |
-| CustomDataSet  |   |   |   |
-| Pascal VOC  |   |   |   |
-| Pascal VOC  |   |   |   |
-| Pascal VOC  |   |   |   |
-| Pascal VOC  |   |   |   |
-| Pascal VOC  |   |   |   |
+| COCO  | √  | √  |  √ |
+|  NPY |  √ |  √ |  √ |
+|  CitysCapes | √  |   |   |
+| Pascal VOC  |   |  √ |   |
+| CustomDataSet  |  √ | √  | √  |
+| Open Image  |   | √  |   |
+
 
 
 

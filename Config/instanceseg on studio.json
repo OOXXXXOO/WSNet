@@ -4,7 +4,7 @@
         "Net": {
             "DefaultNetwork":true,
             "NetType": "MaskRCNN",
-            "BatchSize": 2,
+            "BatchSize": 4,
             "BackBone": "None",
             "Optimizer":"SGD",
             "Loss_Function":"MSELoss",
@@ -14,7 +14,7 @@
             "lr_scheduler":"MultiStepLR",
             "lr_steps":[8,11],
             "lr_gamma":0.1,
-            "class_num":2
+            "class_num":91
         },
         "Dataset": {
             "DefaultDataset":false,

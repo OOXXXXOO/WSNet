@@ -27,8 +27,10 @@ def summary_string(model, input_size, batch_size=-1, device=torch.device('cuda:0
 
             m_key = "%s-%i" % (class_name, module_idx + 1)
             summary[m_key] = OrderedDict()
-            summary[m_key]["input_shape"] = list(input[0].size())
-            summary[m_key]["input_shape"][0] = batch_size
+            print("# ===== type :",type(input[0]))
+            if isinstance(input[0],torch.Tensor):
+                summary[m_key]["input_shape"] = list(input[0].size())
+                summary[m_key]["input_shape"][0] = batch_size
             if isinstance(output, (list, tuple)):
                 if isinstance(list(output)[0],torchvision.models.detection.image_list.ImageList):
                     summary[m_key]["output_shape"]=[]

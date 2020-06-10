@@ -81,7 +81,18 @@ class CocoDataset(COCO):
         print("# ---------------------------------------------------------------------------- #")
         print("# ====Root ",self.root)
 
-    
+    def checktarget(self,index):
+
+        img_id = self.ids[index]
+        ann_ids = self.coco.getAnnIds(imgIds=img_id)
+        Ann = self.coco.loadAnns(ann_ids)
+        labels=np.array([t["category_id"] for t in Ann])
+        if len(labels)==0:
+            return self.checktarget(index+1)
+        else:
+            print(img_id,Ann,labels)
+            return img_id,Ann,labels
+
         
     def __getitem__(self, index):
         """
@@ -92,17 +103,7 @@ class CocoDataset(COCO):
             tuple: Tuple (image, target). target is the object returned by ``coco.loadAnns``.
         """
         coco = self.coco
-        img_id = self.ids[index]
-        
-        ann_ids = coco.getAnnIds(imgIds=img_id)
-        Ann = coco.loadAnns(ann_ids)
-        labels=np.array([t["category_id"] for t in Ann])
-        
-        if len(labels)==0:
-            img_id=self.ids[index+10]
-            ann_ids = coco.getAnnIds(imgIds=img_id)
-            Ann = coco.loadAnns(ann_ids)
-            labels=np.array([t["category_id"] for t in Ann])
+        img_id,Ann,labels= self.checktarget(index)
         
             
         

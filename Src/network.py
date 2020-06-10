@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    network.py                                         :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/05/28 14:04:31 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/10 15:17:55 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,11 @@ class NETWORK(CFG):
 
         if self.DefaultNetwork:
             print('\n\n-----Use The Default Network')
-            self.default_modeldict[self.MissionType](pretrained=self.download_pretrain_model)
+            self.default_modeldict[self.MissionType](
+                pretrained=self.download_pretrain_model,
+                num_classes=self.class_num
+                
+                )
    
             
         # --------------------------------- optimizer -------------------------------- #

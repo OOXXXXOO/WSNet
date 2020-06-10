@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    model.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/05/28 16:39:46 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/10 15:16:17 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,6 @@ from tqdm import tqdm
 # ---------------------------- official reference ---------------------------- #
 
 
-from torch.utils.tensorboard import SummaryWriter
 
 # ------------------------------ local reference ----------------------------- #
 
@@ -83,9 +82,6 @@ class MODEL(DATASET):
         self.default_input_size=(3,512,512)
   
 
-        # ---------------------------------------------------------------------------- #
-        #                                 init process                                 #
-        # ---------------------------------------------------------------------------- #
         """
         Init Process work for different Mission like :
         
@@ -126,9 +122,6 @@ class MODEL(DATASET):
                 free=float(meminfo.free)/1024**3
             )
             print(str_)
-            # for i in range(deviceCount):
-            #     handle = nvmlDeviceGetHandleByIndex(i)
-            #     print("#-----Device", i, ":", nvmlDeviceGetName(handle)
             
             print("# ===== Compute Network Summary of Input:",self.default_input_size)
             _,total_size=summary(self.model,(3,512,512),batch_size=self.BatchSize,device=self.device)
@@ -137,10 +130,19 @@ class MODEL(DATASET):
                 str(total_size.item())+\
                     "(GB) bigger than free GRAM : "+\
                         str(float(meminfo.free)/1024**3)+"(GB)"
+        
+        # ---------------------------------------------------------------------------- #
+        #                                 init process                                 #
+        # ---------------------------------------------------------------------------- #
 
         print("# ---------------------------------------------------------------------------- #")
         print("#                          Model Class Init Successful                         #")
         print("# ---------------------------------------------------------------------------- #")
+
+
+
+
+
 
 
 
@@ -160,7 +162,9 @@ class MODEL(DATASET):
         # ---------------------------------------------------------------------------- #
         if not os.path.exists(self.logdir):
             os.makedirs(self.logdir)
-            self.writer = SummaryWriter(self.logdir)
+        self.writer = SummaryWriter(self.logdir)
+
+        self.global_step=0
         
         for epoch in range(self.epochs):
             self.one_epoch(epoch)
@@ -208,6 +212,7 @@ class MODEL(DATASET):
 
         print("# ============================= train epoch {index} ========================== #".format(index=index))
         self.model.train()
+
         bar=tqdm(self.trainloader)
         for image,target in bar:
             if self.devices=="GPU":
@@ -215,12 +220,19 @@ class MODEL(DATASET):
             lossdict=self.model(image,target)
             losses = sum(loss for loss in lossdict.values())
             
+
             information="# === Epoch : {epoch} |====|loss : {loss} |".format(epoch=index,loss=losses.item())
             bar.set_description(information)
             self.optimizer.zero_grad()
             losses.backward()
             self.optimizer.step()
             self.lr_scheduler.step()
+            
+            self.global_step+=1
+            self.lossinfo=[{ k:v.item() for k,v in lossdict.items()}]
+    
+            self.writer.add_scalars(self.NetType+'_loss function',self.lossinfo[0],global_step=self.global_step)
+            # exit(0)
 
 
             
