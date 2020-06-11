@@ -1,5 +1,5 @@
 
-![](Resources/Document/IMG_0932.PNG)
+![](../../../Resources/Document/IMG_0932.PNG)
 
 ## Satellite Imagery DataSet Toolkit 
 
@@ -334,11 +334,11 @@ plt.imshow(label),plt.show()
 ```
 
 
-![png](Resources/Document/output_14_1.png)
+![png1](../../../Resources/Document/output_14_0.png)
+
+![png](../../../Resources/Document/output_14_1.png)
 
 
-
-![png1](Resources/Document/output_14_0.png)
 
 
 ![](https://aip.bdstatic.com/broad/dist/pc/1586758189/images/download_banner.png)
