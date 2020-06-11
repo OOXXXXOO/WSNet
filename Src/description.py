@@ -172,6 +172,49 @@ class Description():
             "xception":xception,
             "mobilenetv3_s":MobileNetV3_Small,
             "mobilenetv3_l":MobileNetV3_Large
+
+        }
+
+        """
+        update plan :
+            * ResNest(https://github.com/zhanghang1989/ResNeSt.git)
+            * DetectorRS(https://github.com/joe-siyuan-qiao/DetectoRS.git)
+        """
+
+        # ---------------------------------------------------------------------------- #
+        #                The Custom Network for different mission like :               #
+        # ---------------------------------------------------------------------------- #
+        
+        """
+        ### Detection:
+        
+        * Yolov3(https://github.com/ayooshkathuria/pytorch-yolo-v3)
+        * Cascade FPN RCNN()
+        * EfficientDet(https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch.git)
+        
+
+        ### Semantic Segmentation
+
+        * [Deeplab(DeepLab_ResNeSt269_PContext)](https://hangzhang.org/PyTorch-Encoding/model_zoo/segmentation.html)
+
+        ### Instance Segmentation
+
+        * YOLACT(https://github.com/dbolya/yolact.git)
+
+        """
+        self.DetectionDict={
+
+        
+        
+        }
+        self.InstanceSegmentationDict={
+        
+        
+        }
+
+        self.DetectionDict={
+
+
         }
 
         print("# ---------------------------------------------------------------------------- #")

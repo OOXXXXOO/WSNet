@@ -90,7 +90,6 @@ class CocoDataset(COCO):
         if len(labels)==0:
             return self.checktarget(index+1)
         else:
-            print(img_id,Ann,labels)
             return img_id,Ann,labels
 
         

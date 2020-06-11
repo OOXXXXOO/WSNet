@@ -80,6 +80,10 @@ The major purpose of this project :
 [Description](Resources/Document/DesignDescription.md)
 
 
+
+> [Update schedule](UpdatePlanning.md) 
+
+
 ### Document / 文档:
 
 #### EN:

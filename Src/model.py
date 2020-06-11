@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/06/11 19:23:37 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/11 20:07:34 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -257,7 +257,7 @@ class MODEL(DATASET):
             
             # -------------------------------- Output Loss ------------------------------- #
 
-            information="# Epoch : {epoch} |loss : {loss} |".format(epoch=index,loss=str(lossstr))
+            information="# Epoch : {epoch} |loss : {loss} |\n".format(epoch=index,loss=str(lossstr))
             bar.set_description(information)
 
             # --------------------------------- Backward --------------------------------- #
