@@ -55,7 +55,7 @@ The major purpose of this project :
 * Config decode will show up on terminal & process info will add to tensorboard where you could see the perference of training processing. 
 
 
-#### The important toolkit work
+#### The important toolkit 
 
 
 ##### Utils
