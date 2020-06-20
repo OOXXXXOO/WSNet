@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:19 by winshare          #+#    #+#              #
-#    Updated: 2020/06/10 15:17:55 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/16 20:02:53 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ import torch.utils.model_zoo as zoo
 import torchvision.models as models
 import torch.nn as nn
 import random
-
+import math
 # ---------------------------- official reference ---------------------------- #
 
 class NETWORK(CFG):
@@ -108,39 +108,47 @@ class NETWORK(CFG):
             self.default_modeldict[self.MissionType](
                 pretrained=self.download_pretrain_model,
                 num_classes=self.class_num
-                
                 )
    
             
         # --------------------------------- optimizer -------------------------------- #
 
-            print("# ---------------------------- Optimizer&Scheduler --------------------------- #")
+        print("# ---------------------------- Optimizer&Scheduler --------------------------- #")
+        params = [p for p in self.model.parameters() if p.requires_grad]
+        self.optimizer=self.optimizer(
+        params,
+        lr=self.learning_rate,
+        momentum=self.momentum,
+        weight_decay=self.weight_decay
+        )
+        print('-----Network optimizer:\n',self.optimizer)
 
-            self.optimizer=self.optimizer(
-            self.model.parameters(),
-            lr=self.learning_rate,
-            momentum=self.momentum,
-            weight_decay=self.weight_decay
-            )
-            print('-----Network optimizer:\n',self.optimizer)
-
-        
+    
         # ------------------------------- lr_scheduler ------------------------------- #
 
-            self.lr_scheduler=self.lr_scheduler(
-                self.optimizer,
-                milestones=self.lr_steps,
-                gamma=self.lr_gamma
-            )
-            print('-----Network lr_scheduler:\n',self.lr_scheduler)
+        self.lr_scheduler=self.lr_scheduler(
+            self.optimizer,
+            milestones=self.lr_steps,
+            gamma=self.lr_gamma
+        )
+        print('-----Network lr_scheduler:\n',self.lr_scheduler)
                 
         print("# ---------------------------------------------------------------------------- #")
         print("#                         NETWORK Class Init Successful                        #")
         print("# ---------------------------------------------------------------------------- #")
 
 
+        if self.resume:
+            checkpoint = torch.load(self.checkpoint, map_location='cpu')
+            self.model_without_ddp.load_state_dict(checkpoint['model'])
+            self.optimizer.load_state_dict(checkpoint['optimizer'])
+            self.lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
+            self.start_epoch = checkpoint['epoch'] + 1
 
-        if self.download_pretrain_model:
+        
+
+        if not self.download_pretrain_model:
+            print("# ==== initialize_weights ")
             self._initialize_weights(self.model)
 
 

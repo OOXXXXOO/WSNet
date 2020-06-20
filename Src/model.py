@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 11:46:08 by winshare          #+#    #+#              #
-#    Updated: 2020/06/12 13:30:21 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/16 18:45:41 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,10 +41,11 @@ import os
 import time
 import argparse
 from torch.utils.tensorboard import SummaryWriter
-from torchvision.utils import make_grid
+
 import torch
 import numpy as np
 from tqdm import tqdm
+import math
 
 # ---------------------------- official reference ---------------------------- #
 
@@ -56,22 +57,8 @@ from Src.Utils.Summary.Analysis import summary
 from Src.Utils.Evaluator.metrics import Evaluator
 from Data.DataSets.COCO.coco import CocoEvaluation
 from dataset import DATASET
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+from trainer import TRAINER
+from evaluator import EVALATOR
 
 
 
@@ -80,13 +67,6 @@ class MODEL(DATASET):
         self.configfile=cfg
         DATASET.__init__(self)
         self.default_input_size=(3,512,512)
-  
-
-        """
-        Init Process work for different Mission like :
-        
-        """
-
         # -------------------------------- train init -------------------------------- #
         
         
@@ -143,6 +123,64 @@ class MODEL(DATASET):
 
 
 
+    def copy_to_gpu(self,images,targets):
+        images = list(image.to(self.device) for image in images)
+        targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
+        return images,targets
+
+
+    def inference(self,data):
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                                   INFERENCE                                  #")
+        print("# ---------------------------------------------------------------------------- #")
+
+
+
+
+
+
+    def save(self,epoch):
+
+        print("# =====Save model in :") 
+        modelstate={
+            'epoch': epoch + 1,
+            'state_dict': self.model.state_dict(),
+            'optimizer': self.optimizer.state_dict(),
+            'performance':1
+        }
+        modelname=self.MissionType+"_"+self.NetType+str(time.asctime(time.localtime(time.time())))+'.pth'
+        torch.save(modelstate,os.path.join(self.checkpoint,modelname))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -150,107 +188,70 @@ class MODEL(DATASET):
         print("# ---------------------------------------------------------------------------- #")
         print("#                                TRAIN START                                   #")
         print("# ---------------------------------------------------------------------------- #")
-        
-        
-        # ---------------------------------------------------------------------------- #
-        #                                Pre_estimation                                #
-        # ---------------------------------------------------------------------------- #
         self.model.cuda()
-
-        # ---------------------------------------------------------------------------- #
-        #                                Pre_estimation                                #
-        # ---------------------------------------------------------------------------- #
         if not os.path.exists(self.logdir):
             os.makedirs(self.logdir)
         self.writer = SummaryWriter(self.logdir)
-
         self.global_step=0
-        
         for epoch in range(self.epochs):
             self.one_epoch(epoch)
             self.val(epoch)
             
-            
+    
+
+    def val(self,index):
+        """
+        Validation Flow
+        """
+        print("# ---------------------------------------------------------------------------- #")
+        print("#                                  VALIDATION                                  #")
+        print("# ---------------------------------------------------------------------------- #")
+        print("# ============================= validation epoch {index} ========================== #".format(index=index))
+        self.model.val()
+        bar=tqdm(self.valloader,dynamic_ncols=True)
+        if not self.MissionType=="Segmentation" or not self.DefaultNetwork:
+            with torch.no_grad():
+                 for image,target in bar:
+                    if self.devices=="GPU":
+                        image,target=self.copy_to_gpu(image,target)
+                    output=self.model(image)
+                    # ----------------- Compute the Model Accuracy & Performance ----------------- #
 
 
 
 
 
-    def copy_to_gpu(self,images,targets):
-        images = list(image.to(self.device) for image in images)
-        targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets]
-        return images,targets
+
+
+
+
+
+
+
+
+
+
+
     def one_epoch(self,index):
         # ------------------------------ Train one epoch ----------------------------- #
-        
-
-        """
-        Instance Segmentation Output
-
-            Train:
-
-                The model returns a Dict[Tensor] during training, 
-                containing :
-
-                    the classification regression losses for both the RPN and the R-CNN, 
-                    the mask loss.
-
-            Validation:
-
-                returns the post-processed predictions as a List[Dict[Tensor]] containing:
-                    
-                    boxes (FloatTensor[N, 4]): the predicted boxes in [x1, y1, x2, y2] format, with values of x between 0 and W and values of y between 0 and H
-
-                    labels (Int64Tensor[N]): the predicted labels for each image
-
-                    scores (Tensor[N]): the scores or each prediction
-
-                    keypoints (FloatTensor[N, K, 3]): the locations of the predicted keypoints, in [x, y, v] format.
-
-        Segmentation Output:
-
-            Train：
-                    output segmentation target map ,we need use custom loss function to compute loss value,
-                    for 'backward()'function
-
-
-            Validation：
-
-
-        Detection Output：
-
-            Train：
-
-
-            Validation：
-
-
-        
-        """
-
         print("# ============================= train epoch {index} ========================== #".format(index=index))
-
         # --------------------------- General Epoch Module --------------------------- #
-
         self.model.train()
-        bar=tqdm(self.trainloader)
+        bar=tqdm(self.trainloader,dynamic_ncols=True)
         for image,target in bar:
             if self.devices=="GPU":
-                image,target=self.copy_to_gpu(image,target)
-            
-            # ------------------------------- Loss function ------------------------------ #
-                
+                image,target=self.copy_to_gpu(image,target)    
+            # ------------------------------- Loss function ------------------------------ #     
             if not self.MissionType=="Segmentation" or not self.DefaultNetwork:
                 lossdict=self.model(image,target)
                 losses = sum(loss for loss in lossdict.values())
                 lossstr={k:v.item() for k,v in lossdict.items()}
-        
             else:
                 output=self.model(image)
                 loss=self.Loss_Function(output,target)
                 lossstr=loss.item()
-      
-            self.writer.add_scalars(self.NetType+'_loss function',lossstr,global_step=self.global_step)
+        
+            self.writer.add_scalars(self.NetType+'_Loss Function',lossstr,global_step=self.global_step)
         
             # ------------------------------ Inference Once ------------------------------ #
             
@@ -270,11 +271,7 @@ class MODEL(DATASET):
             # -------------------------- Add log to Tensorboard -------------------------- #
 
             self.global_step+=1
-            
-            
-
-
-            
+                
 
 
 
@@ -296,49 +293,9 @@ class MODEL(DATASET):
 
 
 
-        
-
-    def inference(self,data):
-        print("# ---------------------------------------------------------------------------- #")
-        print("#                                   INFERENCE                                  #")
-        print("# ---------------------------------------------------------------------------- #")
 
 
 
-
-    def eval(self,index):
-        """
-        Validation Flow
-        """
-        print("# ---------------------------------------------------------------------------- #")
-        print("#                                  VALIDATION                                  #")
-        print("# ---------------------------------------------------------------------------- #")
-        print("# ============================= validation epoch {index} ========================== #".format(index=index))
-        self.model.val()
-        if not self.MissionType=="Segmentation" or not self.DefaultNetwork:
-            with torch.no_grad():
-                 for image,target in bar:
-                    if self.devices=="GPU":
-                        image,target=self.copy_to_gpu(image,target)
-                    # ------------------------------- Loss function ------------------------------ #
-                    output=self.model(image)
-
-
-
-
-
-
-
-    def save(self,epoch):
-        print("-----save model in :") 
-        modelstate={
-            'epoch': epoch + 1,
-            'state_dict': self.model.state_dict(),
-            'optimizer': self.optimizer.state_dict(),
-            'preference':1
-        }
-        modelname=self.MissionType+"_"+self.NetType+str(time.asctime(time.localtime(time.time())))+'.pth'
-        torch.save(modelstate,os.path.join(self.checkpoint,modelname))
 
 
 

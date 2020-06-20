@@ -31,10 +31,25 @@ import os.path
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 from pycocotools import mask as maskUtils
+import torch
 import matplotlib.pyplot as plt
 import numpy as np
 
-
+def convert_coco_poly_to_mask(segmentations, height, width):
+    masks = []
+    for polygons in segmentations:
+        rles = maskUtils.frPyObjects(polygons, height, width)
+        mask = maskUtils.decode(rles)
+        if len(mask.shape) < 3:
+            mask = mask[..., None]
+        mask = torch.as_tensor(mask, dtype=torch.uint8)
+        mask = mask.any(dim=2)
+        masks.append(mask)
+    if masks:
+        masks = torch.stack(masks, dim=0)
+    else:
+        masks = torch.zeros((0, height, width), dtype=torch.uint8)
+    return masks
 
 class CocoDataset(COCO):
     """
@@ -110,14 +125,22 @@ class CocoDataset(COCO):
         img = Image.open(os.path.join(self.image_root, path)).convert('RGB')
         (w,h)=img.size
         boxes=np.array([t["bbox"] for t in Ann])
-            
+        keep = (boxes[:, 3] > boxes[:, 1]) & (boxes[:, 2] > boxes[:, 0])
+        boxes = boxes[keep]
         
-        instancemasks=np.array([self.annToMask(t,h,w) for t in Ann])
+        labels = labels[keep]
+
+        segmentations=[t['segmentation'] for t in Ann]
+        masks=convert_coco_poly_to_mask(segmentations, h, w)
+        instancemasks = np.array(masks[keep])
+
+        
         segmask=np.zeros((h,w),dtype=np.int64)
         for index,t in enumerate(instancemasks):
             max_=max(segmask.max(),(t*labels[index]).max())
             segmask=segmask+t*labels[index]
             segmask[segmask>max_]=max_
+
         if self.debug:
             plt.imshow(segmask),plt.show()
         
@@ -197,6 +220,8 @@ class CocoDataset(COCO):
             rle = ann['segmentation']
         return rle
 
+    def visual(self):
+        self.coco.showAnns()
 
 
 # ---------------------------------------------------------------------------- #

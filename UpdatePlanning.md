@@ -1,5 +1,11 @@
 ![](Resources/Document/IMG_0932.PNG)
 
+
+
+
+
+
+
 Update Support Future Month:
 ### Detection:
 
@@ -15,3 +21,12 @@ Update Support Future Month:
 ### Instance Segmentation
 
 * [YOLACT](https://github.com/dbolya/yolact.git)
+
+
+
+
+2020-06-16
+
+增加
+训练器
+评估器

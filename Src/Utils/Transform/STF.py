@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    STF.py                                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: winshare <tanwenxuan@live.com>             +#+  +:+       +#+         #
+#    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/01 15:58:14 by winshare          #+#    #+#              #
-#    Updated: 2020/05/28 11:48:49 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/16 17:43:00 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ import PIL.Image as Image
 import random
 import torch
 import torchvision.transforms as T
+import torchvision.transforms.functional as F
+
 RandomRotateDegree=90
 BaseSize=512
 CropSize=512
@@ -87,9 +89,41 @@ instance_transform={
 
 
 
+def _flip_coco_person_keypoints(kps, width):
+    flip_inds = [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15]
+    flipped_data = kps[:, flip_inds]
+    flipped_data[..., 0] = width - flipped_data[..., 0]
+    # Maintain COCO convention that if visibility == 0, then x, y = 0
+    inds = flipped_data[..., 2] == 0
+    flipped_data[inds] = 0
+    return flipped_data
 
+class ToTensor(object):
+    def __call__(self, data):
 
+        image = F.to_tensor(data[0])
+        target=data[1]
+        return image, target
+class RandomHorizontalFlip(object):
+    def __init__(self, prob):
+        self.prob = prob
 
+    def __call__(self, data):
+        image=data[0]
+        target=data[1]
+        if random.random() < self.prob:
+            height, width = image.shape[-2:]
+            image = image.flip(-1)
+            bbox = target["boxes"]
+            bbox[:, [0, 2]] = width - bbox[:, [2, 0]]
+            target["boxes"] = bbox
+            if "masks" in target:
+                target["masks"] = target["masks"].flip(-1)
+            if "keypoints" in target:
+                keypoints = target["keypoints"]
+                keypoints = _flip_coco_person_keypoints(keypoints, width)
+                target["keypoints"] = keypoints
+        return image, target
 
 
 
@@ -118,7 +152,7 @@ class STF():
             "Detection":self.DetectionTransform,
             "Segmentation":self.SegmentationTransform,
             "InstenceSegmentation":self.InstanceSegmentationTransform,
-            # "KeyPoint",# Not support now
+            "KeyPoint":self.InstanceSegmentationTransform
             # "Caption"
         }
         self.mode=mode
@@ -149,17 +183,16 @@ class STF():
     # ---------------------------- Transform Function ---------------------------- #
 
     def InstanceSegmentationTransform(self,image,target):
-        instancemasks=target["masks"]
-        boxes=target["boxes"]
-        labels=target["labels"]
         basetransforms=Compose([
-            T.ToTensor(),
-            T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+                ToTensor(),
+                RandomHorizontalFlip(0.5)
         ])
-        image=basetransforms(image)
-        target["masks"]=torch.from_numpy(instancemasks).to(torch.uint8)# Need Uint8)
-        target['boxes']=torch.from_numpy(boxes).to(torch.float32)
-        target['labels']=torch.from_numpy(labels).to(torch.int64)
+      
+        target["masks"]=torch.from_numpy(target["masks"]).to(torch.uint8)# Need Uint8)
+        target['boxes']=torch.from_numpy(target["boxes"]).to(torch.float32)
+        target['labels']=torch.from_numpy(target["labels"]).to(torch.int64)
+        image,target=basetransforms((image,target))
+        image=F.normalize(image,mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
         return image,target
 
     def DetectionTransform(self,image,target):
