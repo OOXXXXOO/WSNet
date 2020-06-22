@@ -25,10 +25,10 @@
 
 ### Support Network:
 
-
-
-
-
+****
+|Segmentation| Instance Segmentation | Detection| Keypoint | MOT |
+|---|---|---|---|---|
+|  - [x] Deeplabv3Plus | - [x] Mask RCNN  |  - [x] Faster RCNN | - [x]KeyPointRCNN   | - [x]DeepSort   |
 
 
 
