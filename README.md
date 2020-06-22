@@ -23,17 +23,40 @@
 
 * Data Visualzation
 
-### Support Network:
 
 ****
-|Segmentation| Instance Segmentation | Detection| Keypoint | MOT |
-|---|---|---|---|---|
-|  - [x] Deeplabv3Plus | - [x] Mask RCNN  |  - [x] Faster RCNN | - [x]KeyPointRCNN   | - [x]DeepSort   |
+
+### Support Network:
+
+
+#### Segmentation
+
+- [x] Deeplabv3Plus 
+- [ ] FCN
+#### Instance Segmentation 
+
+
+- [x] Mask RCNN
+- [ ] DetecpRS
+
+#### Detection
+
+- [x] Faster RCNN
+- [x] yolov3
+- [ ] EfficientDet 
+#### Keypoint
+
+- [x] KeyPointRCNN
+
+#### MOT
+
+- [x] DeepSort
 
 
 
 
 ### Toolkit for dataset automatic generate
+
 
 #### Patch Generator
 
