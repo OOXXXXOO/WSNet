@@ -1,4 +1,4 @@
-![](Document/Image/title.png)
+![](../../Document/Image/title.png)
 # Network
 ## Default Model
 

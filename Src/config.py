@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/22 16:42:50 by tanwenxuan        #+#    #+#              #
-#    Updated: 2020/06/23 16:21:28 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/23 19:51:49 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ from Src.reference import reference
 
 import json
 import os
-
+import torch
 
 
 
@@ -127,6 +127,39 @@ class cfg(reference):
 
 
 
+        # ---------------------------------------------------------------------------- #
+        #                                    Config                                    #
+        # ---------------------------------------------------------------------------- #
+                
+        self.DistributedDataParallel=self.Config['DistributedDataParallel']
+        self.resume=self.Config['Resume']
+        self.checkpoint=self.Config['checkpoint_path']
+        self.MultiScale_Training=self.Config['multiscale_training']
+        self.logdir=self.Config['logdir']
+        self.devices=self.Config['devices']
+        self.pre_estimation=self.Config['pre_estimation']
+
+        if not os.path.exists(self.checkpoint):
+            os.makedirs(self.checkpoint)
+
+
+        
+        if self.devices=='GPU':
+            self.usegpu=True
+            self.gpu_id=self.Config['gpu_id']
+            # os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
+            self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
+            print('#-----Device:\n',self.device)
+        
+        if self.devices=='CPU':
+            self.device=torch.device("cpu")
+
+
+        self.download_pretrain_model=self.Config['down_pretrain_model']
+        self.visualization=self.Config['visualization']
+        self.worker_num=self.Config['worker_num']
+        self.epochs=self.Config['epochs']
+        self.aspect_ratio_factor=self.Config['group_factor']
 
 
 

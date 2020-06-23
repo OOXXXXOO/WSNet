@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/22 16:43:43 by tanwenxuan        #+#    #+#              #
-#    Updated: 2020/06/23 17:16:35 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/23 19:51:28 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ class dataset(network):
         print("# ---------------------------------------------------------------------------- #")
 
 
-
+        self.mission_datasets=self.datasets_function_dict[self.MissionType]
 
 
 

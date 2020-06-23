@@ -70,6 +70,14 @@ class model(dataset):
         print("#                               model init done                                #")
         print("# ---------------------------------------------------------------------------- #")
 
+    def train(self):
+        """
+        subprocess do open tensorboard or not
+        """
+        import subprocess
+        subprocess.run(["watch","-d","-n","0.1","nvidia-smi"])
+
+
 
 
 def parser():
@@ -85,6 +93,7 @@ def parser():
 def main():
     args=parser()
     Model=model(cfg=args.config,process=args.process)
+    Model.train()
 
 
 

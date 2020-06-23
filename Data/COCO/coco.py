@@ -1,9 +1,9 @@
 
 
 from pycocotools.coco import COCO
-
+from Data.COCO.utils import *
 class CocoDataSet(COCO):
-    def __init__(self):
+    def __init__(self,mission):
         print(
             "------------------------------------------------------------\n"
             "          _             _             _             _       \n"
@@ -19,3 +19,4 @@ class CocoDataSet(COCO):
             "\/____________/\/_________/ \/____________/\/_________/     \n"
             "------------------------------------------------------------\n"
         )
+        

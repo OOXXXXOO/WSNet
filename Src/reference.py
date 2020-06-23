@@ -136,7 +136,7 @@ class reference():
             },
             "InstenceSegmentation":{
                 "CocoDetection":CocoDataSet
-            }
+            },
             "Keypoint":{
                 "CocoKeypoint":CocoDataSet
             }
@@ -285,7 +285,14 @@ class reference():
             "Segmentation":models.segmentation.deeplabv3_resnet50,
             "InstenceSegmentation":models.detection.maskrcnn_resnet50_fpn,
             "Classification":models.resnet50,
-            "Keypoint":models.detection.keypointrcnn_resnet50_fpn,
+            "Keypoint":models.detection.keypointrcnn_resnet50_fpn
+        }
+        self.network_library={
+            "Detection":self.DetectionDict,
+            "Segmentation":self.SegmentationDict,
+            "InstenceSegmentation":self.InstanceSegmentationDict,
+            "Classification":self.BackBoneDict,
+            "Keypoint":self.KeyPointDict
         }
 
         # ==========Pytorch API Reference ===========================================================================================  
