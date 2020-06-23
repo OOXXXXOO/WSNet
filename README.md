@@ -29,6 +29,11 @@
 ### Support Network:
 
 
+#### BackBone & Classification
+
+- [x] EfficientNetB1~B7
+- [ ] Resnest
+
 #### Segmentation
 
 - [x] Deeplabv3Plus 
