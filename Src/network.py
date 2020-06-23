@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/22 16:44:50 by tanwenxuan        #+#    #+#              #
-#    Updated: 2020/06/23 19:55:38 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/23 20:28:58 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,11 +44,13 @@ class network(cfg):
         if self.DefaultNetwork:
             print("# ===== \033[35m Use the default network :\033[32m ✓ \033[0m")
             self.model=self.DefaultNetworkDict[self.MissionType]
+            self.model=self.init_model()
         else:
             print("# ===== \033[35m Use the default network :\033[31m x \033[0m")
             self.modeldict=self.network_library[self.MissionType]
             self.model=self.modeldict[self.NetType]
-            
+        
+
 
 
 
@@ -103,10 +105,13 @@ class network(cfg):
         print("#                            network init done                                 #")
         print("# ---------------------------------------------------------------------------- #")
 
-    def init_model(self,model_function,para):
+    def init_model(self):
+        return self.model(
+            pretrained=self.download_pretrain_model,
+            num_classes=self.class_num,
+            progress=True
+        )
         
-        self.model=model_function(para)
-
 
     def _initialize_weights(self,model):
         for m in model.modules():

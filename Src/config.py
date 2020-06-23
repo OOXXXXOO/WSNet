@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/22 16:42:50 by tanwenxuan        #+#    #+#              #
-#    Updated: 2020/06/23 19:51:49 by winshare         ###   ########.fr        #
+#    Updated: 2020/06/23 20:44:10 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ from Src.reference import reference
 import json
 import os
 import torch
-
 
 
 
@@ -149,7 +148,7 @@ class cfg(reference):
             self.gpu_id=self.Config['gpu_id']
             # os.environ['CUDA_VISIBLE_DEVICES']=str(self.gpu_id)
             self.device = torch.device("cuda:"+str(self.gpu_id) if torch.cuda.is_available() else "cpu")
-            print('#-----Device:\n',self.device)
+            print('# ===== \033[35mAvaliable Device : \033[36m%s\033[0m'%self.device)
         
         if self.devices=='CPU':
             self.device=torch.device("cpu")

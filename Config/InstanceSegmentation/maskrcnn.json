@@ -40,7 +40,7 @@
             "checkpoint_path": "/workspace/models",
             "visualization": false,
             "worker_num":2,
-            "debug":true
+            "debug":false
 
         }
     },
