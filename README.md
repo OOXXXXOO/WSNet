@@ -2,9 +2,27 @@
 
 ![](Document/Image/title.png)
 
-> WSNets is a computer vision framework base on the pytorch. 
- 
+ WSNets is a computer vision framework Support :
 
+- [x] [Pytorch](https://pytorch.org/docs/stable/index.html) 
+- [ ] [TF-Keras (future alpha version)](https://tensorflow.google.cn/guide/keras?hl=zh-cn) 
+- [ ] [MXNet (future alpha version)](https://mxnet.apache.org/api/python/docs/api/) 
+ 
+ 
+ Content:
+
+- [All in Automatic](#all-in-automatic)
+    - [Features](#features)
+    - [Support Network:](#support-network)
+      - [BackBone & Classification](#backbone--classification)
+      - [Segmentation](#segmentation)
+      - [Instance Segmentation](#instance-segmentation)
+      - [Detection](#detection)
+      - [Keypoint](#keypoint)
+      - [MOT](#mot)
+    - [Toolkit for dataset automatic generate](#toolkit-for-dataset-automatic-generate)
+      - [Patch Generator](#patch-generator)
+      - [Satellite Imagery DataSet Generator](#satellite-imagery-dataset-generator)
 # All in Automatic
 
 
@@ -22,6 +40,7 @@
 * Multi Mission , Multi GPU , MultiDataSet  
 
 * Data Visualzation
+
 
 
 ****

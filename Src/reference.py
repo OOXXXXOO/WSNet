@@ -137,6 +137,9 @@ class reference():
             "InstenceSegmentation":{
                 "CocoDetection":CocoDataSet
             }
+            "Keypoint":{
+                "CocoKeypoint":CocoDataSet
+            }
         }
         self.dataset_support_list=self.datasets_function_dict.keys()
 
@@ -274,12 +277,18 @@ class reference():
         }
 
         # ------------------------------ Default Network ----------------------------- #
-        self.DefaultNetwork={
-
-            
+        
+        # Official Network for different mission could use coco reference 
+        
+        self.DefaultNetworkDict={
+            "Detection":models.detection.fasterrcnn_resnet50_fpn,
+            "Segmentation":models.segmentation.deeplabv3_resnet50,
+            "InstenceSegmentation":models.detection.maskrcnn_resnet50_fpn,
+            "Classification":models.resnet50,
+            "Keypoint":models.detection.keypointrcnn_resnet50_fpn,
         }
 
-        # ============================================================================== Pytorch API Reference 
+        # ==========Pytorch API Reference ===========================================================================================  
        
 
 
