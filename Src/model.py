@@ -41,6 +41,7 @@ print("# ----------------------------- Register the SRC ------------------------
 
 import argparse
 import time
+from decorating import animated
 from tqdm import tqdm
 import random
 # ------------------------------ local reference ----------------------------- #
@@ -48,27 +49,6 @@ import random
 from Src.dataset import dataset
 
 
-
-
-def animation(step,width=81):
-    position=step%(width-1)
-    line1=list("#"*width+"\n")
-    line2=list("#"*width+"\n")
-    line3=list("#"*width+"\n")
-    line4=list("#"*width+"\n")
-    line5=list("#"*width+"\n")
-    if step>2:
-        line1[position-2]=">"
-        line2[position-1]=">"
-        line3[position]=">"
-        line4[position-1]=">"
-        line5[position-2]=">"
-    line1="".join(line1)
-    line2="".join(line2)
-    line3="".join(line3)
-    line4="".join(line4)
-    line5="".join(line5)
-    print(line1,line2,line3,line4,line5)
 
 
 
@@ -94,14 +74,92 @@ class model(dataset):
         print("#                               model init done                                #")
         print("# ---------------------------------------------------------------------------- #")
 
+
+
+    
+
+
     def train(self):
         """
         subprocess do open tensorboard or not
         """
         import subprocess
         # subprocess.run(["watch","-d","-n","0.1","nvidia-smi"])
-        for i in tqdm(range(1000)):
-            time.sleep(1)
+        self.step=0
+        self.loss=0
+        for epoch in range(self.epochs):
+            self.one_epoch(epoch)
+            self.eval()
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    def one_epoch(self,index):
+        for i in range(1000):
+            Loss="Training | Epoch {epoch} | Step:{step}| loss:{loss} | acc  f1  recall  ".format(epoch=index,step=self.step,loss=self.loss)
+            with animated(Loss):
+                time.sleep(1.3)
+                self.loss+=1
+                self.step+=1
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -110,20 +168,15 @@ def parser():
     parsers=argparse.ArgumentParser()
     parsers.add_argument("-config",default="Config/InstanceSegmentation/maskrcnn.json", help="dir of config file")
     parsers.add_argument("-process",default="train", help="(train_val) / (eval) / (inference) ")
-    
     args = parsers.parse_args()
     return args
 
 
 
 def main():
-    for i in range(1000):
-        animation(i)
-        time.sleep(0.1)
-        os.system("clear")
-    # args=parser()
-    # Model=model(cfg=args.config,process=args.process)
-    # Model.train()
+    args=parser()
+    Model=model(cfg=args.config,process=args.process)
+    Model.train()
 
 
 
