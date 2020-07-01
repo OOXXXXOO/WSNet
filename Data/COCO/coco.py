@@ -1,6 +1,4 @@
 import sys
-sys.path.append("/workspace/WSNetBeta/WSNets/")
-print(sys.path)
 from pycocotools.coco import COCO
 from Data.COCO.utils import *
 from Data.COCO.references.detection.coco_utils import get_coco as detcoco
@@ -58,7 +56,7 @@ class CocoDataSet(COCO):
         if mission=="segmentation":
             self.dataset=detcoco(root,sets,transforms)
         else:
-            self.dataset=segcoco(root,sets,transforms,mode)
+            self.dataset=segcoco(root,sets,transforms)
         """
         COCO Sucess & fix the transform
         """

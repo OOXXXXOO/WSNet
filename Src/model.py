@@ -108,11 +108,11 @@ class model(dataset):
     
     def one_epoch(self,index):
         for i in range(1000):
-            Loss="Training | Epoch {epoch} | Step:{step}| loss:{loss} | acc  f1  recall  ".format(epoch=index,step=self.step,loss=self.loss)
-            with animated(Loss):
-                time.sleep(1.3)
-                self.loss+=1
-                self.step+=1
+            Loss="Training | Epoch {epoch} | Step:{step}/{steps}| loss:{loss} | acc:{acc} |  f1 {f1}  recall {recall}".format(
+                epoch=index,
+                step=self.step,
+                loss=self.loss
+            )
             
 
 

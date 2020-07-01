@@ -1,7 +1,8 @@
 import copy
 import os
 from PIL import Image
-
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 import torch
 import torch.utils.data
 import torchvision
@@ -10,7 +11,7 @@ from pycocotools import mask as coco_mask
 from pycocotools.coco import COCO
 
 import transforms as T
-
+#Data.COCO.references.detection.
 
 class FilterAndRemapCocoCategories(object):
     def __init__(self, categories, remap=True):
@@ -213,6 +214,7 @@ class CocoDetection(torchvision.datasets.CocoDetection):
 
     def __getitem__(self, idx):
         img, target = super(CocoDetection, self).__getitem__(idx)
+        print(target)
         image_id = self.ids[idx]
         target = dict(image_id=image_id, annotations=target)
         if self._transforms is not None:
@@ -221,10 +223,10 @@ class CocoDetection(torchvision.datasets.CocoDetection):
 
 
 def get_coco(root, image_set, transforms, mode='instances'):
-    anno_file_template = "{}_{}2017.json"
+    anno_file_template = "{}_{}2014.json"
     PATHS = {
-        "train": ("train2017", os.path.join("annotations", anno_file_template.format(mode, "train"))),
-        "val": ("val2017", os.path.join("annotations", anno_file_template.format(mode, "val"))),
+        "train": ("train2014", os.path.join("annotations", anno_file_template.format(mode, "train"))),
+        "val": ("val2014", os.path.join("annotations", anno_file_template.format(mode, "val"))),
         # "train": ("val2017", os.path.join("annotations", anno_file_template.format(mode, "val")))
     }
 

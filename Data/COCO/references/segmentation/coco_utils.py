@@ -8,7 +8,7 @@ import os
 
 from pycocotools import mask as coco_mask
 
-from transforms import Compose
+from Data.COCO.references.segmentation.transforms import Compose
 
 
 class FilterAndRemapCocoCategories(object):
