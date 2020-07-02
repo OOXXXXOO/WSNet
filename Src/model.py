@@ -44,6 +44,11 @@ import time
 from decorating import animated
 from tqdm import tqdm
 import random
+from rich.progress import track
+from rich.progress import Progress
+from rich.progress import BarColumn
+from rich.progress import TimeRemainingColumn
+
 # ------------------------------ local reference ----------------------------- #
 
 from Src.dataset import dataset
@@ -83,13 +88,16 @@ class model(dataset):
         """
         subprocess do open tensorboard or not
         """
+
+        print("\033[1;36m# ------------------------------ \033[5;32mStart Training \033[0m\033[1;36m------------------------------ #\033[0m")
+
         import subprocess
         # subprocess.run(["watch","-d","-n","0.1","nvidia-smi"])
         self.step=0
         self.loss=0
         for epoch in range(self.epochs):
             self.one_epoch(epoch)
-            self.eval()
+            self.eval(epoch)
   
 
 
@@ -98,8 +106,9 @@ class model(dataset):
 
 
 
-
-
+    def eval(self,index):
+        print("\r\033[1;36m# ===== Eval process on epoch : \033[1;32m %s \033[0m"%index,end='')
+        time.sleep(1)
 
 
 
@@ -107,16 +116,9 @@ class model(dataset):
 
     
     def one_epoch(self,index):
-        for i in range(1000):
-            Loss="Training | Epoch {epoch} | Step:{step}/{steps}| loss:{loss} | acc:{acc} |  f1 {f1}  recall {recall}".format(
-                epoch=index,
-                step=self.step,
-                loss=self.loss
-            )
-            
-
-
-
+        print("\r\033[1;36m# ===== Epoch : \033[1;32m %s \033[0m"%index,end='')
+        time.sleep(1)
+        
 
 
 

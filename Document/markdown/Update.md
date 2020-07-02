@@ -24,3 +24,6 @@ Update Support Future Month:
 * [YOLACT](https://github.com/dbolya/yolact.git)
 
 
+抛弃2014数据集  使用2017数据集
+
+同时跑通三个任务  与此同时备份
