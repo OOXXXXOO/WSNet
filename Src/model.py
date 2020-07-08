@@ -107,17 +107,16 @@ class model(dataset):
 
 
     def eval(self,index):
-        print("\r\033[1;36m# ===== Eval process on epoch : \033[1;32m %s \033[0m"%index,end='')
-        time.sleep(1)
-
+        print("\r\033[1;36m# ===== Eval process on epoch : \033[1;32m %s \033[0m"%index)
+       
 
 
 
 
     
     def one_epoch(self,index):
-        print("\r\033[1;36m# ===== Epoch : \033[1;32m %s \033[0m"%index,end='')
-        time.sleep(1)
+        print("\r\033[1;36m# ===== Epoch : \033[1;32m %s \033[0m"%index)
+       
         
 
 

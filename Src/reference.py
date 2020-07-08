@@ -29,7 +29,7 @@ import torchvision.datasets as dataset
 import torch.optim as optim
 import torch.nn as nn
 import torch.nn.functional as F
-
+import rich
 # ------------------------- Official Pytorch library ------------------------- #
 
 # future

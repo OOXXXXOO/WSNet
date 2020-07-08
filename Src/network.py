@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/22 16:44:50 by tanwenxuan        #+#    #+#              #
-#    Updated: 2020/06/23 20:28:58 by winshare         ###   ########.fr        #
+#    Updated: 2020/07/03 14:54:34 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,6 +97,10 @@ class network(cfg):
             milestones=self.lr_steps,
             gamma=self.lr_gamma
         )
+        print("# ===== \033[35m Optimizer: \033[36m%s\033[0m "%self.optimizer)
+        print("# ===== \033[35m Lr Scheduler: \033[36m%s\033[0m "%self.lr_scheduler)
+
+
 
 
 
