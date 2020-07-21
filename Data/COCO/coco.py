@@ -1,11 +1,14 @@
+import os
 import sys
 from pycocotools.coco import COCO
+
+
 # from Data.COCO.utils import *
 # from Data.COCO.references.detection.coco_utils import get_coco as detcoco
 # from Data.COCO.references.segmentation.coco_utils import get_coco as segcoco
 
 class CocoDataSet(COCO):
-    def __init__(self,mission,root,transforms=[],sets='train',version=2014,mode="instance"):
+    def __init__(self,mission,root,transforms=[],sets='train',version=2017,mode="instance"):
         """
         * mission :
                 Detection 
@@ -32,22 +35,22 @@ class CocoDataSet(COCO):
         """
         
         print(
-            "------------------------------------------------------------\n"
-            "          _             _             _             _       \n"
-            "        /\ \           /\ \         /\ \           /\ \     \n"
-            "       /  \ \         /  \ \       /  \ \         /  \ \    \n"
-            "      / /\ \ \       / /\ \ \     / /\ \ \       / /\ \ \   \n"
-            "     / / /\ \ \     / / /\ \ \   / / /\ \ \     / / /\ \ \  \n"
-            "    / / /  \ \_\   / / /  \ \_\ / / /  \ \_\   / / /  \ \_\ \n"
-            "   / / /    \/_/  / / /   / / // / /    \/_/  / / /   / / / \n"
-            "  / / /          / / /   / / // / /          / / /   / / /  \n"
-            " / / /________  / / /___/ / // / /________  / / /___/ / /   \n"
-            "/ / /_________\/ / /____\/ // / /_________\/ / /____\/ /    \n"
-            "\/____________/\/_________/ \/____________/\/_________/     \n"
-            "------------------------------------------------------------\n"
+            "\033[1;36m# ------------------------------------------------------------ #\n"
+            "#          _             _             _             _         #\n"
+            "#        /\ \           /\ \         /\ \           /\ \       #\n"
+            "#       /  \ \         /  \ \       /  \ \         /  \ \      #\n"
+            "#      / /\ \ \       / /\ \ \     / /\ \ \       / /\ \ \     #\n"
+            "#     / / /\ \ \     / / /\ \ \   / / /\ \ \     / / /\ \ \    #\n"
+            "#    / / /  \ \_\   / / /  \ \_\ / / /  \ \_\   / / /  \ \_\   #\n"
+            "#   / / /    \/_/  / / /   / / // / /    \/_/  / / /   / / /   #\n"
+            "#  / / /          / / /   / / // / /          / / /   / / /    #\n"
+            "# / / /________  / / /___/ / // / /________  / / /___/ / /     #\n"
+            "#/ / /_________\/ / /____\/ // / /_________\/ / /____\/ /      #\n"
+            "#\/____________/\/_________/ \/____________/\/_________/       #\n"
+            "# ------------------------------------------------------------ #\033[0m\n"
         )
 
-        print("# ===== COCO DataSet Build with mission :%s"%mission)
+        print("# ===== COCO DataSet Build with mission :\033[1;36m%s\033[0m"%mission)
         anno_file_template = "{}_{}"+str(version)+".json"
         anno=os.path.join("annotations", anno_file_template.format(mode, sets))
         self.abs_anno=os.path.join(root,anno)

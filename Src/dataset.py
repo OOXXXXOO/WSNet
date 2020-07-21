@@ -6,7 +6,7 @@
 #    By: winshare <winshare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/22 16:43:43 by tanwenxuan        #+#    #+#              #
-#    Updated: 2020/06/24 17:24:34 by winshare         ###   ########.fr        #
+#    Updated: 2020/07/09 11:48:10 by winshare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@
 
 
 from Src.network import network
-
+import rich
 
 
 
@@ -43,7 +43,7 @@ class dataset(network):
 
         self.mission_datasets=self.datasets_function_dict[self.MissionType]
         self.datasets_function=self.mission_datasets[self.DataSetType]
-        dataset_para={}
+        self.datasets=self.datasets_function(self.MissionType,self.DataSet_Root)
         
 
 
