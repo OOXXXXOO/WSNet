@@ -4,8 +4,11 @@
 
  WSNets is a computer vision framework Support :
 
-- [x] [Pytorch](https://pytorch.org/docs/stable/index.html) 
+- [x] [Pytorch](https://pytorch.org/docs/stable/index.html)
+
+
 - [ ] [TF-Keras (future alpha version)](https://tensorflow.google.cn/guide/keras?hl=zh-cn) 
+
 - [ ] [MXNet (future alpha version)](https://mxnet.apache.org/api/python/docs/api/) 
  
  
@@ -29,17 +32,17 @@
 
 ### Features
 
-* Fast training
+* Fast training ✓ 
 
-* Minimal enviroment requirement
+* Minimal enviroment requirement ✓ 
 
-* Json based config system 
+* Json based config system ✓ 
 
-* Support for official SOTA model & custom model
+* Support for official SOTA model & custom model ✓ 
 
-* Multi Mission , Multi GPU , MultiDataSet  
+* Multi Mission , Multi GPU , MultiDataSet  ✓ 
 
-* Data Visualzation
+* Data Visualzation ✓ 
 
 
 
